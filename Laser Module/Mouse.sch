@@ -7078,7 +7078,7 @@ High-power, low thermal resistance package.</description>
 <part name="R29" library="SparkFun-Resistors" deviceset="330OHM1/10W1%(0603)" device="" value="10k"/>
 <part name="GND34" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="R33" library="SparkFun-Resistors" deviceset="10KOHM-1/10W-1%(0603)" device="0603" value="10K"/>
-<part name="ANT" library="SparkFun-Connectors" deviceset="M01" device="PTH_2MM"/>
+<part name="ANT" library="SparkFun-Connectors" deviceset="M01" device="PTH_NO_SILK_YES_STOP"/>
 <part name="Q1" library="SparkFun-DiscreteSemi" deviceset="MOSFET-NCHANNEL" device="AO3404A"/>
 <part name="GND35" library="SparkFun" deviceset="GND" device=""/>
 <part name="R18" library="SparkFun-Resistors" deviceset="330OHM1/10W1%(0603)" device="" value="330"/>

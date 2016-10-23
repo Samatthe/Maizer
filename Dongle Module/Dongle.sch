@@ -3472,7 +3472,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="U$1" library="SAUVE" deviceset="APA102" device=""/>
 <part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="SUPPLY5" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="ANT" library="SparkFun-Connectors" deviceset="M01" device="PTH_2MM"/>
+<part name="ANT" library="SparkFun-Connectors" deviceset="M01" device="PTH_NO_SILK_YES_STOP"/>
 </parts>
 <sheets>
 <sheet>

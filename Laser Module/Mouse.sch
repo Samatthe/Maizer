@@ -3196,6 +3196,79 @@ Through-hole SPDT Switch&lt;br&gt;
 <rectangle x1="2.1" y1="-1.1" x2="2.3" y2="-0.5" layer="51" rot="R180"/>
 <rectangle x1="2.1" y1="0.5" x2="2.3" y2="1.1" layer="51" rot="R180"/>
 </package>
+<package name="TRACKBALL">
+<wire x1="-1.5" y1="4.5" x2="1.5" y2="4.5" width="0.127" layer="51"/>
+<wire x1="1.5" y1="-4.5" x2="-1.5" y2="-4.5" width="0.127" layer="51"/>
+<wire x1="-1.5" y1="-1.5" x2="-1.5" y2="-4.5" width="0.127" layer="51"/>
+<wire x1="-4.5" y1="-2" x2="-2.5" y2="-2" width="0.127" layer="47"/>
+<wire x1="-2.5" y1="-2" x2="-2.5" y2="-4.5" width="0.127" layer="47"/>
+<wire x1="-2.5" y1="-4.5" x2="-4.5" y2="-4.5" width="0.127" layer="47"/>
+<wire x1="-4.5" y1="-4.5" x2="-4.5" y2="-2" width="0.127" layer="47"/>
+<wire x1="-5.5" y1="1.5" x2="-5.5" y2="-1.5" width="0.127" layer="51"/>
+<wire x1="-5.5" y1="-1.5" x2="-4" y2="-1.5" width="0.127" layer="51"/>
+<wire x1="-4" y1="-1.5" x2="-3" y2="-1.5" width="0.127" layer="51"/>
+<wire x1="-3" y1="-1.5" x2="-1.5" y2="-1.5" width="0.127" layer="51"/>
+<wire x1="5.5" y1="1.5" x2="5.5" y2="-1.5" width="0.127" layer="51"/>
+<wire x1="5.5" y1="-1.5" x2="1.5" y2="-1.5" width="0.127" layer="51"/>
+<wire x1="1.5" y1="-1.5" x2="1.5" y2="-3" width="0.127" layer="51"/>
+<wire x1="1.5" y1="-3" x2="1.5" y2="-4" width="0.127" layer="51"/>
+<wire x1="1.5" y1="-4" x2="1.5" y2="-4.5" width="0.127" layer="51"/>
+<wire x1="-2" y1="4.5" x2="-2" y2="2.5" width="0.127" layer="47"/>
+<wire x1="-2" y1="2.5" x2="-4.5" y2="2.5" width="0.127" layer="47"/>
+<wire x1="-4.5" y1="2.5" x2="-4.5" y2="4.5" width="0.127" layer="47"/>
+<wire x1="-4.5" y1="4.5" x2="-2" y2="4.5" width="0.127" layer="47"/>
+<wire x1="-1.5" y1="1.5" x2="-1.5" y2="3" width="0.127" layer="51"/>
+<wire x1="-1.5" y1="3" x2="-1.5" y2="4" width="0.127" layer="51"/>
+<wire x1="-1.5" y1="4" x2="-1.5" y2="4.5" width="0.127" layer="51"/>
+<wire x1="-1.5" y1="1.5" x2="-5.5" y2="1.5" width="0.127" layer="51"/>
+<wire x1="5.5" y1="1.5" x2="4" y2="1.5" width="0.127" layer="51"/>
+<wire x1="4" y1="1.5" x2="3" y2="1.5" width="0.127" layer="51"/>
+<wire x1="3" y1="1.5" x2="1.5" y2="1.5" width="0.127" layer="51"/>
+<wire x1="1.5" y1="1.5" x2="1.5" y2="4.5" width="0.127" layer="51"/>
+<wire x1="4.5" y1="2" x2="2.5" y2="2" width="0.127" layer="47"/>
+<wire x1="2.5" y1="2" x2="2.5" y2="4.5" width="0.127" layer="47"/>
+<wire x1="2.5" y1="4.5" x2="4.5" y2="4.5" width="0.127" layer="47"/>
+<wire x1="4.5" y1="4.5" x2="4.5" y2="2" width="0.127" layer="47"/>
+<wire x1="2" y1="-4.5" x2="2" y2="-2.5" width="0.127" layer="47"/>
+<wire x1="2" y1="-2.5" x2="4.5" y2="-2.5" width="0.127" layer="47"/>
+<wire x1="4.5" y1="-2.5" x2="4.5" y2="-4.5" width="0.127" layer="47"/>
+<wire x1="4.5" y1="-4.5" x2="2" y2="-4.5" width="0.127" layer="47"/>
+<wire x1="-4" y1="-1.5" x2="-4" y2="-2" width="0.127" layer="51"/>
+<wire x1="-3" y1="-1.5" x2="-3" y2="-2" width="0.127" layer="51"/>
+<wire x1="-1.5" y1="3" x2="-2" y2="3" width="0.127" layer="51"/>
+<wire x1="-2" y1="4" x2="-1.5" y2="4" width="0.127" layer="51"/>
+<wire x1="2" y1="-3" x2="1.5" y2="-3" width="0.127" layer="51"/>
+<wire x1="2" y1="-4" x2="1.5" y2="-4" width="0.127" layer="51"/>
+<wire x1="4" y1="2" x2="4" y2="1.5" width="0.127" layer="51"/>
+<wire x1="3" y1="2" x2="3" y2="1.5" width="0.127" layer="51"/>
+<wire x1="4.7" y1="1.5" x2="4.7" y2="-1.5" width="0.127" layer="47"/>
+<wire x1="4.7" y1="-1.5" x2="3.3" y2="-1.5" width="0.127" layer="47"/>
+<wire x1="3.3" y1="-1.5" x2="3.3" y2="1.5" width="0.127" layer="47"/>
+<wire x1="3.3" y1="1.5" x2="4.7" y2="1.5" width="0.127" layer="47"/>
+<wire x1="-4.7" y1="-1.5" x2="-4.7" y2="1.5" width="0.127" layer="47"/>
+<wire x1="-4.7" y1="1.5" x2="-3.3" y2="1.5" width="0.127" layer="47"/>
+<wire x1="-3.3" y1="1.5" x2="-3.3" y2="-1.5" width="0.127" layer="47"/>
+<wire x1="-3.3" y1="-1.5" x2="-4.7" y2="-1.5" width="0.127" layer="47"/>
+<wire x1="-1.5" y1="4.4" x2="1.5" y2="4.4" width="0.127" layer="47"/>
+<wire x1="1.5" y1="4.4" x2="1.5" y2="3" width="0.127" layer="47"/>
+<wire x1="1.5" y1="3" x2="-1.5" y2="3" width="0.127" layer="47"/>
+<wire x1="-1.5" y1="3" x2="-1.5" y2="4.4" width="0.127" layer="47"/>
+<wire x1="-1.5" y1="-3" x2="1.5" y2="-3" width="0.127" layer="47"/>
+<wire x1="1.5" y1="-3" x2="1.5" y2="-4.4" width="0.127" layer="47"/>
+<wire x1="1.5" y1="-4.4" x2="-1.5" y2="-4.4" width="0.127" layer="47"/>
+<wire x1="-1.5" y1="-4.4" x2="-1.5" y2="-3" width="0.127" layer="47"/>
+<circle x="0" y="0" radius="1.5" width="0.127" layer="51"/>
+<rectangle x1="-4.7" y1="-1.5" x2="-3.3" y2="1.5" layer="39"/>
+<rectangle x1="-1.5" y1="3" x2="1.5" y2="4.4" layer="39"/>
+<rectangle x1="3.3" y1="-1.5" x2="4.7" y2="1.5" layer="39"/>
+<rectangle x1="-1.5" y1="-4.4" x2="1.5" y2="-3" layer="39"/>
+<rectangle x1="2" y1="-4.5" x2="4.5" y2="-2.5" layer="101"/>
+<rectangle x1="-4.5" y1="-4.5" x2="-2.5" y2="-2" layer="101"/>
+<rectangle x1="-4.5" y1="2.5" x2="-2" y2="4.5" layer="101"/>
+<rectangle x1="2.5" y1="2" x2="4.5" y2="4.5" layer="101"/>
+<hole x="-4" y="0" drill="0.9"/>
+<hole x="4" y="0" drill="0.9"/>
+</package>
 </packages>
 <symbols>
 <symbol name="SWITCH-MOMENTARY-2">
@@ -3220,6 +3293,13 @@ Through-hole SPDT Switch&lt;br&gt;
 <pin name="P" x="-2.54" y="0" visible="off" length="short" direction="pas"/>
 <pin name="S" x="5.08" y="-2.54" visible="off" length="short" direction="pas" rot="R180"/>
 <pin name="O" x="5.08" y="2.54" visible="off" length="short" direction="pas" rot="R180"/>
+</symbol>
+<symbol name="TRACKBALL">
+<wire x1="-7.62" y1="2.54" x2="7.62" y2="2.54" width="0.254" layer="94"/>
+<wire x1="7.62" y1="2.54" x2="7.62" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-2.54" x2="-7.62" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-2.54" x2="-7.62" y2="2.54" width="0.254" layer="94"/>
+<text x="-5.08" y="-0.762" size="1.27" layer="94">TRACKBALL</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -3480,6 +3560,21 @@ DPDT SMT slide switch, AYZ0202, SWCH-08179</description>
 <technologies>
 <technology name="">
 <attribute name="PROD_ID" value="SWCH-10651"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TRACKBALL">
+<description>Mechanical footprint for trackball</description>
+<gates>
+<gate name="G$1" symbol="TRACKBALL" x="0" y="0"/>
+</gates>
+<devices>
+<device name="MECH" package="TRACKBALL">
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="COMP-09237"/>
 </technology>
 </technologies>
 </device>
@@ -7084,6 +7179,7 @@ High-power, low thermal resistance package.</description>
 <part name="R18" library="SparkFun-Resistors" deviceset="330OHM1/10W1%(0603)" device="" value="330"/>
 <part name="LASER" library="SparkFun-Connectors" deviceset="M02" device="1X02_NO_SILK"/>
 <part name="SUPPLY23" library="SparkFun-Aesthetics" deviceset="V_BATT" device=""/>
+<part name="U$1" library="SparkFun-Electromechanical" deviceset="TRACKBALL" device="MECH"/>
 </parts>
 <sheets>
 <sheet>
@@ -7384,6 +7480,7 @@ Iq: 55uA</text>
 <instance part="R18" gate="G$1" x="398.78" y="195.58" rot="R180"/>
 <instance part="LASER" gate="G$1" x="426.72" y="208.28" rot="R180"/>
 <instance part="SUPPLY23" gate="G$1" x="414.02" y="213.36"/>
+<instance part="U$1" gate="G$1" x="264.16" y="307.34"/>
 </instances>
 <busses>
 </busses>

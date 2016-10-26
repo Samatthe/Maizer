@@ -1,5 +1,16 @@
+#define CONF_DBG_PRINT_SERCOM        EDBG_CDC_MODULE
+#define CONF_DBG_PRINT_GCLK_SOURCE   GCLK_GENERATOR_0
+// #define CONF_DBG_PRINT_BAUD_RATE     9600
+// This BAUD value gives 9600 baud with 48 MHz GCLK
+#define CONF_DBG_PRINT_BAUD_VALUE    65326
+#define CONF_DBG_PRINT_SERCOM_MUX    EDBG_CDC_SERCOM_MUX_SETTING
+#define CONF_DBG_PRINT_PINMUX_PAD0   EDBG_CDC_SERCOM_PINMUX_PAD0
+#define CONF_DBG_PRINT_PINMUX_PAD1   EDBG_CDC_SERCOM_PINMUX_PAD1
+#define CONF_DBG_PRINT_PINMUX_PAD2   EDBG_CDC_SERCOM_PINMUX_PAD2
+#define CONF_DBG_PRINT_PINMUX_PAD3   EDBG_CDC_SERCOM_PINMUX_PAD3
+
+
 // Include the RFM69 and SPI libraries:
-#include <stdio.h>
 #include <RFM69.h>
 
 // Addresses for this node.
@@ -18,20 +29,14 @@
 #define USEACK        true
 
 int main()
-{
-  // Open a serial port so we can send keystrokes to the module:
-  
-  printf("Node ");
-  printf(%d, MYNODEID);
-  printf(" ready");  
-    
+{   
   // Initialize the RFM69HCW:
   RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
   RFM_setHighPower(); // Always use this for RFM69HCW
 
   // Turn on encryption if desired:
   if (ENCRYPT)
-    radio_encrypt(ENCRYPTKEY);
+    RFM_encrypt(ENCRYPTKEY);
 
 while(1)
 {
@@ -50,40 +55,25 @@ while(1)
 
   if (Serial.available() > 0)
   {
-    char input = Serial.read();
-    
-    if (input != '\r') // not a carriage return
-    {
-      sendbuffer[sendlength] = input;
-      sendlength++;
-    }
-
-    // If the input is a carriage return, or the buffer is full:
-    
-    if ((input == '\r') || (sendlength == 61)) // CR or buffer full
-    {
-      // Send the packet!
-
-
-      Serial.print("sending to node ");
-      Serial.print(TONODEID, DEC);
-      Serial.print(": [");
+      dbg_print_str("sending to node ");
+      dbg_print_str("%d", TONODEID);
+      dbg_print_str(": [");
       for (byte i = 0; i < sendlength; i++)
-        Serial.print(sendbuffer[i]);
-      Serial.println("]");
+        dbg_print_str(sendbuffer[i]);
+      dbg_print_str("]\n");
       
       // There are two ways to send packets. If you want
-      // acknowledgements, use sendWithRetry():
+      // acknowledgements, use RFM_sendWithRetry():
       
       if (USEACK)
       {
         if (RFM_sendWithRetry(TONODEID, sendbuffer, sendlength))
-          Serial.println("ACK received!");
+          dbg_print_str("ACK received!\n");
         else
-          Serial.println("no ACK received :(");
+          dbg_print_str("no ACK received :(\n");
       }
 
-      // If you don't need acknowledgements, just use send():
+      // If you don't need acknowledgements, just use RFM_send():
       
       else // don't use ACK
       {
@@ -91,7 +81,6 @@ while(1)
       }
       
       sendlength = 0; // reset the packet
-      Blink(LED,10);
     }
   }
 
@@ -104,21 +93,21 @@ while(1)
   {
     // Print out the information:
     
-    Serial.print("received from node ");
-    Serial.print(RFM_SENDERID, DEC);
-    Serial.print(": [");
+    dbg_print_str("received from node ");
+    dbg_print_str("%d", RFM_SENDERID);
+    dbg_print_str(": [");
 
-    // The actual message is contained in the DATA array,
-    // and is DATALEN bytes in size:
+    // The actual message is contained in the RFM_DATA array,
+    // and is RFM_DATALEN bytes in size:
     
     for (byte i = 0; i < RFM_DATALEN; i++)
-      Serial.print((char)RFM_DATA[i]);
+      dbg_print_str((char)RFM_DATA[i]);
 
-    // RSSI is the "Receive Signal Strength Indicator",
+    // RFM_RSSI is the "Receive Signal Strength Indicator",
     // smaller numbers mean higher power.
     
-    Serial.print("], RSSI ");
-    Serial.println(RFM_RSSI);
+    dbg_print_str("], RSSI ");
+    dbg_print_str("%d\n", RFM_RSSI);
 
     // Send an ACK if requested.
     // (You don't need this code if you're not using ACKs.)
@@ -126,7 +115,7 @@ while(1)
     if (RFM_ACKRequested())
     {
       RFM_sendACK();
-      Serial.println("ACK sent");
+      dbg_print_str("ACK sent\n");
     }
   }
 }

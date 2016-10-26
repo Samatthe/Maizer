@@ -1577,6 +1577,18 @@ Standard decoupling cap</description>
 <label x="33.02" y="81.28" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
+<net name="INT" class="0">
+<segment>
+<pinref part="U2" gate="G$1" pin="DIO0"/>
+<wire x1="91.44" y1="40.64" x2="93.98" y2="40.64" width="0.1524" layer="91"/>
+<label x="93.98" y="40.64" size="1.27" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="J1" gate="G$1" pin="2"/>
+<wire x1="27.94" y1="91.44" x2="30.48" y2="91.44" width="0.1524" layer="91"/>
+<label x="30.48" y="91.44" size="1.27" layer="95" xref="yes"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>

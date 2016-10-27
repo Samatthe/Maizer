@@ -1,3 +1,5 @@
+//gcc -x c++ -std=c++11 Pi_Example.cpp RFM69.cpp RFM69.h -o Pi_RFM69
+
 #include "RFM69.h"
 #include <iostream>
 #include <string>

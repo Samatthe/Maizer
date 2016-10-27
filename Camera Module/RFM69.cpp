@@ -34,6 +34,8 @@
 #include <stdint.h>
 #include <wiringPiSPI.h>
 
+using namespace std;
+
 volatile uint8_t RFM69::DATA[RF69_MAX_DATA_LEN];
 volatile uint8_t RFM69::_mode;        // current transceiver state
 volatile uint8_t RFM69::DATALEN;
@@ -89,9 +91,8 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
     {255, 0}
   };
 
-  digitalWrite(_slaveSelectPin, HIGH);
-  pinMode(_slaveSelectPin, OUTPUT);
-  SPI.begin();
+  int fd, result;
+  fd = wiringPiSPISetup(SPI_CHANNEL, 4000000); //fd is the filehandle for spi
   unsigned long start = millis();
   uint8_t timeout = 50;
   do writeReg(REG_SYNCVALUE1, 0xAA); while (readReg(REG_SYNCVALUE1) != 0xaa && millis()-start < timeout);
@@ -448,15 +449,14 @@ void RFM69::select() {
   _SPSR = SPSR;
 #endif
   // set RFM69 SPI settings
-  SPI.setDataMode(SPI_MODE0);
-  SPI.setBitOrder(MSBFIRST);
-  SPI.setClockDivider(SPI_CLOCK_DIV4); // decided to slow down from DIV2 after SPI stalling in some instances, especially visible on mega1284p when RFM69 and FLASH chip both present
-  digitalWrite(_slaveSelectPin, LOW);
+  //SPI.setDataMode(SPI_MODE0);
+  //SPI.setBitOrder(MSBFIRST);
+  //digitalWrite(_slaveSelectPin, LOW);
 }
 
 // unselect the RFM69 transceiver (set CS high, restore SPI settings)
 void RFM69::unselect() {
-  digitalWrite(_slaveSelectPin, HIGH);
+  //digitalWrite(_slaveSelectPin, HIGH);
   // restore SPI settings to what they were before talking to RFM69
 #if defined (SPCR) && defined (SPSR)
   SPCR = _SPCR;
@@ -491,7 +491,7 @@ void RFM69::setHighPowerRegs(bool onOff) {
 // set the slave select (CS) pin 
 void RFM69::setCS(uint8_t newSPISlaveSelect) {
   _slaveSelectPin = newSPISlaveSelect;
-  digitalWrite(_slaveSelectPin, HIGH);
+  //digitalWrite(_slaveSelectPin, HIGH);
   pinMode(_slaveSelectPin, OUTPUT);
 }
 
@@ -524,7 +524,7 @@ void RFM69::readAllRegs()
   long freqCenter = 0;
 #endif
   
-  Serial.println("Address - HEX - BIN");
+  cout << "Address - HEX" << endl;
   for (uint8_t regAddr = 1; regAddr <= 0x4F; regAddr++)
   {
     select();
@@ -532,11 +532,10 @@ void RFM69::readAllRegs()
     regVal = SPI.transfer(0);
     unselect();
 
-    Serial.print(regAddr, HEX);
-    Serial.print(" - ");
-    Serial.print(regVal,HEX);
-    Serial.print(" - ");
-    Serial.println(regVal,BIN);
+    cout << hex << regAddr;
+    cout << " - ";
+    cout << hex << regVal << endl;
+    cout << dec;
 
 #if REGISTER_DETAIL 
     switch ( regAddr ) 

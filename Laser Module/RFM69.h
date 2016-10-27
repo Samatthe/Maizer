@@ -148,7 +148,6 @@ static volatile uint8_t _mode; // should be protected?
 
 #include <RFM69.h>
 #include <RFM69registers.h>
-#include <SPI.h>
 
 volatile uint8_t RFM_DATA[RF69_MAX_DATA_LEN];
 volatile uint8_t _mode;        // current transceiver state
@@ -465,7 +464,7 @@ void interruptHandler() {
 }
 
 // internal function
-void isr0() { _inISR = true; selfPointer->interruptHandler(); _inISR = false; } // CHANGE //
+void isr0() { _inISR = true; interruptHandler(); _inISR = false; } // CHANGE //?
 
 // internal function
 void receiveBegin() {

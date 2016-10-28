@@ -28,80 +28,55 @@
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 #include <asf.h>
+#include "RFM69.h"
 
-///////////////////////// EXT INT ////////////////
-void configure_extint_channel(void)
-{
-	struct extint_chan_conf config_extint_chan;
-	extint_chan_get_config_defaults(&config_extint_chan);
-	config_extint_chan.gpio_pin           = BUTTON_0_EIC_PIN;
-	config_extint_chan.gpio_pin_mux       = BUTTON_0_EIC_MUX;
-	config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
-	config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
-	extint_chan_set_config(BUTTON_0_EIC_LINE, &config_extint_chan);
-}
-void configure_extint_callbacks(void)
-{
-	extint_register_callback(extint_detection_callback,
-	BUTTON_0_EIC_LINE,
-	EXTINT_CALLBACK_TYPE_DETECT);
-	extint_chan_enable_callback(BUTTON_0_EIC_LINE,
-	EXTINT_CALLBACK_TYPE_DETECT);
-}
-void extint_detection_callback(void)
-{
-	bool pin_state = port_pin_get_input_level(BUTTON_0_PIN);
-	port_pin_set_output_level(LED_0_PIN, pin_state);
-}
-///////////////////////////////////////////////////
+// Addresses for this node.
+#define NETWORKID     0   // Must be the same for all nodes (0 to 255)
+#define MYNODEID      1   // My node ID (0 to 255)
+#define TONODEID      2   // Destination node ID (0 to 254, 255 = broadcast)
 
-////////////////////////// SPI ////////////////////
-static uint8_t buffer[BUF_LENGTH] = {
-	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
-	0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13
-};
-#define BUF_LENGTH 20
-#define SLAVE_SELECT_PIN EXT1_PIN_SPI_SS_0
-struct spi_module spi_master_instance;
-struct spi_slave_inst slave;
+// RFM69 frequency:
+#define FREQUENCY     RF69_915MHZ
 
-void configure_spi_master(void)
+// AES encryption:
+#define ENCRYPT       true // Set to "true" to use encryption
+#define ENCRYPTKEY    "TOPSECRETPASSWRD" // Use the same 16-byte key on all nodes
+
+// Use ACKnowledge when sending messages:
+#define USEACK        true
+
+
+// Initialization functions
+void configure_LED_PWM(void);
+struct tcc_module tcc0;
+
+////////////// Configure all of the LED ports as PWM outputs //////////////////
+void configure_LED_PWM(void)
 {
-	struct spi_config config_spi_master;
-	struct spi_slave_inst_config slave_dev_config;
-	/* Configure and initialize software device instance of peripheral slave */
-	spi_slave_inst_get_config_defaults(&slave_dev_config);
-	slave_dev_config.ss_pin = SLAVE_SELECT_PIN;
-	spi_attach_slave(&slave, &slave_dev_config);
-	/* Configure, initialize and enable SERCOM SPI module */
-	spi_get_config_defaults(&config_spi_master);
-	config_spi_master.mux_setting = EXT1_SPI_SERCOM_MUX_SETTING;
-	/* Configure pad 0 for data in */
-	config_spi_master.pinmux_pad0 = EXT1_SPI_SERCOM_PINMUX_PAD0;
-	/* Configure pad 1 as unused */
-	config_spi_master.pinmux_pad1 = PINMUX_UNUSED;
-	/* Configure pad 2 for data out */
-	config_spi_master.pinmux_pad2 = EXT1_SPI_SERCOM_PINMUX_PAD2;
-	/* Configure pad 3 for SCK */
-	config_spi_master.pinmux_pad3 = EXT1_SPI_SERCOM_PINMUX_PAD3;
-	spi_init(&spi_master_instance, EXT1_SPI_MODULE, &config_spi_master);
-	spi_enable(&spi_master_instance);
+	struct tcc_config config_tcc;
+	tcc_get_config_defaults(&config_tcc, TCC0);
+	config_tcc.counter.period = 0xFFFF;
+	config_tcc.compare.wave_generation = TCC_WAVE_GENERATION_SINGLE_SLOPE_PWM;
+	config_tcc.compare.match[0] = 0;
+	config_tcc.compare.match[1] = 0;
+	config_tcc.compare.match[2] = 0;
+	config_tcc.compare.match[3] = 0;
+	config_tcc.pins.enable_wave_out_pin[0] = true;
+	config_tcc.pins.enable_wave_out_pin[1] = true;
+	config_tcc.pins.enable_wave_out_pin[2] = true;
+	config_tcc.pins.enable_wave_out_pin[3] = true;
+	config_tcc.pins.wave_out_pin[0]        = PIN_PA14F_TCC0_WO4;
+	config_tcc.pins.wave_out_pin[1]        = PIN_PA15F_TCC0_WO5;
+	config_tcc.pins.wave_out_pin[2]        = PIN_PA20F_TCC0_WO6;
+	config_tcc.pins.wave_out_pin[3]        = PIN_PA21F_TCC0_WO7;
+	config_tcc.pins.wave_out_pin_mux[0]    = MUX_PA14F_TCC0_WO4;
+	config_tcc.pins.wave_out_pin_mux[1]    = MUX_PA15F_TCC0_WO5;
+	config_tcc.pins.wave_out_pin_mux[2]    = MUX_PA20F_TCC0_WO6;
+	config_tcc.pins.wave_out_pin_mux[3]    = MUX_PA21F_TCC0_WO7;
+	tcc_init(&tcc0, TCC0, &config_tcc);
+	tcc_enable(&tcc0);
 }
-
-void configure_spi_master_callbacks(void)
-{
-	spi_register_callback(&spi_master_instance, callback_spi_master,
-	SPI_CALLBACK_BUFFER_TRANSMITTED);
-	spi_enable_callback(&spi_master_instance, SPI_CALLBACK_BUFFER_TRANSMITTED);
-}
-
-volatile bool transfer_complete_spi_master = false;
-
-static void callback_spi_master(const struct spi_module *const module)
-{
-	transfer_complete_spi_master = true;
-}
-///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 
 
@@ -109,20 +84,114 @@ int main (void)
 {
     /* Initialize system */
 	system_init();
-	configure_spi_master();
-	configure_spi_master_callbacks();
+	//configure_spi_master();
+	//configure_spi_master_callbacks();
 
-    configure_extint_channel();
-    configure_extint_callbacks();
-    system_interrupt_enable_global();
+    //configure_extint_channel();
+    //configure_extint_callbacks();
+    //system_interrupt_enable_global();
 
-    spi_select_slave(&spi_master_instance, &slave, true);
-    spi_write_buffer_job(&spi_master_instance, buffer, BUF_LENGTH);
-    while (!transfer_complete_spi_master) {
+	//configure_LED_PWM();
+
+    //spi_select_slave(&spi_master_instance, &slave, true);
+    //spi_write_buffer_job(&spi_master_instance, buffer, BUF_LENGTH);
+    //while (!transfer_complete_spi_master) {
 	    /* Wait for write complete */
-    }
-    spi_select_slave(&spi_master_instance, &slave, false);
-	while (true) {
+    //}
+    //spi_select_slave(&spi_master_instance, &slave, false);
+	//while (true) {
 		
+	//}
+
+	// Initialize the RFM69HCW:
+	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
+	RFM_setHighPower(); // Always use this for RFM69HCW
+
+	// Turn on encryption if desired:
+	if (ENCRYPT)
+	RFM_encrypt(ENCRYPTKEY);
+
+	while(1)
+	{
+		// Set up a "buffer" for characters that we'll send:
+		  
+		static char sendbuffer[12] = "Hello World!";
+		static int sendlength = 12;
+
+		// SENDING
+
+		// In this section, we'll gather serial characters and
+		// send them to the other node if we (1) get a carriage return,
+		// or (2) the buffer is full (61 characters).
+		  
+		// If there is any serial input, add it to the buffer:
+
+		//if (Serial.available() > 0)
+		//{
+			//dbg_print_str("sending to node ");
+			//dbg_print_str("%d", TONODEID);
+			//dbg_print_str(": [");
+			//for (byte i = 0; i < sendlength; i++)
+			//dbg_print_str(sendbuffer[i]);
+			//dbg_print_str("]\n");
+			  
+			// There are two ways to send packets. If you want
+			// acknowledgements, use RFM_sendWithRetry():
+			  
+			if (USEACK)
+			{
+				int ACK = 0;
+				if (RFM_sendWithRetry(TONODEID, sendbuffer, sendlength))
+					ACK = 1;
+				else
+					ACK = 0;
+			}
+
+			// If you don't need acknowledgements, just use RFM_send():
+			  
+			else // don't use ACK
+			{
+				RFM_send(TONODEID, sendbuffer, sendlength);
+			}
+			  
+			sendlength = 0; // reset the packet
+		}
 	}
+
+	// RECEIVING
+
+	// In this section, we'll check with the RFM69HCW to see
+	// if it has received any packets:
+
+	if (RFM_receiveDone()) // Got one!
+	{
+		// Print out the information:
+		  
+		//dbg_print_str("received from node ");
+		//dbg_print_str("%d", RFM_SENDERID);
+		//dbg_print_str(": [");
+
+		// The actual message is contained in the RFM_DATA array,
+		// and is RFM_DATALEN bytes in size:
+		  
+		//for (byte i = 0; i < RFM_DATALEN; i++)
+		//dbg_print_str((char)RFM_DATA[i]);
+		RFM_DATALEN = RFM_DATALEN;
+		// RFM_RSSI is the "Receive Signal Strength Indicator",
+		// smaller numbers mean higher power.
+		  
+		//dbg_print_str("], RSSI ");
+		//dbg_print_str("%d\n", RFM_RSSI);
+		RFM_RSSI = RFM_RSSI;
+
+		// Send an ACK if requested.
+		// (You don't need this code if you're not using ACKs.)
+		  
+		if (RFM_ACKRequested())
+		{
+			RFM_sendACK();
+		//	dbg_print_str("ACK sent\n");
+		}
+	}
+  }
 }

@@ -1482,6 +1482,11 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="26.7" y1="15.9" x2="24.7" y2="13.9" width="0.3048" layer="1"/>
 <wire x1="24.7" y1="13.9" x2="24" y2="13.9" width="0.3048" layer="1"/>
 </signal>
+<signal name="RF_INT">
+<contactref element="U1" pad="14"/>
+<contactref element="U8" pad="4"/>
+<wire x1="5.91" y1="6.54" x2="36.92" y2="7.5" width="0" layer="19" extent="1-16"/>
+</signal>
 </signals>
 </board>
 </drawing>

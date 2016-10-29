@@ -4109,6 +4109,18 @@ Iq: 55uA</text>
 <label x="116.84" y="76.2" size="1.27" layer="95" xref="yes"/>
 </segment>
 </net>
+<net name="RF_INT" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="DIO0"/>
+<wire x1="91.44" y1="228.6" x2="93.98" y2="228.6" width="0.1524" layer="91"/>
+<label x="93.98" y="228.6" size="1.27" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="U8" gate="G$1" pin="PA03(AIN1/REFA)"/>
+<wire x1="45.72" y1="48.26" x2="43.18" y2="48.26" width="0.1524" layer="91"/>
+<label x="43.18" y="48.26" size="1.27" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>

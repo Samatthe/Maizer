@@ -1,4 +1,4 @@
-//gcc -x c++ -std=c++11 Pi_Example.cpp RFM69.cpp RFM69.h -o Pi_RFM69
+//g++ -x c++ -std=c++11 Pi_Example.cpp RFM69.cpp RFM69.h -o Pi_RFM69 -lwiringPi
 
 #include "RFM69.h"
 #include <iostream>
@@ -55,28 +55,29 @@ int main() {
     
       // Send the packet!
       cout << "sending to node " << TONODEID << ": [";
+cout << "in loop" << endl;
 
       for (unsigned int i = 0; i < sendlength; i++)
         cout << sendbuffer[i];
       cout << "]" << endl;
-      
+cout << "in loop1" << endl;      
       // There are two ways to send packets. If you want
       // acknowledgements, use sendWithRetry():
       if (USEACK)
       {
+cout << "in loop2" << endl;
         if (radio.sendWithRetry(TONODEID, sendbuffer, sendlength))
           cout << "ACK received!" << endl;
         else
           cout << "no ACK received :(" << endl;
       }
-
       // If you don't need acknowledgements, just use send():
       else // don't use ACK
       {
         radio.send(TONODEID, sendbuffer, sendlength);
       }
-      
-      sendlength = 0; // reset the packet
+cout << "in loop3" << endl;      
+      //sendlength = 0; // reset the packet
     }
 
     // RECEIVING

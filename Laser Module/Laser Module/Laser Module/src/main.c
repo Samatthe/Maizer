@@ -116,7 +116,7 @@ int main (void)
 	int index = 0;
 	while(1)
 	{
-		/*char sendbuffer[16] = "Hello World!   ";
+		char sendbuffer[16] = "Hello World!   ";
 		// Set up a "buffer" for characters that we'll send:
 		index++;
 		if(index < 10)
@@ -125,7 +125,7 @@ int main (void)
 		{
 			sendbuffer[14] = index/10 + '0';
 			sendbuffer[15] = index%10 + '0';
-		}*/
+		}
 			
 
 		// SENDING
@@ -146,7 +146,7 @@ int main (void)
 			//dbg_print_str("]\n");
 			  
 			// If you want acknowledgements, use RFM_sendWithRetry(): 
-			/*if (USEACK)
+			if (USEACK)
 			{
 				int ACK = 0;
 				if (RFM_sendWithRetry(TONODEID, sendbuffer, sendlength, 2, 40))
@@ -158,7 +158,7 @@ int main (void)
 			else // don't use ACK
 			{
 				RFM_send(TONODEID, sendbuffer, sendlength, false);
-			}*/
+			}
 			  
 			sendlength = 0; // reset the packet
 		//}

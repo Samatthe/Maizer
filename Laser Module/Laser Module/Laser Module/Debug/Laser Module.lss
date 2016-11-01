@@ -3,35 +3,35 @@ Laser Module.elf:     file format elf32-littlearm
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000042ec  00000000  00000000  00008000  2**2
+  0 .text         00004708  00000000  00000000  00008000  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .relocate     00000004  20000000  000042ec  00010000  2**0
+  1 .relocate     00000004  20000000  00004708  00010000  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          000001c8  20000004  000042f0  00010004  2**2
+  2 .bss          000001c8  20000004  0000470c  00010004  2**2
                   ALLOC
-  3 .stack        00002004  200001cc  000044b8  00010004  2**0
+  3 .stack        00002004  200001cc  000048d4  00010004  2**0
                   ALLOC
   4 .ARM.attributes 00000028  00000000  00000000  00010004  2**0
                   CONTENTS, READONLY
   5 .comment      0000005b  00000000  00000000  0001002c  2**0
                   CONTENTS, READONLY
-  6 .debug_info   000292b7  00000000  00000000  00010087  2**0
+  6 .debug_info   000292f7  00000000  00000000  00010087  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00002d6d  00000000  00000000  0003933e  2**0
+  7 .debug_abbrev 00002d7c  00000000  00000000  0003937e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_loc    00003280  00000000  00000000  0003c0ab  2**0
+  8 .debug_loc    00003280  00000000  00000000  0003c0fa  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_aranges 00000948  00000000  00000000  0003f32b  2**0
+  9 .debug_aranges 00000948  00000000  00000000  0003f37a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 00000818  00000000  00000000  0003fc73  2**0
+ 10 .debug_ranges 00000818  00000000  00000000  0003fcc2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_macro  00007e14  00000000  00000000  0004048b  2**0
+ 11 .debug_macro  00007e14  00000000  00000000  000404da  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_line   0000d209  00000000  00000000  0004829f  2**0
+ 12 .debug_line   0000d21b  00000000  00000000  000482ee  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_str    0008e093  00000000  00000000  000554a8  2**0
+ 13 .debug_str    0008e09e  00000000  00000000  00055509  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_frame  00001f20  00000000  00000000  000e353c  2**2
+ 14 .debug_frame  00001f40  00000000  00000000  000e35a8  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -92,7 +92,7 @@ Disassembly of section .text:
       ce:	bd10      	pop	{r4, pc}
       d0:	20000004 	.word	0x20000004
       d4:	00000000 	.word	0x00000000
-      d8:	000042ec 	.word	0x000042ec
+      d8:	00004708 	.word	0x00004708
 
 000000dc <frame_dummy>:
       dc:	b508      	push	{r3, lr}
@@ -114,9 +114,9 @@ Disassembly of section .text:
       fc:	4798      	blx	r3
       fe:	e7f9      	b.n	f4 <frame_dummy+0x18>
      100:	00000000 	.word	0x00000000
-     104:	000042ec 	.word	0x000042ec
+     104:	00004708 	.word	0x00004708
      108:	20000008 	.word	0x20000008
-     10c:	000042ec 	.word	0x000042ec
+     10c:	00004708 	.word	0x00004708
      110:	00000000 	.word	0x00000000
 
 00000114 <system_gclk_chan_get_config_defaults>:
@@ -2336,7 +2336,7 @@ void _tcc_interrupt_handler(
      bd4:	b006      	add	sp, #24
      bd6:	bd80      	pop	{r7, pc}
      bd8:	200000a8 	.word	0x200000a8
-     bdc:	00004208 	.word	0x00004208
+     bdc:	00004614 	.word	0x00004614
 
 00000be0 <TC3_Handler>:
 #if (SAML21E) || (SAML21G)
@@ -5673,7 +5673,7 @@ uint8_t _sercom_get_sercom_inst_index(
     1d1e:	46bd      	mov	sp, r7
     1d20:	b00b      	add	sp, #44	; 0x2c
     1d22:	bd90      	pop	{r4, r7, pc}
-    1d24:	00004238 	.word	0x00004238
+    1d24:	00004644 	.word	0x00004644
 
 00001d28 <_sercom_default_handler>:
  *
@@ -5828,8 +5828,8 @@ enum system_interrupt_vector _sercom_get_interrupt_vector(
     1dea:	b005      	add	sp, #20
     1dec:	bd90      	pop	{r4, r7, pc}
     1dee:	46c0      	nop			; (mov r8, r8)
-    1df0:	00004250 	.word	0x00004250
-    1df4:	000041e5 	.word	0x000041e5
+    1df0:	0000465c 	.word	0x0000465c
+    1df4:	000045f1 	.word	0x000045f1
     1df8:	00001cdd 	.word	0x00001cdd
 
 00001dfc <SERCOM0_Handler>:
@@ -6608,7 +6608,7 @@ uint32_t system_clock_source_get_hz(
     21ae:	46bd      	mov	sp, r7
     21b0:	b002      	add	sp, #8
     21b2:	bd80      	pop	{r7, pc}
-    21b4:	00004258 	.word	0x00004258
+    21b4:	00004664 	.word	0x00004664
     21b8:	20000044 	.word	0x20000044
     21bc:	40000800 	.word	0x40000800
     21c0:	007a1200 	.word	0x007a1200
@@ -6937,7 +6937,7 @@ enum status_code system_clock_source_enable(
     23aa:	b002      	add	sp, #8
     23ac:	bd80      	pop	{r7, pc}
     23ae:	46c0      	nop			; (mov r8, r8)
-    23b0:	0000427c 	.word	0x0000427c
+    23b0:	00004688 	.word	0x00004688
     23b4:	40000800 	.word	0x40000800
     23b8:	20000044 	.word	0x20000044
     23bc:	000020cd 	.word	0x000020cd
@@ -7907,7 +7907,7 @@ uint32_t system_gclk_gen_get_hz(
     289c:	00002111 	.word	0x00002111
     28a0:	40000c08 	.word	0x40000c08
     28a4:	000025e9 	.word	0x000025e9
-    28a8:	00004075 	.word	0x00004075
+    28a8:	000042a1 	.word	0x000042a1
 
 000028ac <system_gclk_chan_set_config>:
  *
@@ -8771,7 +8771,7 @@ void Reset_Handler(void)
         /* Infinite loop */
         while (1);
     2ce2:	e7fe      	b.n	2ce2 <Reset_Handler+0xc2>
-    2ce4:	000042ec 	.word	0x000042ec
+    2ce4:	00004708 	.word	0x00004708
     2ce8:	20000000 	.word	0x20000000
     2cec:	20000004 	.word	0x20000004
     2cf0:	20000004 	.word	0x20000004
@@ -8782,8 +8782,8 @@ void Reset_Handler(void)
     2d04:	41005000 	.word	0x41005000
     2d08:	41004800 	.word	0x41004800
     2d0c:	41004000 	.word	0x41004000
-    2d10:	00004199 	.word	0x00004199
-    2d14:	00003fe9 	.word	0x00003fe9
+    2d10:	000045a5 	.word	0x000045a5
+    2d14:	00004185 	.word	0x00004185
 
 00002d18 <Dummy_Handler>:
 
@@ -9325,7 +9325,7 @@ static inline void spi_get_config_defaults(
     2fa6:	b002      	add	sp, #8
     2fa8:	bd80      	pop	{r7, pc}
     2faa:	46c0      	nop			; (mov r8, r8)
-    2fac:	000041f7 	.word	0x000041f7
+    2fac:	00004603 	.word	0x00004603
     2fb0:	000186a0 	.word	0x000186a0
 
 00002fb4 <spi_slave_inst_get_config_defaults>:
@@ -9515,7 +9515,7 @@ void configure_extint_callbacks(void)
 }
     309c:	46bd      	mov	sp, r7
     309e:	bd80      	pop	{r7, pc}
-    30a0:	00003c4d 	.word	0x00003c4d
+    30a0:	00003de9 	.word	0x00003de9
     30a4:	00000a15 	.word	0x00000a15
     30a8:	00000a79 	.word	0x00000a79
 
@@ -9981,14 +9981,14 @@ void sendFrame(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool r
     3388:	b005      	add	sp, #20
     338a:	bd90      	pop	{r4, r7, pc}
     338c:	000037d1 	.word	0x000037d1
-    3390:	00003e59 	.word	0x00003e59
-    3394:	00003ec5 	.word	0x00003ec5
-    3398:	00003f29 	.word	0x00003f29
+    3390:	00003ff5 	.word	0x00003ff5
+    3394:	00004061 	.word	0x00004061
+    3398:	000040c5 	.word	0x000040c5
     339c:	20000188 	.word	0x20000188
     33a0:	2000005c 	.word	0x2000005c
     33a4:	00001379 	.word	0x00001379
     33a8:	2000013c 	.word	0x2000013c
-    33ac:	00003f55 	.word	0x00003f55
+    33ac:	000040f1 	.word	0x000040f1
     33b0:	000031d5 	.word	0x000031d5
     33b4:	00002dc5 	.word	0x00002dc5
     33b8:	000031fd 	.word	0x000031fd
@@ -10066,8 +10066,8 @@ void RFM_setHighPower(bool onOff) {
     3434:	bd80      	pop	{r7, pc}
     3436:	46c0      	nop			; (mov r8, r8)
     3438:	20000186 	.word	0x20000186
-    343c:	00003ec5 	.word	0x00003ec5
-    3440:	00003e59 	.word	0x00003e59
+    343c:	00004061 	.word	0x00004061
+    3440:	00003ff5 	.word	0x00003ff5
     3444:	200000f8 	.word	0x200000f8
 
 00003448 <RFM69>:
@@ -10579,10 +10579,10 @@ bool RFM_initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
     379c:	000030ad 	.word	0x000030ad
     37a0:	00003171 	.word	0x00003171
     37a4:	000031d5 	.word	0x000031d5
-    37a8:	00003ec5 	.word	0x00003ec5
-    37ac:	00003e59 	.word	0x00003e59
+    37a8:	00004061 	.word	0x00004061
+    37ac:	00003ff5 	.word	0x00003ff5
     37b0:	000031fd 	.word	0x000031fd
-    37b4:	00003d59 	.word	0x00003d59
+    37b4:	00003ef5 	.word	0x00003ef5
     37b8:	20000186 	.word	0x20000186
     37bc:	000033c1 	.word	0x000033c1
     37c0:	000037d1 	.word	0x000037d1
@@ -10799,11 +10799,11 @@ void setMode(uint8_t newMode)
     390c:	bd80      	pop	{r7, pc}
     390e:	46c0      	nop			; (mov r8, r8)
     3910:	20000185 	.word	0x20000185
-    3914:	000042a0 	.word	0x000042a0
-    3918:	00003e59 	.word	0x00003e59
-    391c:	00003ec5 	.word	0x00003ec5
+    3914:	000046ac 	.word	0x000046ac
+    3918:	00003ff5 	.word	0x00003ff5
+    391c:	00004061 	.word	0x00004061
     3920:	20000186 	.word	0x20000186
-    3924:	00003f81 	.word	0x00003f81
+    3924:	0000411d 	.word	0x0000411d
 
 00003928 <canSend>:
   if (_isRFM69HW) _powerLevel /= 2;
@@ -10847,1337 +10847,1913 @@ bool canSend()
     395a:	bd80      	pop	{r7, pc}
     395c:	20000185 	.word	0x20000185
     3960:	20000182 	.word	0x20000182
-    3964:	00003e15 	.word	0x00003e15
+    3964:	00003fb1 	.word	0x00003fb1
     3968:	000037d1 	.word	0x000037d1
 
-0000396c <RFM_ACKRequested>:
-    return (RFM_SENDERID == fromNodeID || fromNodeID == RF69_BROADCAST_ADDR) && ACK_RECEIVED;
-  return false;
+0000396c <RFM_send>:
+
+void RFM_send(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool requestACK)
+{
+    396c:	b590      	push	{r4, r7, lr}
+    396e:	b085      	sub	sp, #20
+    3970:	af02      	add	r7, sp, #8
+    3972:	1c04      	adds	r4, r0, #0
+    3974:	6039      	str	r1, [r7, #0]
+    3976:	1c10      	adds	r0, r2, #0
+    3978:	1c19      	adds	r1, r3, #0
+    397a:	1dfb      	adds	r3, r7, #7
+    397c:	1c22      	adds	r2, r4, #0
+    397e:	701a      	strb	r2, [r3, #0]
+    3980:	1dbb      	adds	r3, r7, #6
+    3982:	1c02      	adds	r2, r0, #0
+    3984:	701a      	strb	r2, [r3, #0]
+    3986:	1d7b      	adds	r3, r7, #5
+    3988:	1c0a      	adds	r2, r1, #0
+    398a:	701a      	strb	r2, [r3, #0]
+  writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
+    398c:	203d      	movs	r0, #61	; 0x3d
+    398e:	4b17      	ldr	r3, [pc, #92]	; (39ec <RFM_send+0x80>)
+    3990:	4798      	blx	r3
+    3992:	1c03      	adds	r3, r0, #0
+    3994:	1c1a      	adds	r2, r3, #0
+    3996:	2304      	movs	r3, #4
+    3998:	4313      	orrs	r3, r2
+    399a:	b2db      	uxtb	r3, r3
+    399c:	203d      	movs	r0, #61	; 0x3d
+    399e:	1c19      	adds	r1, r3, #0
+    39a0:	4b13      	ldr	r3, [pc, #76]	; (39f0 <RFM_send+0x84>)
+    39a2:	4798      	blx	r3
+  reset_millis(); //uint32_t now = millis(); // CHANGE //
+    39a4:	4b13      	ldr	r3, [pc, #76]	; (39f4 <RFM_send+0x88>)
+    39a6:	4798      	blx	r3
+  while (!canSend() && millis() < RF69_CSMA_LIMIT_MS) RFM_receiveDone(); // CHANGE //
+    39a8:	e001      	b.n	39ae <RFM_send+0x42>
+    39aa:	4b13      	ldr	r3, [pc, #76]	; (39f8 <RFM_send+0x8c>)
+    39ac:	4798      	blx	r3
+    39ae:	4b13      	ldr	r3, [pc, #76]	; (39fc <RFM_send+0x90>)
+    39b0:	4798      	blx	r3
+    39b2:	1c03      	adds	r3, r0, #0
+    39b4:	1c1a      	adds	r2, r3, #0
+    39b6:	2301      	movs	r3, #1
+    39b8:	4053      	eors	r3, r2
+    39ba:	b2db      	uxtb	r3, r3
+    39bc:	2b00      	cmp	r3, #0
+    39be:	d005      	beq.n	39cc <RFM_send+0x60>
+    39c0:	4b0f      	ldr	r3, [pc, #60]	; (3a00 <RFM_send+0x94>)
+    39c2:	4798      	blx	r3
+    39c4:	1e02      	subs	r2, r0, #0
+    39c6:	4b0f      	ldr	r3, [pc, #60]	; (3a04 <RFM_send+0x98>)
+    39c8:	429a      	cmp	r2, r3
+    39ca:	d9ee      	bls.n	39aa <RFM_send+0x3e>
+  sendFrame(toAddress, buffer, bufferSize, requestACK, false);
+    39cc:	1dfb      	adds	r3, r7, #7
+    39ce:	7818      	ldrb	r0, [r3, #0]
+    39d0:	6839      	ldr	r1, [r7, #0]
+    39d2:	1dbb      	adds	r3, r7, #6
+    39d4:	781a      	ldrb	r2, [r3, #0]
+    39d6:	1d7b      	adds	r3, r7, #5
+    39d8:	781c      	ldrb	r4, [r3, #0]
+    39da:	2300      	movs	r3, #0
+    39dc:	9300      	str	r3, [sp, #0]
+    39de:	1c23      	adds	r3, r4, #0
+    39e0:	4c09      	ldr	r4, [pc, #36]	; (3a08 <RFM_send+0x9c>)
+    39e2:	47a0      	blx	r4
 }
+    39e4:	46bd      	mov	sp, r7
+    39e6:	b003      	add	sp, #12
+    39e8:	bd90      	pop	{r4, r7, pc}
+    39ea:	46c0      	nop			; (mov r8, r8)
+    39ec:	00003ff5 	.word	0x00003ff5
+    39f0:	00004061 	.word	0x00004061
+    39f4:	000031d5 	.word	0x000031d5
+    39f8:	00003e99 	.word	0x00003e99
+    39fc:	00003929 	.word	0x00003929
+    3a00:	000031fd 	.word	0x000031fd
+    3a04:	000003e7 	.word	0x000003e7
+    3a08:	00003229 	.word	0x00003229
+
+00003a0c <RFM_sendWithRetry>:
+// and it handles all the ACK requesting/retrying for you :)
+// The only twist is that you have to manually listen to ACK requests on the other side and send back the ACKs
+// The reason for the semi-automaton is that the lib is interrupt driven and
+// requires user action to read the received data and decide what to do with it
+// replies usually take only 5..8ms at 50kbps@915MHz
+bool RFM_sendWithRetry(uint8_t toAddress, const void* buffer, uint8_t bufferSize, uint8_t retries, uint8_t retryWaitTime) {
+    3a0c:	b590      	push	{r4, r7, lr}
+    3a0e:	b085      	sub	sp, #20
+    3a10:	af00      	add	r7, sp, #0
+    3a12:	1c04      	adds	r4, r0, #0
+    3a14:	6039      	str	r1, [r7, #0]
+    3a16:	1c10      	adds	r0, r2, #0
+    3a18:	1c19      	adds	r1, r3, #0
+    3a1a:	1dfb      	adds	r3, r7, #7
+    3a1c:	1c22      	adds	r2, r4, #0
+    3a1e:	701a      	strb	r2, [r3, #0]
+    3a20:	1dbb      	adds	r3, r7, #6
+    3a22:	1c02      	adds	r2, r0, #0
+    3a24:	701a      	strb	r2, [r3, #0]
+    3a26:	1d7b      	adds	r3, r7, #5
+    3a28:	1c0a      	adds	r2, r1, #0
+    3a2a:	701a      	strb	r2, [r3, #0]
+  //uint32_t sentTime;
+  for (uint8_t i = 0; i <= retries; i++)
+    3a2c:	230f      	movs	r3, #15
+    3a2e:	18fb      	adds	r3, r7, r3
+    3a30:	2200      	movs	r2, #0
+    3a32:	701a      	strb	r2, [r3, #0]
+    3a34:	e025      	b.n	3a82 <RFM_sendWithRetry+0x76>
+  {
+    RFM_send(toAddress, buffer, bufferSize, true);
+    3a36:	1dfb      	adds	r3, r7, #7
+    3a38:	7819      	ldrb	r1, [r3, #0]
+    3a3a:	683a      	ldr	r2, [r7, #0]
+    3a3c:	1dbb      	adds	r3, r7, #6
+    3a3e:	781b      	ldrb	r3, [r3, #0]
+    3a40:	1c08      	adds	r0, r1, #0
+    3a42:	1c11      	adds	r1, r2, #0
+    3a44:	1c1a      	adds	r2, r3, #0
+    3a46:	2301      	movs	r3, #1
+    3a48:	4c14      	ldr	r4, [pc, #80]	; (3a9c <RFM_sendWithRetry+0x90>)
+    3a4a:	47a0      	blx	r4
+    reset_millis(); //sentTime = millis(); // CHANGE //
+    3a4c:	4b14      	ldr	r3, [pc, #80]	; (3aa0 <RFM_sendWithRetry+0x94>)
+    3a4e:	4798      	blx	r3
+    while (millis() < retryWaitTime) // CHANGE //
+    3a50:	e008      	b.n	3a64 <RFM_sendWithRetry+0x58>
+    {
+      if (ACKReceived(toAddress))
+    3a52:	1dfb      	adds	r3, r7, #7
+    3a54:	781b      	ldrb	r3, [r3, #0]
+    3a56:	1c18      	adds	r0, r3, #0
+    3a58:	4b12      	ldr	r3, [pc, #72]	; (3aa4 <RFM_sendWithRetry+0x98>)
+    3a5a:	4798      	blx	r3
+    3a5c:	1e03      	subs	r3, r0, #0
+    3a5e:	d001      	beq.n	3a64 <RFM_sendWithRetry+0x58>
+      {
+        return true;
+    3a60:	2301      	movs	r3, #1
+    3a62:	e016      	b.n	3a92 <RFM_sendWithRetry+0x86>
+  //uint32_t sentTime;
+  for (uint8_t i = 0; i <= retries; i++)
+  {
+    RFM_send(toAddress, buffer, bufferSize, true);
+    reset_millis(); //sentTime = millis(); // CHANGE //
+    while (millis() < retryWaitTime) // CHANGE //
+    3a64:	4b10      	ldr	r3, [pc, #64]	; (3aa8 <RFM_sendWithRetry+0x9c>)
+    3a66:	4798      	blx	r3
+    3a68:	1c02      	adds	r2, r0, #0
+    3a6a:	2320      	movs	r3, #32
+    3a6c:	18fb      	adds	r3, r7, r3
+    3a6e:	781b      	ldrb	r3, [r3, #0]
+    3a70:	429a      	cmp	r2, r3
+    3a72:	d3ee      	bcc.n	3a52 <RFM_sendWithRetry+0x46>
+// The reason for the semi-automaton is that the lib is interrupt driven and
+// requires user action to read the received data and decide what to do with it
+// replies usually take only 5..8ms at 50kbps@915MHz
+bool RFM_sendWithRetry(uint8_t toAddress, const void* buffer, uint8_t bufferSize, uint8_t retries, uint8_t retryWaitTime) {
+  //uint32_t sentTime;
+  for (uint8_t i = 0; i <= retries; i++)
+    3a74:	230f      	movs	r3, #15
+    3a76:	18fb      	adds	r3, r7, r3
+    3a78:	781a      	ldrb	r2, [r3, #0]
+    3a7a:	230f      	movs	r3, #15
+    3a7c:	18fb      	adds	r3, r7, r3
+    3a7e:	3201      	adds	r2, #1
+    3a80:	701a      	strb	r2, [r3, #0]
+    3a82:	230f      	movs	r3, #15
+    3a84:	18fa      	adds	r2, r7, r3
+    3a86:	1d7b      	adds	r3, r7, #5
+    3a88:	7812      	ldrb	r2, [r2, #0]
+    3a8a:	781b      	ldrb	r3, [r3, #0]
+    3a8c:	429a      	cmp	r2, r3
+    3a8e:	d9d2      	bls.n	3a36 <RFM_sendWithRetry+0x2a>
+      {
+        return true;
+      }
+    }
+  }
+  return false;
+    3a90:	2300      	movs	r3, #0
+}
+    3a92:	1c18      	adds	r0, r3, #0
+    3a94:	46bd      	mov	sp, r7
+    3a96:	b005      	add	sp, #20
+    3a98:	bd90      	pop	{r4, r7, pc}
+    3a9a:	46c0      	nop			; (mov r8, r8)
+    3a9c:	0000396d 	.word	0x0000396d
+    3aa0:	000031d5 	.word	0x000031d5
+    3aa4:	00003aad 	.word	0x00003aad
+    3aa8:	000031fd 	.word	0x000031fd
+
+00003aac <ACKReceived>:
+
+// should be polled immediately after sending a packet with ACK request
+bool ACKReceived(uint8_t fromNodeID) {
+    3aac:	b580      	push	{r7, lr}
+    3aae:	b082      	sub	sp, #8
+    3ab0:	af00      	add	r7, sp, #0
+    3ab2:	1c02      	adds	r2, r0, #0
+    3ab4:	1dfb      	adds	r3, r7, #7
+    3ab6:	701a      	strb	r2, [r3, #0]
+  if (RFM_receiveDone())
+    3ab8:	4b10      	ldr	r3, [pc, #64]	; (3afc <ACKReceived+0x50>)
+    3aba:	4798      	blx	r3
+    3abc:	1e03      	subs	r3, r0, #0
+    3abe:	d017      	beq.n	3af0 <ACKReceived+0x44>
+    return (RFM_SENDERID == fromNodeID || fromNodeID == RF69_BROADCAST_ADDR) && ACK_RECEIVED;
+    3ac0:	4b0f      	ldr	r3, [pc, #60]	; (3b00 <ACKReceived+0x54>)
+    3ac2:	781b      	ldrb	r3, [r3, #0]
+    3ac4:	b2db      	uxtb	r3, r3
+    3ac6:	1dfa      	adds	r2, r7, #7
+    3ac8:	7812      	ldrb	r2, [r2, #0]
+    3aca:	429a      	cmp	r2, r3
+    3acc:	d003      	beq.n	3ad6 <ACKReceived+0x2a>
+    3ace:	1dfb      	adds	r3, r7, #7
+    3ad0:	781b      	ldrb	r3, [r3, #0]
+    3ad2:	2bff      	cmp	r3, #255	; 0xff
+    3ad4:	d106      	bne.n	3ae4 <ACKReceived+0x38>
+    3ad6:	4b0b      	ldr	r3, [pc, #44]	; (3b04 <ACKReceived+0x58>)
+    3ad8:	781b      	ldrb	r3, [r3, #0]
+    3ada:	b2db      	uxtb	r3, r3
+    3adc:	2b00      	cmp	r3, #0
+    3ade:	d001      	beq.n	3ae4 <ACKReceived+0x38>
+    3ae0:	2301      	movs	r3, #1
+    3ae2:	e000      	b.n	3ae6 <ACKReceived+0x3a>
+    3ae4:	2300      	movs	r3, #0
+    3ae6:	1c1a      	adds	r2, r3, #0
+    3ae8:	2301      	movs	r3, #1
+    3aea:	4013      	ands	r3, r2
+    3aec:	b2db      	uxtb	r3, r3
+    3aee:	e000      	b.n	3af2 <ACKReceived+0x46>
+  return false;
+    3af0:	2300      	movs	r3, #0
+}
+    3af2:	1c18      	adds	r0, r3, #0
+    3af4:	46bd      	mov	sp, r7
+    3af6:	b002      	add	sp, #8
+    3af8:	bd80      	pop	{r7, pc}
+    3afa:	46c0      	nop			; (mov r8, r8)
+    3afc:	00003e99 	.word	0x00003e99
+    3b00:	200000dd 	.word	0x200000dd
+    3b04:	2000013d 	.word	0x2000013d
+
+00003b08 <RFM_ACKRequested>:
 
 // check whether an ACK was requested in the last received packet (non-broadcasted packet)
 bool RFM_ACKRequested() {
-    396c:	b580      	push	{r7, lr}
-    396e:	af00      	add	r7, sp, #0
+    3b08:	b580      	push	{r7, lr}
+    3b0a:	af00      	add	r7, sp, #0
   return ACK_REQUESTED && (TARGETID != RF69_BROADCAST_ADDR);
-    3970:	4b09      	ldr	r3, [pc, #36]	; (3998 <RFM_ACKRequested+0x2c>)
-    3972:	781b      	ldrb	r3, [r3, #0]
-    3974:	b2db      	uxtb	r3, r3
-    3976:	2b00      	cmp	r3, #0
-    3978:	d006      	beq.n	3988 <RFM_ACKRequested+0x1c>
-    397a:	4b08      	ldr	r3, [pc, #32]	; (399c <RFM_ACKRequested+0x30>)
-    397c:	781b      	ldrb	r3, [r3, #0]
-    397e:	b2db      	uxtb	r3, r3
-    3980:	2bff      	cmp	r3, #255	; 0xff
-    3982:	d001      	beq.n	3988 <RFM_ACKRequested+0x1c>
-    3984:	2301      	movs	r3, #1
-    3986:	e000      	b.n	398a <RFM_ACKRequested+0x1e>
-    3988:	2300      	movs	r3, #0
-    398a:	1c1a      	adds	r2, r3, #0
-    398c:	2301      	movs	r3, #1
-    398e:	4013      	ands	r3, r2
-    3990:	b2db      	uxtb	r3, r3
+    3b0c:	4b09      	ldr	r3, [pc, #36]	; (3b34 <RFM_ACKRequested+0x2c>)
+    3b0e:	781b      	ldrb	r3, [r3, #0]
+    3b10:	b2db      	uxtb	r3, r3
+    3b12:	2b00      	cmp	r3, #0
+    3b14:	d006      	beq.n	3b24 <RFM_ACKRequested+0x1c>
+    3b16:	4b08      	ldr	r3, [pc, #32]	; (3b38 <RFM_ACKRequested+0x30>)
+    3b18:	781b      	ldrb	r3, [r3, #0]
+    3b1a:	b2db      	uxtb	r3, r3
+    3b1c:	2bff      	cmp	r3, #255	; 0xff
+    3b1e:	d001      	beq.n	3b24 <RFM_ACKRequested+0x1c>
+    3b20:	2301      	movs	r3, #1
+    3b22:	e000      	b.n	3b26 <RFM_ACKRequested+0x1e>
+    3b24:	2300      	movs	r3, #0
+    3b26:	1c1a      	adds	r2, r3, #0
+    3b28:	2301      	movs	r3, #1
+    3b2a:	4013      	ands	r3, r2
+    3b2c:	b2db      	uxtb	r3, r3
 }
-    3992:	1c18      	adds	r0, r3, #0
-    3994:	46bd      	mov	sp, r7
-    3996:	bd80      	pop	{r7, pc}
-    3998:	20000183 	.word	0x20000183
-    399c:	20000184 	.word	0x20000184
+    3b2e:	1c18      	adds	r0, r3, #0
+    3b30:	46bd      	mov	sp, r7
+    3b32:	bd80      	pop	{r7, pc}
+    3b34:	20000183 	.word	0x20000183
+    3b38:	20000184 	.word	0x20000184
 
-000039a0 <RFM_sendACK>:
+00003b3c <RFM_sendACK>:
 
 // should be called immediately after reception in case sender wants ACK
 void RFM_sendACK(const void* buffer, uint8_t bufferSize) {
-    39a0:	b590      	push	{r4, r7, lr}
-    39a2:	b087      	sub	sp, #28
-    39a4:	af02      	add	r7, sp, #8
-    39a6:	6078      	str	r0, [r7, #4]
-    39a8:	1c0a      	adds	r2, r1, #0
-    39aa:	1cfb      	adds	r3, r7, #3
-    39ac:	701a      	strb	r2, [r3, #0]
+    3b3c:	b590      	push	{r4, r7, lr}
+    3b3e:	b087      	sub	sp, #28
+    3b40:	af02      	add	r7, sp, #8
+    3b42:	6078      	str	r0, [r7, #4]
+    3b44:	1c0a      	adds	r2, r1, #0
+    3b46:	1cfb      	adds	r3, r7, #3
+    3b48:	701a      	strb	r2, [r3, #0]
   ACK_REQUESTED = 0;   // TWS added to make sure we don't end up in a timing race and infinite loop sending Acks
-    39ae:	4b25      	ldr	r3, [pc, #148]	; (3a44 <RFM_sendACK+0xa4>)
-    39b0:	2200      	movs	r2, #0
-    39b2:	701a      	strb	r2, [r3, #0]
+    3b4a:	4b25      	ldr	r3, [pc, #148]	; (3be0 <RFM_sendACK+0xa4>)
+    3b4c:	2200      	movs	r2, #0
+    3b4e:	701a      	strb	r2, [r3, #0]
   volatile uint8_t sender = RFM_SENDERID;
-    39b4:	4b24      	ldr	r3, [pc, #144]	; (3a48 <RFM_sendACK+0xa8>)
-    39b6:	781b      	ldrb	r3, [r3, #0]
-    39b8:	b2da      	uxtb	r2, r3
-    39ba:	230f      	movs	r3, #15
-    39bc:	18fb      	adds	r3, r7, r3
-    39be:	701a      	strb	r2, [r3, #0]
+    3b50:	4b24      	ldr	r3, [pc, #144]	; (3be4 <RFM_sendACK+0xa8>)
+    3b52:	781b      	ldrb	r3, [r3, #0]
+    3b54:	b2da      	uxtb	r2, r3
+    3b56:	230f      	movs	r3, #15
+    3b58:	18fb      	adds	r3, r7, r3
+    3b5a:	701a      	strb	r2, [r3, #0]
   volatile int16_t _RSSI = RFM_RSSI; // save payload received RSSI value
-    39c0:	4b22      	ldr	r3, [pc, #136]	; (3a4c <RFM_sendACK+0xac>)
-    39c2:	881b      	ldrh	r3, [r3, #0]
-    39c4:	b29a      	uxth	r2, r3
-    39c6:	230c      	movs	r3, #12
-    39c8:	18fb      	adds	r3, r7, r3
-    39ca:	801a      	strh	r2, [r3, #0]
+    3b5c:	4b22      	ldr	r3, [pc, #136]	; (3be8 <RFM_sendACK+0xac>)
+    3b5e:	881b      	ldrh	r3, [r3, #0]
+    3b60:	b29a      	uxth	r2, r3
+    3b62:	230c      	movs	r3, #12
+    3b64:	18fb      	adds	r3, r7, r3
+    3b66:	801a      	strh	r2, [r3, #0]
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
-    39cc:	203d      	movs	r0, #61	; 0x3d
-    39ce:	4b20      	ldr	r3, [pc, #128]	; (3a50 <RFM_sendACK+0xb0>)
-    39d0:	4798      	blx	r3
-    39d2:	1c03      	adds	r3, r0, #0
-    39d4:	1c1a      	adds	r2, r3, #0
-    39d6:	2304      	movs	r3, #4
-    39d8:	4313      	orrs	r3, r2
-    39da:	b2db      	uxtb	r3, r3
-    39dc:	203d      	movs	r0, #61	; 0x3d
-    39de:	1c19      	adds	r1, r3, #0
-    39e0:	4b1c      	ldr	r3, [pc, #112]	; (3a54 <RFM_sendACK+0xb4>)
-    39e2:	4798      	blx	r3
+    3b68:	203d      	movs	r0, #61	; 0x3d
+    3b6a:	4b20      	ldr	r3, [pc, #128]	; (3bec <RFM_sendACK+0xb0>)
+    3b6c:	4798      	blx	r3
+    3b6e:	1c03      	adds	r3, r0, #0
+    3b70:	1c1a      	adds	r2, r3, #0
+    3b72:	2304      	movs	r3, #4
+    3b74:	4313      	orrs	r3, r2
+    3b76:	b2db      	uxtb	r3, r3
+    3b78:	203d      	movs	r0, #61	; 0x3d
+    3b7a:	1c19      	adds	r1, r3, #0
+    3b7c:	4b1c      	ldr	r3, [pc, #112]	; (3bf0 <RFM_sendACK+0xb4>)
+    3b7e:	4798      	blx	r3
   reset_millis(); //uint32_t now = millis(); // CHANGE //
-    39e4:	4b1c      	ldr	r3, [pc, #112]	; (3a58 <RFM_sendACK+0xb8>)
-    39e6:	4798      	blx	r3
+    3b80:	4b1c      	ldr	r3, [pc, #112]	; (3bf4 <RFM_sendACK+0xb8>)
+    3b82:	4798      	blx	r3
   while (!canSend() && millis() < RF69_CSMA_LIMIT_MS) RFM_receiveDone(); // CHANGE //
-    39e8:	e001      	b.n	39ee <RFM_sendACK+0x4e>
-    39ea:	4b1c      	ldr	r3, [pc, #112]	; (3a5c <RFM_sendACK+0xbc>)
-    39ec:	4798      	blx	r3
-    39ee:	4b1c      	ldr	r3, [pc, #112]	; (3a60 <RFM_sendACK+0xc0>)
-    39f0:	4798      	blx	r3
-    39f2:	1c03      	adds	r3, r0, #0
-    39f4:	1c1a      	adds	r2, r3, #0
-    39f6:	2301      	movs	r3, #1
-    39f8:	4053      	eors	r3, r2
-    39fa:	b2db      	uxtb	r3, r3
-    39fc:	2b00      	cmp	r3, #0
-    39fe:	d005      	beq.n	3a0c <RFM_sendACK+0x6c>
-    3a00:	4b18      	ldr	r3, [pc, #96]	; (3a64 <RFM_sendACK+0xc4>)
-    3a02:	4798      	blx	r3
-    3a04:	1e02      	subs	r2, r0, #0
-    3a06:	4b18      	ldr	r3, [pc, #96]	; (3a68 <RFM_sendACK+0xc8>)
-    3a08:	429a      	cmp	r2, r3
-    3a0a:	d9ee      	bls.n	39ea <RFM_sendACK+0x4a>
+    3b84:	e001      	b.n	3b8a <RFM_sendACK+0x4e>
+    3b86:	4b1c      	ldr	r3, [pc, #112]	; (3bf8 <RFM_sendACK+0xbc>)
+    3b88:	4798      	blx	r3
+    3b8a:	4b1c      	ldr	r3, [pc, #112]	; (3bfc <RFM_sendACK+0xc0>)
+    3b8c:	4798      	blx	r3
+    3b8e:	1c03      	adds	r3, r0, #0
+    3b90:	1c1a      	adds	r2, r3, #0
+    3b92:	2301      	movs	r3, #1
+    3b94:	4053      	eors	r3, r2
+    3b96:	b2db      	uxtb	r3, r3
+    3b98:	2b00      	cmp	r3, #0
+    3b9a:	d005      	beq.n	3ba8 <RFM_sendACK+0x6c>
+    3b9c:	4b18      	ldr	r3, [pc, #96]	; (3c00 <RFM_sendACK+0xc4>)
+    3b9e:	4798      	blx	r3
+    3ba0:	1e02      	subs	r2, r0, #0
+    3ba2:	4b18      	ldr	r3, [pc, #96]	; (3c04 <RFM_sendACK+0xc8>)
+    3ba4:	429a      	cmp	r2, r3
+    3ba6:	d9ee      	bls.n	3b86 <RFM_sendACK+0x4a>
   RFM_SENDERID = sender;    // TWS: Restore SenderID after it gets wiped out by RFM_receiveDone()
-    3a0c:	230f      	movs	r3, #15
-    3a0e:	18fb      	adds	r3, r7, r3
-    3a10:	781b      	ldrb	r3, [r3, #0]
-    3a12:	b2da      	uxtb	r2, r3
-    3a14:	4b0c      	ldr	r3, [pc, #48]	; (3a48 <RFM_sendACK+0xa8>)
-    3a16:	701a      	strb	r2, [r3, #0]
+    3ba8:	230f      	movs	r3, #15
+    3baa:	18fb      	adds	r3, r7, r3
+    3bac:	781b      	ldrb	r3, [r3, #0]
+    3bae:	b2da      	uxtb	r2, r3
+    3bb0:	4b0c      	ldr	r3, [pc, #48]	; (3be4 <RFM_sendACK+0xa8>)
+    3bb2:	701a      	strb	r2, [r3, #0]
   sendFrame(sender, buffer, bufferSize, false, true);
-    3a18:	230f      	movs	r3, #15
-    3a1a:	18fb      	adds	r3, r7, r3
-    3a1c:	781b      	ldrb	r3, [r3, #0]
-    3a1e:	b2d8      	uxtb	r0, r3
-    3a20:	6879      	ldr	r1, [r7, #4]
-    3a22:	1cfb      	adds	r3, r7, #3
-    3a24:	781a      	ldrb	r2, [r3, #0]
-    3a26:	2301      	movs	r3, #1
-    3a28:	9300      	str	r3, [sp, #0]
-    3a2a:	2300      	movs	r3, #0
-    3a2c:	4c0f      	ldr	r4, [pc, #60]	; (3a6c <RFM_sendACK+0xcc>)
-    3a2e:	47a0      	blx	r4
+    3bb4:	230f      	movs	r3, #15
+    3bb6:	18fb      	adds	r3, r7, r3
+    3bb8:	781b      	ldrb	r3, [r3, #0]
+    3bba:	b2d8      	uxtb	r0, r3
+    3bbc:	6879      	ldr	r1, [r7, #4]
+    3bbe:	1cfb      	adds	r3, r7, #3
+    3bc0:	781a      	ldrb	r2, [r3, #0]
+    3bc2:	2301      	movs	r3, #1
+    3bc4:	9300      	str	r3, [sp, #0]
+    3bc6:	2300      	movs	r3, #0
+    3bc8:	4c0f      	ldr	r4, [pc, #60]	; (3c08 <RFM_sendACK+0xcc>)
+    3bca:	47a0      	blx	r4
   RFM_RSSI = _RSSI; // restore payload RSSI
-    3a30:	230c      	movs	r3, #12
-    3a32:	18fb      	adds	r3, r7, r3
-    3a34:	881b      	ldrh	r3, [r3, #0]
-    3a36:	b29a      	uxth	r2, r3
-    3a38:	4b04      	ldr	r3, [pc, #16]	; (3a4c <RFM_sendACK+0xac>)
-    3a3a:	801a      	strh	r2, [r3, #0]
+    3bcc:	230c      	movs	r3, #12
+    3bce:	18fb      	adds	r3, r7, r3
+    3bd0:	881b      	ldrh	r3, [r3, #0]
+    3bd2:	b29a      	uxth	r2, r3
+    3bd4:	4b04      	ldr	r3, [pc, #16]	; (3be8 <RFM_sendACK+0xac>)
+    3bd6:	801a      	strh	r2, [r3, #0]
 }
-    3a3c:	46bd      	mov	sp, r7
-    3a3e:	b005      	add	sp, #20
-    3a40:	bd90      	pop	{r4, r7, pc}
-    3a42:	46c0      	nop			; (mov r8, r8)
-    3a44:	20000183 	.word	0x20000183
-    3a48:	200000dd 	.word	0x200000dd
-    3a4c:	200001c4 	.word	0x200001c4
-    3a50:	00003e59 	.word	0x00003e59
-    3a54:	00003ec5 	.word	0x00003ec5
-    3a58:	000031d5 	.word	0x000031d5
-    3a5c:	00003cfd 	.word	0x00003cfd
-    3a60:	00003929 	.word	0x00003929
-    3a64:	000031fd 	.word	0x000031fd
-    3a68:	000003e7 	.word	0x000003e7
-    3a6c:	00003229 	.word	0x00003229
+    3bd8:	46bd      	mov	sp, r7
+    3bda:	b005      	add	sp, #20
+    3bdc:	bd90      	pop	{r4, r7, pc}
+    3bde:	46c0      	nop			; (mov r8, r8)
+    3be0:	20000183 	.word	0x20000183
+    3be4:	200000dd 	.word	0x200000dd
+    3be8:	200001c4 	.word	0x200001c4
+    3bec:	00003ff5 	.word	0x00003ff5
+    3bf0:	00004061 	.word	0x00004061
+    3bf4:	000031d5 	.word	0x000031d5
+    3bf8:	00003e99 	.word	0x00003e99
+    3bfc:	00003929 	.word	0x00003929
+    3c00:	000031fd 	.word	0x000031fd
+    3c04:	000003e7 	.word	0x000003e7
+    3c08:	00003229 	.word	0x00003229
 
-00003a70 <interruptHandler>:
+00003c0c <interruptHandler>:
 
 // internal function - interrupt gets called when a packet is received
 void interruptHandler() {
-    3a70:	b590      	push	{r4, r7, lr}
-    3a72:	b083      	sub	sp, #12
-    3a74:	af00      	add	r7, sp, #0
+    3c0c:	b590      	push	{r4, r7, lr}
+    3c0e:	b083      	sub	sp, #12
+    3c10:	af00      	add	r7, sp, #0
   if (_mode == RF69_MODE_RX && (readReg(REG_IRQFLAGS2) & RF_IRQFLAGS2_PAYLOADREADY))
-    3a76:	4b61      	ldr	r3, [pc, #388]	; (3bfc <interruptHandler+0x18c>)
-    3a78:	781b      	ldrb	r3, [r3, #0]
-    3a7a:	b2db      	uxtb	r3, r3
-    3a7c:	2b03      	cmp	r3, #3
-    3a7e:	d000      	beq.n	3a82 <interruptHandler+0x12>
-    3a80:	e0b3      	b.n	3bea <interruptHandler+0x17a>
-    3a82:	2028      	movs	r0, #40	; 0x28
-    3a84:	4b5e      	ldr	r3, [pc, #376]	; (3c00 <interruptHandler+0x190>)
-    3a86:	4798      	blx	r3
-    3a88:	1c03      	adds	r3, r0, #0
-    3a8a:	1c1a      	adds	r2, r3, #0
-    3a8c:	2304      	movs	r3, #4
-    3a8e:	4013      	ands	r3, r2
-    3a90:	d100      	bne.n	3a94 <interruptHandler+0x24>
-    3a92:	e0aa      	b.n	3bea <interruptHandler+0x17a>
+    3c12:	4b61      	ldr	r3, [pc, #388]	; (3d98 <interruptHandler+0x18c>)
+    3c14:	781b      	ldrb	r3, [r3, #0]
+    3c16:	b2db      	uxtb	r3, r3
+    3c18:	2b03      	cmp	r3, #3
+    3c1a:	d000      	beq.n	3c1e <interruptHandler+0x12>
+    3c1c:	e0b3      	b.n	3d86 <interruptHandler+0x17a>
+    3c1e:	2028      	movs	r0, #40	; 0x28
+    3c20:	4b5e      	ldr	r3, [pc, #376]	; (3d9c <interruptHandler+0x190>)
+    3c22:	4798      	blx	r3
+    3c24:	1c03      	adds	r3, r0, #0
+    3c26:	1c1a      	adds	r2, r3, #0
+    3c28:	2304      	movs	r3, #4
+    3c2a:	4013      	ands	r3, r2
+    3c2c:	d100      	bne.n	3c30 <interruptHandler+0x24>
+    3c2e:	e0aa      	b.n	3d86 <interruptHandler+0x17a>
   {
     setMode(RF69_MODE_STANDBY);
-    3a94:	2001      	movs	r0, #1
-    3a96:	4b5b      	ldr	r3, [pc, #364]	; (3c04 <interruptHandler+0x194>)
-    3a98:	4798      	blx	r3
+    3c30:	2001      	movs	r0, #1
+    3c32:	4b5b      	ldr	r3, [pc, #364]	; (3da0 <interruptHandler+0x194>)
+    3c34:	4798      	blx	r3
     select();
-    3a9a:	4b5b      	ldr	r3, [pc, #364]	; (3c08 <interruptHandler+0x198>)
-    3a9c:	4798      	blx	r3
+    3c36:	4b5b      	ldr	r3, [pc, #364]	; (3da4 <interruptHandler+0x198>)
+    3c38:	4798      	blx	r3
     spi_transceive_wait(&spi_master_instance, REG_FIFO & 0x7F, &read_buf); //SPI.transfer(REG_FIFO & 0x7F); // CHANGE //
-    3a9e:	4a5b      	ldr	r2, [pc, #364]	; (3c0c <interruptHandler+0x19c>)
-    3aa0:	4b5b      	ldr	r3, [pc, #364]	; (3c10 <interruptHandler+0x1a0>)
-    3aa2:	1c10      	adds	r0, r2, #0
-    3aa4:	2100      	movs	r1, #0
-    3aa6:	1c1a      	adds	r2, r3, #0
-    3aa8:	4b5a      	ldr	r3, [pc, #360]	; (3c14 <interruptHandler+0x1a4>)
-    3aaa:	4798      	blx	r3
+    3c3a:	4a5b      	ldr	r2, [pc, #364]	; (3da8 <interruptHandler+0x19c>)
+    3c3c:	4b5b      	ldr	r3, [pc, #364]	; (3dac <interruptHandler+0x1a0>)
+    3c3e:	1c10      	adds	r0, r2, #0
+    3c40:	2100      	movs	r1, #0
+    3c42:	1c1a      	adds	r2, r3, #0
+    3c44:	4b5a      	ldr	r3, [pc, #360]	; (3db0 <interruptHandler+0x1a4>)
+    3c46:	4798      	blx	r3
     PAYLOADLEN = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
-    3aac:	4a57      	ldr	r2, [pc, #348]	; (3c0c <interruptHandler+0x19c>)
-    3aae:	4b58      	ldr	r3, [pc, #352]	; (3c10 <interruptHandler+0x1a0>)
-    3ab0:	1c10      	adds	r0, r2, #0
-    3ab2:	2100      	movs	r1, #0
-    3ab4:	1c1a      	adds	r2, r3, #0
-    3ab6:	4b57      	ldr	r3, [pc, #348]	; (3c14 <interruptHandler+0x1a4>)
-    3ab8:	4798      	blx	r3
-    3aba:	1c03      	adds	r3, r0, #0
-    3abc:	1c1a      	adds	r2, r3, #0
-    3abe:	4b56      	ldr	r3, [pc, #344]	; (3c18 <interruptHandler+0x1a8>)
-    3ac0:	701a      	strb	r2, [r3, #0]
+    3c48:	4a57      	ldr	r2, [pc, #348]	; (3da8 <interruptHandler+0x19c>)
+    3c4a:	4b58      	ldr	r3, [pc, #352]	; (3dac <interruptHandler+0x1a0>)
+    3c4c:	1c10      	adds	r0, r2, #0
+    3c4e:	2100      	movs	r1, #0
+    3c50:	1c1a      	adds	r2, r3, #0
+    3c52:	4b57      	ldr	r3, [pc, #348]	; (3db0 <interruptHandler+0x1a4>)
+    3c54:	4798      	blx	r3
+    3c56:	1c03      	adds	r3, r0, #0
+    3c58:	1c1a      	adds	r2, r3, #0
+    3c5a:	4b56      	ldr	r3, [pc, #344]	; (3db4 <interruptHandler+0x1a8>)
+    3c5c:	701a      	strb	r2, [r3, #0]
     PAYLOADLEN = PAYLOADLEN > 66 ? 66 : PAYLOADLEN; // precaution
-    3ac2:	4b55      	ldr	r3, [pc, #340]	; (3c18 <interruptHandler+0x1a8>)
-    3ac4:	781b      	ldrb	r3, [r3, #0]
-    3ac6:	b2db      	uxtb	r3, r3
-    3ac8:	2b42      	cmp	r3, #66	; 0x42
-    3aca:	d803      	bhi.n	3ad4 <interruptHandler+0x64>
-    3acc:	4b52      	ldr	r3, [pc, #328]	; (3c18 <interruptHandler+0x1a8>)
-    3ace:	781b      	ldrb	r3, [r3, #0]
-    3ad0:	b2da      	uxtb	r2, r3
-    3ad2:	e000      	b.n	3ad6 <interruptHandler+0x66>
-    3ad4:	2242      	movs	r2, #66	; 0x42
-    3ad6:	4b50      	ldr	r3, [pc, #320]	; (3c18 <interruptHandler+0x1a8>)
-    3ad8:	701a      	strb	r2, [r3, #0]
+    3c5e:	4b55      	ldr	r3, [pc, #340]	; (3db4 <interruptHandler+0x1a8>)
+    3c60:	781b      	ldrb	r3, [r3, #0]
+    3c62:	b2db      	uxtb	r3, r3
+    3c64:	2b42      	cmp	r3, #66	; 0x42
+    3c66:	d803      	bhi.n	3c70 <interruptHandler+0x64>
+    3c68:	4b52      	ldr	r3, [pc, #328]	; (3db4 <interruptHandler+0x1a8>)
+    3c6a:	781b      	ldrb	r3, [r3, #0]
+    3c6c:	b2da      	uxtb	r2, r3
+    3c6e:	e000      	b.n	3c72 <interruptHandler+0x66>
+    3c70:	2242      	movs	r2, #66	; 0x42
+    3c72:	4b50      	ldr	r3, [pc, #320]	; (3db4 <interruptHandler+0x1a8>)
+    3c74:	701a      	strb	r2, [r3, #0]
     TARGETID = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
-    3ada:	4a4c      	ldr	r2, [pc, #304]	; (3c0c <interruptHandler+0x19c>)
-    3adc:	4b4c      	ldr	r3, [pc, #304]	; (3c10 <interruptHandler+0x1a0>)
-    3ade:	1c10      	adds	r0, r2, #0
-    3ae0:	2100      	movs	r1, #0
-    3ae2:	1c1a      	adds	r2, r3, #0
-    3ae4:	4b4b      	ldr	r3, [pc, #300]	; (3c14 <interruptHandler+0x1a4>)
-    3ae6:	4798      	blx	r3
-    3ae8:	1c03      	adds	r3, r0, #0
-    3aea:	1c1a      	adds	r2, r3, #0
-    3aec:	4b4b      	ldr	r3, [pc, #300]	; (3c1c <interruptHandler+0x1ac>)
-    3aee:	701a      	strb	r2, [r3, #0]
+    3c76:	4a4c      	ldr	r2, [pc, #304]	; (3da8 <interruptHandler+0x19c>)
+    3c78:	4b4c      	ldr	r3, [pc, #304]	; (3dac <interruptHandler+0x1a0>)
+    3c7a:	1c10      	adds	r0, r2, #0
+    3c7c:	2100      	movs	r1, #0
+    3c7e:	1c1a      	adds	r2, r3, #0
+    3c80:	4b4b      	ldr	r3, [pc, #300]	; (3db0 <interruptHandler+0x1a4>)
+    3c82:	4798      	blx	r3
+    3c84:	1c03      	adds	r3, r0, #0
+    3c86:	1c1a      	adds	r2, r3, #0
+    3c88:	4b4b      	ldr	r3, [pc, #300]	; (3db8 <interruptHandler+0x1ac>)
+    3c8a:	701a      	strb	r2, [r3, #0]
     if(!(_promiscuousMode || TARGETID == _address || TARGETID == RF69_BROADCAST_ADDR) // match this node's address, or broadcast address or anything in promiscuous mode
-    3af0:	4b4b      	ldr	r3, [pc, #300]	; (3c20 <interruptHandler+0x1b0>)
-    3af2:	781b      	ldrb	r3, [r3, #0]
-    3af4:	b2db      	uxtb	r3, r3
-    3af6:	2201      	movs	r2, #1
-    3af8:	4053      	eors	r3, r2
-    3afa:	b2db      	uxtb	r3, r3
-    3afc:	2b00      	cmp	r3, #0
-    3afe:	d00c      	beq.n	3b1a <interruptHandler+0xaa>
-    3b00:	4b46      	ldr	r3, [pc, #280]	; (3c1c <interruptHandler+0x1ac>)
-    3b02:	781b      	ldrb	r3, [r3, #0]
-    3b04:	b2da      	uxtb	r2, r3
-    3b06:	4b47      	ldr	r3, [pc, #284]	; (3c24 <interruptHandler+0x1b4>)
-    3b08:	781b      	ldrb	r3, [r3, #0]
-    3b0a:	b2db      	uxtb	r3, r3
-    3b0c:	429a      	cmp	r2, r3
-    3b0e:	d004      	beq.n	3b1a <interruptHandler+0xaa>
-    3b10:	4b42      	ldr	r3, [pc, #264]	; (3c1c <interruptHandler+0x1ac>)
-    3b12:	781b      	ldrb	r3, [r3, #0]
-    3b14:	b2db      	uxtb	r3, r3
-    3b16:	2bff      	cmp	r3, #255	; 0xff
-    3b18:	d104      	bne.n	3b24 <interruptHandler+0xb4>
+    3c8c:	4b4b      	ldr	r3, [pc, #300]	; (3dbc <interruptHandler+0x1b0>)
+    3c8e:	781b      	ldrb	r3, [r3, #0]
+    3c90:	b2db      	uxtb	r3, r3
+    3c92:	2201      	movs	r2, #1
+    3c94:	4053      	eors	r3, r2
+    3c96:	b2db      	uxtb	r3, r3
+    3c98:	2b00      	cmp	r3, #0
+    3c9a:	d00c      	beq.n	3cb6 <interruptHandler+0xaa>
+    3c9c:	4b46      	ldr	r3, [pc, #280]	; (3db8 <interruptHandler+0x1ac>)
+    3c9e:	781b      	ldrb	r3, [r3, #0]
+    3ca0:	b2da      	uxtb	r2, r3
+    3ca2:	4b47      	ldr	r3, [pc, #284]	; (3dc0 <interruptHandler+0x1b4>)
+    3ca4:	781b      	ldrb	r3, [r3, #0]
+    3ca6:	b2db      	uxtb	r3, r3
+    3ca8:	429a      	cmp	r2, r3
+    3caa:	d004      	beq.n	3cb6 <interruptHandler+0xaa>
+    3cac:	4b42      	ldr	r3, [pc, #264]	; (3db8 <interruptHandler+0x1ac>)
+    3cae:	781b      	ldrb	r3, [r3, #0]
+    3cb0:	b2db      	uxtb	r3, r3
+    3cb2:	2bff      	cmp	r3, #255	; 0xff
+    3cb4:	d104      	bne.n	3cc0 <interruptHandler+0xb4>
        || PAYLOADLEN < 3) // address situation could receive packets that are malformed and don't fit this libraries extra fields
-    3b1a:	4b3f      	ldr	r3, [pc, #252]	; (3c18 <interruptHandler+0x1a8>)
-    3b1c:	781b      	ldrb	r3, [r3, #0]
-    3b1e:	b2db      	uxtb	r3, r3
-    3b20:	2b02      	cmp	r3, #2
-    3b22:	d807      	bhi.n	3b34 <interruptHandler+0xc4>
+    3cb6:	4b3f      	ldr	r3, [pc, #252]	; (3db4 <interruptHandler+0x1a8>)
+    3cb8:	781b      	ldrb	r3, [r3, #0]
+    3cba:	b2db      	uxtb	r3, r3
+    3cbc:	2b02      	cmp	r3, #2
+    3cbe:	d807      	bhi.n	3cd0 <interruptHandler+0xc4>
     {
       PAYLOADLEN = 0;
-    3b24:	4b3c      	ldr	r3, [pc, #240]	; (3c18 <interruptHandler+0x1a8>)
-    3b26:	2200      	movs	r2, #0
-    3b28:	701a      	strb	r2, [r3, #0]
+    3cc0:	4b3c      	ldr	r3, [pc, #240]	; (3db4 <interruptHandler+0x1a8>)
+    3cc2:	2200      	movs	r2, #0
+    3cc4:	701a      	strb	r2, [r3, #0]
       unselect();
-    3b2a:	4b3f      	ldr	r3, [pc, #252]	; (3c28 <interruptHandler+0x1b8>)
-    3b2c:	4798      	blx	r3
+    3cc6:	4b3f      	ldr	r3, [pc, #252]	; (3dc4 <interruptHandler+0x1b8>)
+    3cc8:	4798      	blx	r3
       receiveBegin();
-    3b2e:	4b3f      	ldr	r3, [pc, #252]	; (3c2c <interruptHandler+0x1bc>)
-    3b30:	4798      	blx	r3
+    3cca:	4b3f      	ldr	r3, [pc, #252]	; (3dc8 <interruptHandler+0x1bc>)
+    3ccc:	4798      	blx	r3
       return;
-    3b32:	e060      	b.n	3bf6 <interruptHandler+0x186>
+    3cce:	e060      	b.n	3d92 <interruptHandler+0x186>
     }
 
     RFM_DATALEN = PAYLOADLEN - 3;
-    3b34:	4b38      	ldr	r3, [pc, #224]	; (3c18 <interruptHandler+0x1a8>)
-    3b36:	781b      	ldrb	r3, [r3, #0]
-    3b38:	b2db      	uxtb	r3, r3
-    3b3a:	3b03      	subs	r3, #3
-    3b3c:	b2da      	uxtb	r2, r3
-    3b3e:	4b3c      	ldr	r3, [pc, #240]	; (3c30 <interruptHandler+0x1c0>)
-    3b40:	701a      	strb	r2, [r3, #0]
+    3cd0:	4b38      	ldr	r3, [pc, #224]	; (3db4 <interruptHandler+0x1a8>)
+    3cd2:	781b      	ldrb	r3, [r3, #0]
+    3cd4:	b2db      	uxtb	r3, r3
+    3cd6:	3b03      	subs	r3, #3
+    3cd8:	b2da      	uxtb	r2, r3
+    3cda:	4b3c      	ldr	r3, [pc, #240]	; (3dcc <interruptHandler+0x1c0>)
+    3cdc:	701a      	strb	r2, [r3, #0]
     RFM_SENDERID = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
-    3b42:	4a32      	ldr	r2, [pc, #200]	; (3c0c <interruptHandler+0x19c>)
-    3b44:	4b32      	ldr	r3, [pc, #200]	; (3c10 <interruptHandler+0x1a0>)
-    3b46:	1c10      	adds	r0, r2, #0
-    3b48:	2100      	movs	r1, #0
-    3b4a:	1c1a      	adds	r2, r3, #0
-    3b4c:	4b31      	ldr	r3, [pc, #196]	; (3c14 <interruptHandler+0x1a4>)
-    3b4e:	4798      	blx	r3
-    3b50:	1c03      	adds	r3, r0, #0
-    3b52:	1c1a      	adds	r2, r3, #0
-    3b54:	4b37      	ldr	r3, [pc, #220]	; (3c34 <interruptHandler+0x1c4>)
-    3b56:	701a      	strb	r2, [r3, #0]
+    3cde:	4a32      	ldr	r2, [pc, #200]	; (3da8 <interruptHandler+0x19c>)
+    3ce0:	4b32      	ldr	r3, [pc, #200]	; (3dac <interruptHandler+0x1a0>)
+    3ce2:	1c10      	adds	r0, r2, #0
+    3ce4:	2100      	movs	r1, #0
+    3ce6:	1c1a      	adds	r2, r3, #0
+    3ce8:	4b31      	ldr	r3, [pc, #196]	; (3db0 <interruptHandler+0x1a4>)
+    3cea:	4798      	blx	r3
+    3cec:	1c03      	adds	r3, r0, #0
+    3cee:	1c1a      	adds	r2, r3, #0
+    3cf0:	4b37      	ldr	r3, [pc, #220]	; (3dd0 <interruptHandler+0x1c4>)
+    3cf2:	701a      	strb	r2, [r3, #0]
     volatile uint8_t CTLbyte = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
-    3b58:	4a2c      	ldr	r2, [pc, #176]	; (3c0c <interruptHandler+0x19c>)
-    3b5a:	4b2d      	ldr	r3, [pc, #180]	; (3c10 <interruptHandler+0x1a0>)
-    3b5c:	1c10      	adds	r0, r2, #0
-    3b5e:	2100      	movs	r1, #0
-    3b60:	1c1a      	adds	r2, r3, #0
-    3b62:	4b2c      	ldr	r3, [pc, #176]	; (3c14 <interruptHandler+0x1a4>)
-    3b64:	4798      	blx	r3
-    3b66:	1c03      	adds	r3, r0, #0
-    3b68:	1c1a      	adds	r2, r3, #0
-    3b6a:	1dbb      	adds	r3, r7, #6
-    3b6c:	701a      	strb	r2, [r3, #0]
+    3cf4:	4a2c      	ldr	r2, [pc, #176]	; (3da8 <interruptHandler+0x19c>)
+    3cf6:	4b2d      	ldr	r3, [pc, #180]	; (3dac <interruptHandler+0x1a0>)
+    3cf8:	1c10      	adds	r0, r2, #0
+    3cfa:	2100      	movs	r1, #0
+    3cfc:	1c1a      	adds	r2, r3, #0
+    3cfe:	4b2c      	ldr	r3, [pc, #176]	; (3db0 <interruptHandler+0x1a4>)
+    3d00:	4798      	blx	r3
+    3d02:	1c03      	adds	r3, r0, #0
+    3d04:	1c1a      	adds	r2, r3, #0
+    3d06:	1dbb      	adds	r3, r7, #6
+    3d08:	701a      	strb	r2, [r3, #0]
 
     ACK_RECEIVED = CTLbyte & RFM69_CTL_SENDACK; // extract ACK-received flag
-    3b6e:	1dbb      	adds	r3, r7, #6
-    3b70:	781b      	ldrb	r3, [r3, #0]
-    3b72:	b2db      	uxtb	r3, r3
-    3b74:	227f      	movs	r2, #127	; 0x7f
-    3b76:	4393      	bics	r3, r2
-    3b78:	b2da      	uxtb	r2, r3
-    3b7a:	4b2f      	ldr	r3, [pc, #188]	; (3c38 <interruptHandler+0x1c8>)
-    3b7c:	701a      	strb	r2, [r3, #0]
+    3d0a:	1dbb      	adds	r3, r7, #6
+    3d0c:	781b      	ldrb	r3, [r3, #0]
+    3d0e:	b2db      	uxtb	r3, r3
+    3d10:	227f      	movs	r2, #127	; 0x7f
+    3d12:	4393      	bics	r3, r2
+    3d14:	b2da      	uxtb	r2, r3
+    3d16:	4b2f      	ldr	r3, [pc, #188]	; (3dd4 <interruptHandler+0x1c8>)
+    3d18:	701a      	strb	r2, [r3, #0]
     ACK_REQUESTED = CTLbyte & RFM69_CTL_REQACK; // extract ACK-requested flag
-    3b7e:	1dbb      	adds	r3, r7, #6
-    3b80:	781b      	ldrb	r3, [r3, #0]
-    3b82:	b2db      	uxtb	r3, r3
-    3b84:	2240      	movs	r2, #64	; 0x40
-    3b86:	4013      	ands	r3, r2
-    3b88:	b2da      	uxtb	r2, r3
-    3b8a:	4b2c      	ldr	r3, [pc, #176]	; (3c3c <interruptHandler+0x1cc>)
-    3b8c:	701a      	strb	r2, [r3, #0]
+    3d1a:	1dbb      	adds	r3, r7, #6
+    3d1c:	781b      	ldrb	r3, [r3, #0]
+    3d1e:	b2db      	uxtb	r3, r3
+    3d20:	2240      	movs	r2, #64	; 0x40
+    3d22:	4013      	ands	r3, r2
+    3d24:	b2da      	uxtb	r2, r3
+    3d26:	4b2c      	ldr	r3, [pc, #176]	; (3dd8 <interruptHandler+0x1cc>)
+    3d28:	701a      	strb	r2, [r3, #0]
 
     for (uint8_t i = 0; i < RFM_DATALEN; i++)
-    3b8e:	1dfb      	adds	r3, r7, #7
-    3b90:	2200      	movs	r2, #0
-    3b92:	701a      	strb	r2, [r3, #0]
-    3b94:	e011      	b.n	3bba <interruptHandler+0x14a>
+    3d2a:	1dfb      	adds	r3, r7, #7
+    3d2c:	2200      	movs	r2, #0
+    3d2e:	701a      	strb	r2, [r3, #0]
+    3d30:	e011      	b.n	3d56 <interruptHandler+0x14a>
     {
       RFM_DATA[i] = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
-    3b96:	1dfb      	adds	r3, r7, #7
-    3b98:	781c      	ldrb	r4, [r3, #0]
-    3b9a:	4a1c      	ldr	r2, [pc, #112]	; (3c0c <interruptHandler+0x19c>)
-    3b9c:	4b1c      	ldr	r3, [pc, #112]	; (3c10 <interruptHandler+0x1a0>)
-    3b9e:	1c10      	adds	r0, r2, #0
-    3ba0:	2100      	movs	r1, #0
-    3ba2:	1c1a      	adds	r2, r3, #0
-    3ba4:	4b1b      	ldr	r3, [pc, #108]	; (3c14 <interruptHandler+0x1a4>)
-    3ba6:	4798      	blx	r3
-    3ba8:	1c03      	adds	r3, r0, #0
-    3baa:	1c1a      	adds	r2, r3, #0
-    3bac:	4b24      	ldr	r3, [pc, #144]	; (3c40 <interruptHandler+0x1d0>)
-    3bae:	551a      	strb	r2, [r3, r4]
+    3d32:	1dfb      	adds	r3, r7, #7
+    3d34:	781c      	ldrb	r4, [r3, #0]
+    3d36:	4a1c      	ldr	r2, [pc, #112]	; (3da8 <interruptHandler+0x19c>)
+    3d38:	4b1c      	ldr	r3, [pc, #112]	; (3dac <interruptHandler+0x1a0>)
+    3d3a:	1c10      	adds	r0, r2, #0
+    3d3c:	2100      	movs	r1, #0
+    3d3e:	1c1a      	adds	r2, r3, #0
+    3d40:	4b1b      	ldr	r3, [pc, #108]	; (3db0 <interruptHandler+0x1a4>)
+    3d42:	4798      	blx	r3
+    3d44:	1c03      	adds	r3, r0, #0
+    3d46:	1c1a      	adds	r2, r3, #0
+    3d48:	4b24      	ldr	r3, [pc, #144]	; (3ddc <interruptHandler+0x1d0>)
+    3d4a:	551a      	strb	r2, [r3, r4]
     volatile uint8_t CTLbyte = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
 
     ACK_RECEIVED = CTLbyte & RFM69_CTL_SENDACK; // extract ACK-received flag
     ACK_REQUESTED = CTLbyte & RFM69_CTL_REQACK; // extract ACK-requested flag
 
     for (uint8_t i = 0; i < RFM_DATALEN; i++)
-    3bb0:	1dfb      	adds	r3, r7, #7
-    3bb2:	781a      	ldrb	r2, [r3, #0]
-    3bb4:	1dfb      	adds	r3, r7, #7
-    3bb6:	3201      	adds	r2, #1
-    3bb8:	701a      	strb	r2, [r3, #0]
-    3bba:	4b1d      	ldr	r3, [pc, #116]	; (3c30 <interruptHandler+0x1c0>)
-    3bbc:	781b      	ldrb	r3, [r3, #0]
-    3bbe:	b2db      	uxtb	r3, r3
-    3bc0:	1dfa      	adds	r2, r7, #7
-    3bc2:	7812      	ldrb	r2, [r2, #0]
-    3bc4:	429a      	cmp	r2, r3
-    3bc6:	d3e6      	bcc.n	3b96 <interruptHandler+0x126>
+    3d4c:	1dfb      	adds	r3, r7, #7
+    3d4e:	781a      	ldrb	r2, [r3, #0]
+    3d50:	1dfb      	adds	r3, r7, #7
+    3d52:	3201      	adds	r2, #1
+    3d54:	701a      	strb	r2, [r3, #0]
+    3d56:	4b1d      	ldr	r3, [pc, #116]	; (3dcc <interruptHandler+0x1c0>)
+    3d58:	781b      	ldrb	r3, [r3, #0]
+    3d5a:	b2db      	uxtb	r3, r3
+    3d5c:	1dfa      	adds	r2, r7, #7
+    3d5e:	7812      	ldrb	r2, [r2, #0]
+    3d60:	429a      	cmp	r2, r3
+    3d62:	d3e6      	bcc.n	3d32 <interruptHandler+0x126>
     {
       RFM_DATA[i] = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
     }
     if (RFM_DATALEN < RF69_MAX_DATA_LEN) RFM_DATA[RFM_DATALEN] = 0; // add null at end of string
-    3bc8:	4b19      	ldr	r3, [pc, #100]	; (3c30 <interruptHandler+0x1c0>)
-    3bca:	781b      	ldrb	r3, [r3, #0]
-    3bcc:	b2db      	uxtb	r3, r3
-    3bce:	2b3c      	cmp	r3, #60	; 0x3c
-    3bd0:	d806      	bhi.n	3be0 <interruptHandler+0x170>
-    3bd2:	4b17      	ldr	r3, [pc, #92]	; (3c30 <interruptHandler+0x1c0>)
-    3bd4:	781b      	ldrb	r3, [r3, #0]
-    3bd6:	b2db      	uxtb	r3, r3
-    3bd8:	1c1a      	adds	r2, r3, #0
-    3bda:	4b19      	ldr	r3, [pc, #100]	; (3c40 <interruptHandler+0x1d0>)
-    3bdc:	2100      	movs	r1, #0
-    3bde:	5499      	strb	r1, [r3, r2]
+    3d64:	4b19      	ldr	r3, [pc, #100]	; (3dcc <interruptHandler+0x1c0>)
+    3d66:	781b      	ldrb	r3, [r3, #0]
+    3d68:	b2db      	uxtb	r3, r3
+    3d6a:	2b3c      	cmp	r3, #60	; 0x3c
+    3d6c:	d806      	bhi.n	3d7c <interruptHandler+0x170>
+    3d6e:	4b17      	ldr	r3, [pc, #92]	; (3dcc <interruptHandler+0x1c0>)
+    3d70:	781b      	ldrb	r3, [r3, #0]
+    3d72:	b2db      	uxtb	r3, r3
+    3d74:	1c1a      	adds	r2, r3, #0
+    3d76:	4b19      	ldr	r3, [pc, #100]	; (3ddc <interruptHandler+0x1d0>)
+    3d78:	2100      	movs	r1, #0
+    3d7a:	5499      	strb	r1, [r3, r2]
     unselect();
-    3be0:	4b11      	ldr	r3, [pc, #68]	; (3c28 <interruptHandler+0x1b8>)
-    3be2:	4798      	blx	r3
+    3d7c:	4b11      	ldr	r3, [pc, #68]	; (3dc4 <interruptHandler+0x1b8>)
+    3d7e:	4798      	blx	r3
     setMode(RF69_MODE_RX);
-    3be4:	2003      	movs	r0, #3
-    3be6:	4b07      	ldr	r3, [pc, #28]	; (3c04 <interruptHandler+0x194>)
-    3be8:	4798      	blx	r3
+    3d80:	2003      	movs	r0, #3
+    3d82:	4b07      	ldr	r3, [pc, #28]	; (3da0 <interruptHandler+0x194>)
+    3d84:	4798      	blx	r3
   }
   RFM_RSSI = readRSSI();
-    3bea:	4b16      	ldr	r3, [pc, #88]	; (3c44 <interruptHandler+0x1d4>)
-    3bec:	4798      	blx	r3
-    3bee:	1c03      	adds	r3, r0, #0
-    3bf0:	1c1a      	adds	r2, r3, #0
-    3bf2:	4b15      	ldr	r3, [pc, #84]	; (3c48 <interruptHandler+0x1d8>)
-    3bf4:	801a      	strh	r2, [r3, #0]
+    3d86:	4b16      	ldr	r3, [pc, #88]	; (3de0 <interruptHandler+0x1d4>)
+    3d88:	4798      	blx	r3
+    3d8a:	1c03      	adds	r3, r0, #0
+    3d8c:	1c1a      	adds	r2, r3, #0
+    3d8e:	4b15      	ldr	r3, [pc, #84]	; (3de4 <interruptHandler+0x1d8>)
+    3d90:	801a      	strh	r2, [r3, #0]
 }
-    3bf6:	46bd      	mov	sp, r7
-    3bf8:	b003      	add	sp, #12
-    3bfa:	bd90      	pop	{r4, r7, pc}
-    3bfc:	20000185 	.word	0x20000185
-    3c00:	00003e59 	.word	0x00003e59
-    3c04:	000037d1 	.word	0x000037d1
-    3c08:	00003f29 	.word	0x00003f29
-    3c0c:	20000188 	.word	0x20000188
-    3c10:	2000005c 	.word	0x2000005c
-    3c14:	00001379 	.word	0x00001379
-    3c18:	20000182 	.word	0x20000182
-    3c1c:	20000184 	.word	0x20000184
-    3c20:	2000013f 	.word	0x2000013f
-    3c24:	2000013c 	.word	0x2000013c
-    3c28:	00003f55 	.word	0x00003f55
-    3c2c:	00003c6d 	.word	0x00003c6d
-    3c30:	2000013e 	.word	0x2000013e
-    3c34:	200000dd 	.word	0x200000dd
-    3c38:	2000013d 	.word	0x2000013d
-    3c3c:	20000183 	.word	0x20000183
-    3c40:	20000144 	.word	0x20000144
-    3c44:	00003e15 	.word	0x00003e15
-    3c48:	200001c4 	.word	0x200001c4
+    3d92:	46bd      	mov	sp, r7
+    3d94:	b003      	add	sp, #12
+    3d96:	bd90      	pop	{r4, r7, pc}
+    3d98:	20000185 	.word	0x20000185
+    3d9c:	00003ff5 	.word	0x00003ff5
+    3da0:	000037d1 	.word	0x000037d1
+    3da4:	000040c5 	.word	0x000040c5
+    3da8:	20000188 	.word	0x20000188
+    3dac:	2000005c 	.word	0x2000005c
+    3db0:	00001379 	.word	0x00001379
+    3db4:	20000182 	.word	0x20000182
+    3db8:	20000184 	.word	0x20000184
+    3dbc:	2000013f 	.word	0x2000013f
+    3dc0:	2000013c 	.word	0x2000013c
+    3dc4:	000040f1 	.word	0x000040f1
+    3dc8:	00003e09 	.word	0x00003e09
+    3dcc:	2000013e 	.word	0x2000013e
+    3dd0:	200000dd 	.word	0x200000dd
+    3dd4:	2000013d 	.word	0x2000013d
+    3dd8:	20000183 	.word	0x20000183
+    3ddc:	20000144 	.word	0x20000144
+    3de0:	00003fb1 	.word	0x00003fb1
+    3de4:	200001c4 	.word	0x200001c4
 
-00003c4c <isr0>:
+00003de8 <isr0>:
 
 // internal function
 void isr0()
 { 
-    3c4c:	b580      	push	{r7, lr}
-    3c4e:	af00      	add	r7, sp, #0
+    3de8:	b580      	push	{r7, lr}
+    3dea:	af00      	add	r7, sp, #0
 	_inISR = true; 
-    3c50:	4b04      	ldr	r3, [pc, #16]	; (3c64 <isr0+0x18>)
-    3c52:	2201      	movs	r2, #1
-    3c54:	701a      	strb	r2, [r3, #0]
+    3dec:	4b04      	ldr	r3, [pc, #16]	; (3e00 <isr0+0x18>)
+    3dee:	2201      	movs	r2, #1
+    3df0:	701a      	strb	r2, [r3, #0]
 	interruptHandler(); 
-    3c56:	4b04      	ldr	r3, [pc, #16]	; (3c68 <isr0+0x1c>)
-    3c58:	4798      	blx	r3
+    3df2:	4b04      	ldr	r3, [pc, #16]	; (3e04 <isr0+0x1c>)
+    3df4:	4798      	blx	r3
 	_inISR = false;
-    3c5a:	4b02      	ldr	r3, [pc, #8]	; (3c64 <isr0+0x18>)
-    3c5c:	2200      	movs	r2, #0
-    3c5e:	701a      	strb	r2, [r3, #0]
+    3df6:	4b02      	ldr	r3, [pc, #8]	; (3e00 <isr0+0x18>)
+    3df8:	2200      	movs	r2, #0
+    3dfa:	701a      	strb	r2, [r3, #0]
 } // CHANGE //?
-    3c60:	46bd      	mov	sp, r7
-    3c62:	bd80      	pop	{r7, pc}
-    3c64:	200000f9 	.word	0x200000f9
-    3c68:	00003a71 	.word	0x00003a71
+    3dfc:	46bd      	mov	sp, r7
+    3dfe:	bd80      	pop	{r7, pc}
+    3e00:	200000f9 	.word	0x200000f9
+    3e04:	00003c0d 	.word	0x00003c0d
 
-00003c6c <receiveBegin>:
+00003e08 <receiveBegin>:
 
 // internal function
 void receiveBegin() {
-    3c6c:	b580      	push	{r7, lr}
-    3c6e:	af00      	add	r7, sp, #0
+    3e08:	b580      	push	{r7, lr}
+    3e0a:	af00      	add	r7, sp, #0
   RFM_DATALEN = 0;
-    3c70:	4b18      	ldr	r3, [pc, #96]	; (3cd4 <receiveBegin+0x68>)
-    3c72:	2200      	movs	r2, #0
-    3c74:	701a      	strb	r2, [r3, #0]
+    3e0c:	4b18      	ldr	r3, [pc, #96]	; (3e70 <receiveBegin+0x68>)
+    3e0e:	2200      	movs	r2, #0
+    3e10:	701a      	strb	r2, [r3, #0]
   RFM_SENDERID = 0;
-    3c76:	4b18      	ldr	r3, [pc, #96]	; (3cd8 <receiveBegin+0x6c>)
-    3c78:	2200      	movs	r2, #0
-    3c7a:	701a      	strb	r2, [r3, #0]
+    3e12:	4b18      	ldr	r3, [pc, #96]	; (3e74 <receiveBegin+0x6c>)
+    3e14:	2200      	movs	r2, #0
+    3e16:	701a      	strb	r2, [r3, #0]
   TARGETID = 0;
-    3c7c:	4b17      	ldr	r3, [pc, #92]	; (3cdc <receiveBegin+0x70>)
-    3c7e:	2200      	movs	r2, #0
-    3c80:	701a      	strb	r2, [r3, #0]
+    3e18:	4b17      	ldr	r3, [pc, #92]	; (3e78 <receiveBegin+0x70>)
+    3e1a:	2200      	movs	r2, #0
+    3e1c:	701a      	strb	r2, [r3, #0]
   PAYLOADLEN = 0;
-    3c82:	4b17      	ldr	r3, [pc, #92]	; (3ce0 <receiveBegin+0x74>)
-    3c84:	2200      	movs	r2, #0
-    3c86:	701a      	strb	r2, [r3, #0]
+    3e1e:	4b17      	ldr	r3, [pc, #92]	; (3e7c <receiveBegin+0x74>)
+    3e20:	2200      	movs	r2, #0
+    3e22:	701a      	strb	r2, [r3, #0]
   ACK_REQUESTED = 0;
-    3c88:	4b16      	ldr	r3, [pc, #88]	; (3ce4 <receiveBegin+0x78>)
-    3c8a:	2200      	movs	r2, #0
-    3c8c:	701a      	strb	r2, [r3, #0]
+    3e24:	4b16      	ldr	r3, [pc, #88]	; (3e80 <receiveBegin+0x78>)
+    3e26:	2200      	movs	r2, #0
+    3e28:	701a      	strb	r2, [r3, #0]
   ACK_RECEIVED = 0;
-    3c8e:	4b16      	ldr	r3, [pc, #88]	; (3ce8 <receiveBegin+0x7c>)
-    3c90:	2200      	movs	r2, #0
-    3c92:	701a      	strb	r2, [r3, #0]
+    3e2a:	4b16      	ldr	r3, [pc, #88]	; (3e84 <receiveBegin+0x7c>)
+    3e2c:	2200      	movs	r2, #0
+    3e2e:	701a      	strb	r2, [r3, #0]
   RFM_RSSI = 0;
-    3c94:	4b15      	ldr	r3, [pc, #84]	; (3cec <receiveBegin+0x80>)
-    3c96:	2200      	movs	r2, #0
-    3c98:	801a      	strh	r2, [r3, #0]
+    3e30:	4b15      	ldr	r3, [pc, #84]	; (3e88 <receiveBegin+0x80>)
+    3e32:	2200      	movs	r2, #0
+    3e34:	801a      	strh	r2, [r3, #0]
   if (readReg(REG_IRQFLAGS2) & RF_IRQFLAGS2_PAYLOADREADY)
-    3c9a:	2028      	movs	r0, #40	; 0x28
-    3c9c:	4b14      	ldr	r3, [pc, #80]	; (3cf0 <receiveBegin+0x84>)
-    3c9e:	4798      	blx	r3
-    3ca0:	1c03      	adds	r3, r0, #0
-    3ca2:	1c1a      	adds	r2, r3, #0
-    3ca4:	2304      	movs	r3, #4
-    3ca6:	4013      	ands	r3, r2
-    3ca8:	d00b      	beq.n	3cc2 <receiveBegin+0x56>
+    3e36:	2028      	movs	r0, #40	; 0x28
+    3e38:	4b14      	ldr	r3, [pc, #80]	; (3e8c <receiveBegin+0x84>)
+    3e3a:	4798      	blx	r3
+    3e3c:	1c03      	adds	r3, r0, #0
+    3e3e:	1c1a      	adds	r2, r3, #0
+    3e40:	2304      	movs	r3, #4
+    3e42:	4013      	ands	r3, r2
+    3e44:	d00b      	beq.n	3e5e <receiveBegin+0x56>
     writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
-    3caa:	203d      	movs	r0, #61	; 0x3d
-    3cac:	4b10      	ldr	r3, [pc, #64]	; (3cf0 <receiveBegin+0x84>)
-    3cae:	4798      	blx	r3
-    3cb0:	1c03      	adds	r3, r0, #0
-    3cb2:	1c1a      	adds	r2, r3, #0
-    3cb4:	2304      	movs	r3, #4
-    3cb6:	4313      	orrs	r3, r2
-    3cb8:	b2db      	uxtb	r3, r3
-    3cba:	203d      	movs	r0, #61	; 0x3d
-    3cbc:	1c19      	adds	r1, r3, #0
-    3cbe:	4b0d      	ldr	r3, [pc, #52]	; (3cf4 <receiveBegin+0x88>)
-    3cc0:	4798      	blx	r3
+    3e46:	203d      	movs	r0, #61	; 0x3d
+    3e48:	4b10      	ldr	r3, [pc, #64]	; (3e8c <receiveBegin+0x84>)
+    3e4a:	4798      	blx	r3
+    3e4c:	1c03      	adds	r3, r0, #0
+    3e4e:	1c1a      	adds	r2, r3, #0
+    3e50:	2304      	movs	r3, #4
+    3e52:	4313      	orrs	r3, r2
+    3e54:	b2db      	uxtb	r3, r3
+    3e56:	203d      	movs	r0, #61	; 0x3d
+    3e58:	1c19      	adds	r1, r3, #0
+    3e5a:	4b0d      	ldr	r3, [pc, #52]	; (3e90 <receiveBegin+0x88>)
+    3e5c:	4798      	blx	r3
   writeReg(REG_DIOMAPPING1, RF_DIOMAPPING1_DIO0_01); // set DIO0 to "PAYLOADREADY" in receive mode
-    3cc2:	2025      	movs	r0, #37	; 0x25
-    3cc4:	2140      	movs	r1, #64	; 0x40
-    3cc6:	4b0b      	ldr	r3, [pc, #44]	; (3cf4 <receiveBegin+0x88>)
-    3cc8:	4798      	blx	r3
+    3e5e:	2025      	movs	r0, #37	; 0x25
+    3e60:	2140      	movs	r1, #64	; 0x40
+    3e62:	4b0b      	ldr	r3, [pc, #44]	; (3e90 <receiveBegin+0x88>)
+    3e64:	4798      	blx	r3
   setMode(RF69_MODE_RX);
-    3cca:	2003      	movs	r0, #3
-    3ccc:	4b0a      	ldr	r3, [pc, #40]	; (3cf8 <receiveBegin+0x8c>)
-    3cce:	4798      	blx	r3
+    3e66:	2003      	movs	r0, #3
+    3e68:	4b0a      	ldr	r3, [pc, #40]	; (3e94 <receiveBegin+0x8c>)
+    3e6a:	4798      	blx	r3
 }
-    3cd0:	46bd      	mov	sp, r7
-    3cd2:	bd80      	pop	{r7, pc}
-    3cd4:	2000013e 	.word	0x2000013e
-    3cd8:	200000dd 	.word	0x200000dd
-    3cdc:	20000184 	.word	0x20000184
-    3ce0:	20000182 	.word	0x20000182
-    3ce4:	20000183 	.word	0x20000183
-    3ce8:	2000013d 	.word	0x2000013d
-    3cec:	200001c4 	.word	0x200001c4
-    3cf0:	00003e59 	.word	0x00003e59
-    3cf4:	00003ec5 	.word	0x00003ec5
-    3cf8:	000037d1 	.word	0x000037d1
+    3e6c:	46bd      	mov	sp, r7
+    3e6e:	bd80      	pop	{r7, pc}
+    3e70:	2000013e 	.word	0x2000013e
+    3e74:	200000dd 	.word	0x200000dd
+    3e78:	20000184 	.word	0x20000184
+    3e7c:	20000182 	.word	0x20000182
+    3e80:	20000183 	.word	0x20000183
+    3e84:	2000013d 	.word	0x2000013d
+    3e88:	200001c4 	.word	0x200001c4
+    3e8c:	00003ff5 	.word	0x00003ff5
+    3e90:	00004061 	.word	0x00004061
+    3e94:	000037d1 	.word	0x000037d1
 
-00003cfc <RFM_receiveDone>:
+00003e98 <RFM_receiveDone>:
 
 // checks if a packet was received and/or puts transceiver in receive (ie RX or listen) mode
 bool RFM_receiveDone() {
-    3cfc:	b580      	push	{r7, lr}
-    3cfe:	af00      	add	r7, sp, #0
+    3e98:	b580      	push	{r7, lr}
+    3e9a:	af00      	add	r7, sp, #0
   system_interrupt_disable_global(); //noInterrupts(); // re-enabled in unselect() via setMode() or via receiveBegin() // CHANGE //
-    3d00:	4b0f      	ldr	r3, [pc, #60]	; (3d40 <RFM_receiveDone+0x44>)
-    3d02:	4798      	blx	r3
+    3e9c:	4b0f      	ldr	r3, [pc, #60]	; (3edc <RFM_receiveDone+0x44>)
+    3e9e:	4798      	blx	r3
 
   if (_mode == RF69_MODE_RX && PAYLOADLEN > 0)
-    3d04:	4b0f      	ldr	r3, [pc, #60]	; (3d44 <RFM_receiveDone+0x48>)
-    3d06:	781b      	ldrb	r3, [r3, #0]
-    3d08:	b2db      	uxtb	r3, r3
-    3d0a:	2b03      	cmp	r3, #3
-    3d0c:	d109      	bne.n	3d22 <RFM_receiveDone+0x26>
-    3d0e:	4b0e      	ldr	r3, [pc, #56]	; (3d48 <RFM_receiveDone+0x4c>)
-    3d10:	781b      	ldrb	r3, [r3, #0]
-    3d12:	b2db      	uxtb	r3, r3
-    3d14:	2b00      	cmp	r3, #0
-    3d16:	d004      	beq.n	3d22 <RFM_receiveDone+0x26>
+    3ea0:	4b0f      	ldr	r3, [pc, #60]	; (3ee0 <RFM_receiveDone+0x48>)
+    3ea2:	781b      	ldrb	r3, [r3, #0]
+    3ea4:	b2db      	uxtb	r3, r3
+    3ea6:	2b03      	cmp	r3, #3
+    3ea8:	d109      	bne.n	3ebe <RFM_receiveDone+0x26>
+    3eaa:	4b0e      	ldr	r3, [pc, #56]	; (3ee4 <RFM_receiveDone+0x4c>)
+    3eac:	781b      	ldrb	r3, [r3, #0]
+    3eae:	b2db      	uxtb	r3, r3
+    3eb0:	2b00      	cmp	r3, #0
+    3eb2:	d004      	beq.n	3ebe <RFM_receiveDone+0x26>
   {
     setMode(RF69_MODE_STANDBY); // enables interrupts
-    3d18:	2001      	movs	r0, #1
-    3d1a:	4b0c      	ldr	r3, [pc, #48]	; (3d4c <RFM_receiveDone+0x50>)
-    3d1c:	4798      	blx	r3
+    3eb4:	2001      	movs	r0, #1
+    3eb6:	4b0c      	ldr	r3, [pc, #48]	; (3ee8 <RFM_receiveDone+0x50>)
+    3eb8:	4798      	blx	r3
     return true;
-    3d1e:	2301      	movs	r3, #1
-    3d20:	e00b      	b.n	3d3a <RFM_receiveDone+0x3e>
+    3eba:	2301      	movs	r3, #1
+    3ebc:	e00b      	b.n	3ed6 <RFM_receiveDone+0x3e>
   }
   else if (_mode == RF69_MODE_RX) // already in RX no payload yet
-    3d22:	4b08      	ldr	r3, [pc, #32]	; (3d44 <RFM_receiveDone+0x48>)
-    3d24:	781b      	ldrb	r3, [r3, #0]
-    3d26:	b2db      	uxtb	r3, r3
-    3d28:	2b03      	cmp	r3, #3
-    3d2a:	d103      	bne.n	3d34 <RFM_receiveDone+0x38>
+    3ebe:	4b08      	ldr	r3, [pc, #32]	; (3ee0 <RFM_receiveDone+0x48>)
+    3ec0:	781b      	ldrb	r3, [r3, #0]
+    3ec2:	b2db      	uxtb	r3, r3
+    3ec4:	2b03      	cmp	r3, #3
+    3ec6:	d103      	bne.n	3ed0 <RFM_receiveDone+0x38>
   {
     system_interrupt_enable_global(); //interrupts(); // explicitly re-enable interrupts // CHANGE //
-    3d2c:	4b08      	ldr	r3, [pc, #32]	; (3d50 <RFM_receiveDone+0x54>)
-    3d2e:	4798      	blx	r3
+    3ec8:	4b08      	ldr	r3, [pc, #32]	; (3eec <RFM_receiveDone+0x54>)
+    3eca:	4798      	blx	r3
     return false;
-    3d30:	2300      	movs	r3, #0
-    3d32:	e002      	b.n	3d3a <RFM_receiveDone+0x3e>
+    3ecc:	2300      	movs	r3, #0
+    3ece:	e002      	b.n	3ed6 <RFM_receiveDone+0x3e>
   }
   receiveBegin();
-    3d34:	4b07      	ldr	r3, [pc, #28]	; (3d54 <RFM_receiveDone+0x58>)
-    3d36:	4798      	blx	r3
+    3ed0:	4b07      	ldr	r3, [pc, #28]	; (3ef0 <RFM_receiveDone+0x58>)
+    3ed2:	4798      	blx	r3
   return false;
-    3d38:	2300      	movs	r3, #0
+    3ed4:	2300      	movs	r3, #0
 }
-    3d3a:	1c18      	adds	r0, r3, #0
-    3d3c:	46bd      	mov	sp, r7
-    3d3e:	bd80      	pop	{r7, pc}
-    3d40:	00002e71 	.word	0x00002e71
-    3d44:	20000185 	.word	0x20000185
-    3d48:	20000182 	.word	0x20000182
-    3d4c:	000037d1 	.word	0x000037d1
-    3d50:	00002e59 	.word	0x00002e59
-    3d54:	00003c6d 	.word	0x00003c6d
+    3ed6:	1c18      	adds	r0, r3, #0
+    3ed8:	46bd      	mov	sp, r7
+    3eda:	bd80      	pop	{r7, pc}
+    3edc:	00002e71 	.word	0x00002e71
+    3ee0:	20000185 	.word	0x20000185
+    3ee4:	20000182 	.word	0x20000182
+    3ee8:	000037d1 	.word	0x000037d1
+    3eec:	00002e59 	.word	0x00002e59
+    3ef0:	00003e09 	.word	0x00003e09
 
-00003d58 <RFM_encrypt>:
+00003ef4 <RFM_encrypt>:
 
 // To enable encryption: radio.encrypt("ABCDEFGHIJKLMNOP");
 // To disable encryption: radio.encrypt(null) or radio.encrypt(0)
 // KEY HAS TO BE 16 bytes !!!
 void RFM_encrypt(const char* key) {
-    3d58:	b580      	push	{r7, lr}
-    3d5a:	b084      	sub	sp, #16
-    3d5c:	af00      	add	r7, sp, #0
-    3d5e:	6078      	str	r0, [r7, #4]
+    3ef4:	b580      	push	{r7, lr}
+    3ef6:	b084      	sub	sp, #16
+    3ef8:	af00      	add	r7, sp, #0
+    3efa:	6078      	str	r0, [r7, #4]
   setMode(RF69_MODE_STANDBY);
-    3d60:	2001      	movs	r0, #1
-    3d62:	4b24      	ldr	r3, [pc, #144]	; (3df4 <RFM_encrypt+0x9c>)
-    3d64:	4798      	blx	r3
+    3efc:	2001      	movs	r0, #1
+    3efe:	4b24      	ldr	r3, [pc, #144]	; (3f90 <RFM_encrypt+0x9c>)
+    3f00:	4798      	blx	r3
   if (key != 0)
-    3d66:	687b      	ldr	r3, [r7, #4]
-    3d68:	2b00      	cmp	r3, #0
-    3d6a:	d029      	beq.n	3dc0 <RFM_encrypt+0x68>
+    3f02:	687b      	ldr	r3, [r7, #4]
+    3f04:	2b00      	cmp	r3, #0
+    3f06:	d029      	beq.n	3f5c <RFM_encrypt+0x68>
   {
     select();
-    3d6c:	4b22      	ldr	r3, [pc, #136]	; (3df8 <RFM_encrypt+0xa0>)
-    3d6e:	4798      	blx	r3
+    3f08:	4b22      	ldr	r3, [pc, #136]	; (3f94 <RFM_encrypt+0xa0>)
+    3f0a:	4798      	blx	r3
     spi_transceive_wait(&spi_master_instance, REG_AESKEY1 | 0x80, &read_buf); //SPI.transfer(REG_AESKEY1 | 0x80); // CHANGE //
-    3d70:	4a22      	ldr	r2, [pc, #136]	; (3dfc <RFM_encrypt+0xa4>)
-    3d72:	4b23      	ldr	r3, [pc, #140]	; (3e00 <RFM_encrypt+0xa8>)
-    3d74:	1c10      	adds	r0, r2, #0
-    3d76:	21be      	movs	r1, #190	; 0xbe
-    3d78:	1c1a      	adds	r2, r3, #0
-    3d7a:	4b22      	ldr	r3, [pc, #136]	; (3e04 <RFM_encrypt+0xac>)
-    3d7c:	4798      	blx	r3
+    3f0c:	4a22      	ldr	r2, [pc, #136]	; (3f98 <RFM_encrypt+0xa4>)
+    3f0e:	4b23      	ldr	r3, [pc, #140]	; (3f9c <RFM_encrypt+0xa8>)
+    3f10:	1c10      	adds	r0, r2, #0
+    3f12:	21be      	movs	r1, #190	; 0xbe
+    3f14:	1c1a      	adds	r2, r3, #0
+    3f16:	4b22      	ldr	r3, [pc, #136]	; (3fa0 <RFM_encrypt+0xac>)
+    3f18:	4798      	blx	r3
     for (uint8_t i = 0; i < 16; i++)
-    3d7e:	230f      	movs	r3, #15
-    3d80:	18fb      	adds	r3, r7, r3
-    3d82:	2200      	movs	r2, #0
-    3d84:	701a      	strb	r2, [r3, #0]
-    3d86:	e014      	b.n	3db2 <RFM_encrypt+0x5a>
+    3f1a:	230f      	movs	r3, #15
+    3f1c:	18fb      	adds	r3, r7, r3
+    3f1e:	2200      	movs	r2, #0
+    3f20:	701a      	strb	r2, [r3, #0]
+    3f22:	e014      	b.n	3f4e <RFM_encrypt+0x5a>
       spi_transceive_wait(&spi_master_instance, key[i], &read_buf); //SPI.transfer(key[i]); // CHANGE //
-    3d88:	230f      	movs	r3, #15
-    3d8a:	18fb      	adds	r3, r7, r3
-    3d8c:	781b      	ldrb	r3, [r3, #0]
-    3d8e:	687a      	ldr	r2, [r7, #4]
-    3d90:	18d3      	adds	r3, r2, r3
-    3d92:	781b      	ldrb	r3, [r3, #0]
-    3d94:	b29a      	uxth	r2, r3
-    3d96:	4919      	ldr	r1, [pc, #100]	; (3dfc <RFM_encrypt+0xa4>)
-    3d98:	4b19      	ldr	r3, [pc, #100]	; (3e00 <RFM_encrypt+0xa8>)
-    3d9a:	1c08      	adds	r0, r1, #0
-    3d9c:	1c11      	adds	r1, r2, #0
-    3d9e:	1c1a      	adds	r2, r3, #0
-    3da0:	4b18      	ldr	r3, [pc, #96]	; (3e04 <RFM_encrypt+0xac>)
-    3da2:	4798      	blx	r3
+    3f24:	230f      	movs	r3, #15
+    3f26:	18fb      	adds	r3, r7, r3
+    3f28:	781b      	ldrb	r3, [r3, #0]
+    3f2a:	687a      	ldr	r2, [r7, #4]
+    3f2c:	18d3      	adds	r3, r2, r3
+    3f2e:	781b      	ldrb	r3, [r3, #0]
+    3f30:	b29a      	uxth	r2, r3
+    3f32:	4919      	ldr	r1, [pc, #100]	; (3f98 <RFM_encrypt+0xa4>)
+    3f34:	4b19      	ldr	r3, [pc, #100]	; (3f9c <RFM_encrypt+0xa8>)
+    3f36:	1c08      	adds	r0, r1, #0
+    3f38:	1c11      	adds	r1, r2, #0
+    3f3a:	1c1a      	adds	r2, r3, #0
+    3f3c:	4b18      	ldr	r3, [pc, #96]	; (3fa0 <RFM_encrypt+0xac>)
+    3f3e:	4798      	blx	r3
   setMode(RF69_MODE_STANDBY);
   if (key != 0)
   {
     select();
     spi_transceive_wait(&spi_master_instance, REG_AESKEY1 | 0x80, &read_buf); //SPI.transfer(REG_AESKEY1 | 0x80); // CHANGE //
     for (uint8_t i = 0; i < 16; i++)
-    3da4:	230f      	movs	r3, #15
-    3da6:	18fb      	adds	r3, r7, r3
-    3da8:	781a      	ldrb	r2, [r3, #0]
-    3daa:	230f      	movs	r3, #15
-    3dac:	18fb      	adds	r3, r7, r3
-    3dae:	3201      	adds	r2, #1
-    3db0:	701a      	strb	r2, [r3, #0]
-    3db2:	230f      	movs	r3, #15
-    3db4:	18fb      	adds	r3, r7, r3
-    3db6:	781b      	ldrb	r3, [r3, #0]
-    3db8:	2b0f      	cmp	r3, #15
-    3dba:	d9e5      	bls.n	3d88 <RFM_encrypt+0x30>
+    3f40:	230f      	movs	r3, #15
+    3f42:	18fb      	adds	r3, r7, r3
+    3f44:	781a      	ldrb	r2, [r3, #0]
+    3f46:	230f      	movs	r3, #15
+    3f48:	18fb      	adds	r3, r7, r3
+    3f4a:	3201      	adds	r2, #1
+    3f4c:	701a      	strb	r2, [r3, #0]
+    3f4e:	230f      	movs	r3, #15
+    3f50:	18fb      	adds	r3, r7, r3
+    3f52:	781b      	ldrb	r3, [r3, #0]
+    3f54:	2b0f      	cmp	r3, #15
+    3f56:	d9e5      	bls.n	3f24 <RFM_encrypt+0x30>
       spi_transceive_wait(&spi_master_instance, key[i], &read_buf); //SPI.transfer(key[i]); // CHANGE //
     unselect();
-    3dbc:	4b12      	ldr	r3, [pc, #72]	; (3e08 <RFM_encrypt+0xb0>)
-    3dbe:	4798      	blx	r3
+    3f58:	4b12      	ldr	r3, [pc, #72]	; (3fa4 <RFM_encrypt+0xb0>)
+    3f5a:	4798      	blx	r3
   }
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFE) | (key ? 1 : 0));
-    3dc0:	203d      	movs	r0, #61	; 0x3d
-    3dc2:	4b12      	ldr	r3, [pc, #72]	; (3e0c <RFM_encrypt+0xb4>)
-    3dc4:	4798      	blx	r3
-    3dc6:	1c03      	adds	r3, r0, #0
-    3dc8:	b2db      	uxtb	r3, r3
-    3dca:	1c1a      	adds	r2, r3, #0
-    3dcc:	2301      	movs	r3, #1
-    3dce:	439a      	bics	r2, r3
-    3dd0:	1c13      	adds	r3, r2, #0
-    3dd2:	b2da      	uxtb	r2, r3
-    3dd4:	687b      	ldr	r3, [r7, #4]
-    3dd6:	1e59      	subs	r1, r3, #1
-    3dd8:	418b      	sbcs	r3, r1
-    3dda:	b2db      	uxtb	r3, r3
-    3ddc:	b2db      	uxtb	r3, r3
-    3dde:	4313      	orrs	r3, r2
-    3de0:	b2db      	uxtb	r3, r3
-    3de2:	b2db      	uxtb	r3, r3
-    3de4:	203d      	movs	r0, #61	; 0x3d
-    3de6:	1c19      	adds	r1, r3, #0
-    3de8:	4b09      	ldr	r3, [pc, #36]	; (3e10 <RFM_encrypt+0xb8>)
-    3dea:	4798      	blx	r3
+    3f5c:	203d      	movs	r0, #61	; 0x3d
+    3f5e:	4b12      	ldr	r3, [pc, #72]	; (3fa8 <RFM_encrypt+0xb4>)
+    3f60:	4798      	blx	r3
+    3f62:	1c03      	adds	r3, r0, #0
+    3f64:	b2db      	uxtb	r3, r3
+    3f66:	1c1a      	adds	r2, r3, #0
+    3f68:	2301      	movs	r3, #1
+    3f6a:	439a      	bics	r2, r3
+    3f6c:	1c13      	adds	r3, r2, #0
+    3f6e:	b2da      	uxtb	r2, r3
+    3f70:	687b      	ldr	r3, [r7, #4]
+    3f72:	1e59      	subs	r1, r3, #1
+    3f74:	418b      	sbcs	r3, r1
+    3f76:	b2db      	uxtb	r3, r3
+    3f78:	b2db      	uxtb	r3, r3
+    3f7a:	4313      	orrs	r3, r2
+    3f7c:	b2db      	uxtb	r3, r3
+    3f7e:	b2db      	uxtb	r3, r3
+    3f80:	203d      	movs	r0, #61	; 0x3d
+    3f82:	1c19      	adds	r1, r3, #0
+    3f84:	4b09      	ldr	r3, [pc, #36]	; (3fac <RFM_encrypt+0xb8>)
+    3f86:	4798      	blx	r3
 }
-    3dec:	46bd      	mov	sp, r7
-    3dee:	b004      	add	sp, #16
-    3df0:	bd80      	pop	{r7, pc}
-    3df2:	46c0      	nop			; (mov r8, r8)
-    3df4:	000037d1 	.word	0x000037d1
-    3df8:	00003f29 	.word	0x00003f29
-    3dfc:	20000188 	.word	0x20000188
-    3e00:	2000005c 	.word	0x2000005c
-    3e04:	00001379 	.word	0x00001379
-    3e08:	00003f55 	.word	0x00003f55
-    3e0c:	00003e59 	.word	0x00003e59
-    3e10:	00003ec5 	.word	0x00003ec5
+    3f88:	46bd      	mov	sp, r7
+    3f8a:	b004      	add	sp, #16
+    3f8c:	bd80      	pop	{r7, pc}
+    3f8e:	46c0      	nop			; (mov r8, r8)
+    3f90:	000037d1 	.word	0x000037d1
+    3f94:	000040c5 	.word	0x000040c5
+    3f98:	20000188 	.word	0x20000188
+    3f9c:	2000005c 	.word	0x2000005c
+    3fa0:	00001379 	.word	0x00001379
+    3fa4:	000040f1 	.word	0x000040f1
+    3fa8:	00003ff5 	.word	0x00003ff5
+    3fac:	00004061 	.word	0x00004061
 
-00003e14 <readRSSI>:
+00003fb0 <readRSSI>:
 
 // get the received signal strength indicator (RFM_RSSI)
 int16_t readRSSI() {
-    3e14:	b580      	push	{r7, lr}
-    3e16:	b082      	sub	sp, #8
-    3e18:	af00      	add	r7, sp, #0
+    3fb0:	b580      	push	{r7, lr}
+    3fb2:	b082      	sub	sp, #8
+    3fb4:	af00      	add	r7, sp, #0
   volatile int16_t rssi = 0;
-    3e1a:	1dbb      	adds	r3, r7, #6
-    3e1c:	2200      	movs	r2, #0
-    3e1e:	801a      	strh	r2, [r3, #0]
+    3fb6:	1dbb      	adds	r3, r7, #6
+    3fb8:	2200      	movs	r2, #0
+    3fba:	801a      	strh	r2, [r3, #0]
   rssi = -readReg(REG_RSSIVALUE);
-    3e20:	2024      	movs	r0, #36	; 0x24
-    3e22:	4b0c      	ldr	r3, [pc, #48]	; (3e54 <readRSSI+0x40>)
-    3e24:	4798      	blx	r3
-    3e26:	1c03      	adds	r3, r0, #0
-    3e28:	b29b      	uxth	r3, r3
-    3e2a:	425b      	negs	r3, r3
-    3e2c:	b29b      	uxth	r3, r3
-    3e2e:	b29a      	uxth	r2, r3
-    3e30:	1dbb      	adds	r3, r7, #6
-    3e32:	801a      	strh	r2, [r3, #0]
+    3fbc:	2024      	movs	r0, #36	; 0x24
+    3fbe:	4b0c      	ldr	r3, [pc, #48]	; (3ff0 <readRSSI+0x40>)
+    3fc0:	4798      	blx	r3
+    3fc2:	1c03      	adds	r3, r0, #0
+    3fc4:	b29b      	uxth	r3, r3
+    3fc6:	425b      	negs	r3, r3
+    3fc8:	b29b      	uxth	r3, r3
+    3fca:	b29a      	uxth	r2, r3
+    3fcc:	1dbb      	adds	r3, r7, #6
+    3fce:	801a      	strh	r2, [r3, #0]
   rssi >>= 1;
-    3e34:	1dbb      	adds	r3, r7, #6
-    3e36:	881b      	ldrh	r3, [r3, #0]
-    3e38:	b29b      	uxth	r3, r3
-    3e3a:	b21b      	sxth	r3, r3
-    3e3c:	105b      	asrs	r3, r3, #1
-    3e3e:	b29a      	uxth	r2, r3
-    3e40:	1dbb      	adds	r3, r7, #6
-    3e42:	801a      	strh	r2, [r3, #0]
+    3fd0:	1dbb      	adds	r3, r7, #6
+    3fd2:	881b      	ldrh	r3, [r3, #0]
+    3fd4:	b29b      	uxth	r3, r3
+    3fd6:	b21b      	sxth	r3, r3
+    3fd8:	105b      	asrs	r3, r3, #1
+    3fda:	b29a      	uxth	r2, r3
+    3fdc:	1dbb      	adds	r3, r7, #6
+    3fde:	801a      	strh	r2, [r3, #0]
   return rssi;
-    3e44:	1dbb      	adds	r3, r7, #6
-    3e46:	881b      	ldrh	r3, [r3, #0]
-    3e48:	b29b      	uxth	r3, r3
-    3e4a:	b21b      	sxth	r3, r3
+    3fe0:	1dbb      	adds	r3, r7, #6
+    3fe2:	881b      	ldrh	r3, [r3, #0]
+    3fe4:	b29b      	uxth	r3, r3
+    3fe6:	b21b      	sxth	r3, r3
 }
-    3e4c:	1c18      	adds	r0, r3, #0
-    3e4e:	46bd      	mov	sp, r7
-    3e50:	b002      	add	sp, #8
-    3e52:	bd80      	pop	{r7, pc}
-    3e54:	00003e59 	.word	0x00003e59
+    3fe8:	1c18      	adds	r0, r3, #0
+    3fea:	46bd      	mov	sp, r7
+    3fec:	b002      	add	sp, #8
+    3fee:	bd80      	pop	{r7, pc}
+    3ff0:	00003ff5 	.word	0x00003ff5
 
-00003e58 <readReg>:
+00003ff4 <readReg>:
 
 uint8_t readReg(volatile uint16_t addr)
 {
-    3e58:	b580      	push	{r7, lr}
-    3e5a:	b084      	sub	sp, #16
-    3e5c:	af00      	add	r7, sp, #0
-    3e5e:	1c02      	adds	r2, r0, #0
-    3e60:	1dbb      	adds	r3, r7, #6
-    3e62:	801a      	strh	r2, [r3, #0]
+    3ff4:	b580      	push	{r7, lr}
+    3ff6:	b084      	sub	sp, #16
+    3ff8:	af00      	add	r7, sp, #0
+    3ffa:	1c02      	adds	r2, r0, #0
+    3ffc:	1dbb      	adds	r3, r7, #6
+    3ffe:	801a      	strh	r2, [r3, #0]
   select();
-    3e64:	4b12      	ldr	r3, [pc, #72]	; (3eb0 <readReg+0x58>)
-    3e66:	4798      	blx	r3
+    4000:	4b12      	ldr	r3, [pc, #72]	; (404c <readReg+0x58>)
+    4002:	4798      	blx	r3
   spi_transceive_wait(&spi_master_instance, addr & 0x7F, &read_buf); //SPI.transfer(addr & 0x7F); // CHANGE //
-    3e68:	1dbb      	adds	r3, r7, #6
-    3e6a:	881b      	ldrh	r3, [r3, #0]
-    3e6c:	b29b      	uxth	r3, r3
-    3e6e:	227f      	movs	r2, #127	; 0x7f
-    3e70:	4013      	ands	r3, r2
-    3e72:	b29a      	uxth	r2, r3
-    3e74:	490f      	ldr	r1, [pc, #60]	; (3eb4 <readReg+0x5c>)
-    3e76:	4b10      	ldr	r3, [pc, #64]	; (3eb8 <readReg+0x60>)
-    3e78:	1c08      	adds	r0, r1, #0
-    3e7a:	1c11      	adds	r1, r2, #0
-    3e7c:	1c1a      	adds	r2, r3, #0
-    3e7e:	4b0f      	ldr	r3, [pc, #60]	; (3ebc <readReg+0x64>)
-    3e80:	4798      	blx	r3
+    4004:	1dbb      	adds	r3, r7, #6
+    4006:	881b      	ldrh	r3, [r3, #0]
+    4008:	b29b      	uxth	r3, r3
+    400a:	227f      	movs	r2, #127	; 0x7f
+    400c:	4013      	ands	r3, r2
+    400e:	b29a      	uxth	r2, r3
+    4010:	490f      	ldr	r1, [pc, #60]	; (4050 <readReg+0x5c>)
+    4012:	4b10      	ldr	r3, [pc, #64]	; (4054 <readReg+0x60>)
+    4014:	1c08      	adds	r0, r1, #0
+    4016:	1c11      	adds	r1, r2, #0
+    4018:	1c1a      	adds	r2, r3, #0
+    401a:	4b0f      	ldr	r3, [pc, #60]	; (4058 <readReg+0x64>)
+    401c:	4798      	blx	r3
   volatile uint16_t regval = 0;
-    3e82:	230e      	movs	r3, #14
-    3e84:	18fb      	adds	r3, r7, r3
-    3e86:	2200      	movs	r2, #0
-    3e88:	801a      	strh	r2, [r3, #0]
+    401e:	230e      	movs	r3, #14
+    4020:	18fb      	adds	r3, r7, r3
+    4022:	2200      	movs	r2, #0
+    4024:	801a      	strh	r2, [r3, #0]
   spi_transceive_wait(&spi_master_instance, 0, &regval); //SPI.transfer(0); // CHANGE //
-    3e8a:	4a0a      	ldr	r2, [pc, #40]	; (3eb4 <readReg+0x5c>)
-    3e8c:	230e      	movs	r3, #14
-    3e8e:	18fb      	adds	r3, r7, r3
-    3e90:	1c10      	adds	r0, r2, #0
-    3e92:	2100      	movs	r1, #0
-    3e94:	1c1a      	adds	r2, r3, #0
-    3e96:	4b09      	ldr	r3, [pc, #36]	; (3ebc <readReg+0x64>)
-    3e98:	4798      	blx	r3
+    4026:	4a0a      	ldr	r2, [pc, #40]	; (4050 <readReg+0x5c>)
+    4028:	230e      	movs	r3, #14
+    402a:	18fb      	adds	r3, r7, r3
+    402c:	1c10      	adds	r0, r2, #0
+    402e:	2100      	movs	r1, #0
+    4030:	1c1a      	adds	r2, r3, #0
+    4032:	4b09      	ldr	r3, [pc, #36]	; (4058 <readReg+0x64>)
+    4034:	4798      	blx	r3
   unselect();
-    3e9a:	4b09      	ldr	r3, [pc, #36]	; (3ec0 <readReg+0x68>)
-    3e9c:	4798      	blx	r3
+    4036:	4b09      	ldr	r3, [pc, #36]	; (405c <readReg+0x68>)
+    4038:	4798      	blx	r3
   return (uint8_t)regval;
-    3e9e:	230e      	movs	r3, #14
-    3ea0:	18fb      	adds	r3, r7, r3
-    3ea2:	881b      	ldrh	r3, [r3, #0]
-    3ea4:	b29b      	uxth	r3, r3
-    3ea6:	b2db      	uxtb	r3, r3
+    403a:	230e      	movs	r3, #14
+    403c:	18fb      	adds	r3, r7, r3
+    403e:	881b      	ldrh	r3, [r3, #0]
+    4040:	b29b      	uxth	r3, r3
+    4042:	b2db      	uxtb	r3, r3
 }
-    3ea8:	1c18      	adds	r0, r3, #0
-    3eaa:	46bd      	mov	sp, r7
-    3eac:	b004      	add	sp, #16
-    3eae:	bd80      	pop	{r7, pc}
-    3eb0:	00003f29 	.word	0x00003f29
-    3eb4:	20000188 	.word	0x20000188
-    3eb8:	2000005c 	.word	0x2000005c
-    3ebc:	00001379 	.word	0x00001379
-    3ec0:	00003f55 	.word	0x00003f55
+    4044:	1c18      	adds	r0, r3, #0
+    4046:	46bd      	mov	sp, r7
+    4048:	b004      	add	sp, #16
+    404a:	bd80      	pop	{r7, pc}
+    404c:	000040c5 	.word	0x000040c5
+    4050:	20000188 	.word	0x20000188
+    4054:	2000005c 	.word	0x2000005c
+    4058:	00001379 	.word	0x00001379
+    405c:	000040f1 	.word	0x000040f1
 
-00003ec4 <writeReg>:
+00004060 <writeReg>:
 
 void writeReg(uint8_t addr, uint8_t value)
 {
-    3ec4:	b580      	push	{r7, lr}
-    3ec6:	b082      	sub	sp, #8
-    3ec8:	af00      	add	r7, sp, #0
-    3eca:	1c02      	adds	r2, r0, #0
-    3ecc:	1dfb      	adds	r3, r7, #7
-    3ece:	701a      	strb	r2, [r3, #0]
-    3ed0:	1dbb      	adds	r3, r7, #6
-    3ed2:	1c0a      	adds	r2, r1, #0
-    3ed4:	701a      	strb	r2, [r3, #0]
+    4060:	b580      	push	{r7, lr}
+    4062:	b082      	sub	sp, #8
+    4064:	af00      	add	r7, sp, #0
+    4066:	1c02      	adds	r2, r0, #0
+    4068:	1dfb      	adds	r3, r7, #7
+    406a:	701a      	strb	r2, [r3, #0]
+    406c:	1dbb      	adds	r3, r7, #6
+    406e:	1c0a      	adds	r2, r1, #0
+    4070:	701a      	strb	r2, [r3, #0]
   select();
-    3ed6:	4b0f      	ldr	r3, [pc, #60]	; (3f14 <writeReg+0x50>)
-    3ed8:	4798      	blx	r3
+    4072:	4b0f      	ldr	r3, [pc, #60]	; (40b0 <writeReg+0x50>)
+    4074:	4798      	blx	r3
   spi_transceive_wait(&spi_master_instance, addr | 0x80, &read_buf); //SPI.transfer(addr | 0x80); // CHANGE //
-    3eda:	1dfb      	adds	r3, r7, #7
-    3edc:	781b      	ldrb	r3, [r3, #0]
-    3ede:	2280      	movs	r2, #128	; 0x80
-    3ee0:	4252      	negs	r2, r2
-    3ee2:	4313      	orrs	r3, r2
-    3ee4:	b2db      	uxtb	r3, r3
-    3ee6:	b29a      	uxth	r2, r3
-    3ee8:	490b      	ldr	r1, [pc, #44]	; (3f18 <writeReg+0x54>)
-    3eea:	4b0c      	ldr	r3, [pc, #48]	; (3f1c <writeReg+0x58>)
-    3eec:	1c08      	adds	r0, r1, #0
-    3eee:	1c11      	adds	r1, r2, #0
-    3ef0:	1c1a      	adds	r2, r3, #0
-    3ef2:	4b0b      	ldr	r3, [pc, #44]	; (3f20 <writeReg+0x5c>)
-    3ef4:	4798      	blx	r3
+    4076:	1dfb      	adds	r3, r7, #7
+    4078:	781b      	ldrb	r3, [r3, #0]
+    407a:	2280      	movs	r2, #128	; 0x80
+    407c:	4252      	negs	r2, r2
+    407e:	4313      	orrs	r3, r2
+    4080:	b2db      	uxtb	r3, r3
+    4082:	b29a      	uxth	r2, r3
+    4084:	490b      	ldr	r1, [pc, #44]	; (40b4 <writeReg+0x54>)
+    4086:	4b0c      	ldr	r3, [pc, #48]	; (40b8 <writeReg+0x58>)
+    4088:	1c08      	adds	r0, r1, #0
+    408a:	1c11      	adds	r1, r2, #0
+    408c:	1c1a      	adds	r2, r3, #0
+    408e:	4b0b      	ldr	r3, [pc, #44]	; (40bc <writeReg+0x5c>)
+    4090:	4798      	blx	r3
   spi_transceive_wait(&spi_master_instance, value, &read_buf); //SPI.transfer(value); // CHANGE //
-    3ef6:	1dbb      	adds	r3, r7, #6
-    3ef8:	781b      	ldrb	r3, [r3, #0]
-    3efa:	b29a      	uxth	r2, r3
-    3efc:	4906      	ldr	r1, [pc, #24]	; (3f18 <writeReg+0x54>)
-    3efe:	4b07      	ldr	r3, [pc, #28]	; (3f1c <writeReg+0x58>)
-    3f00:	1c08      	adds	r0, r1, #0
-    3f02:	1c11      	adds	r1, r2, #0
-    3f04:	1c1a      	adds	r2, r3, #0
-    3f06:	4b06      	ldr	r3, [pc, #24]	; (3f20 <writeReg+0x5c>)
-    3f08:	4798      	blx	r3
+    4092:	1dbb      	adds	r3, r7, #6
+    4094:	781b      	ldrb	r3, [r3, #0]
+    4096:	b29a      	uxth	r2, r3
+    4098:	4906      	ldr	r1, [pc, #24]	; (40b4 <writeReg+0x54>)
+    409a:	4b07      	ldr	r3, [pc, #28]	; (40b8 <writeReg+0x58>)
+    409c:	1c08      	adds	r0, r1, #0
+    409e:	1c11      	adds	r1, r2, #0
+    40a0:	1c1a      	adds	r2, r3, #0
+    40a2:	4b06      	ldr	r3, [pc, #24]	; (40bc <writeReg+0x5c>)
+    40a4:	4798      	blx	r3
   unselect();
-    3f0a:	4b06      	ldr	r3, [pc, #24]	; (3f24 <writeReg+0x60>)
-    3f0c:	4798      	blx	r3
+    40a6:	4b06      	ldr	r3, [pc, #24]	; (40c0 <writeReg+0x60>)
+    40a8:	4798      	blx	r3
 }
-    3f0e:	46bd      	mov	sp, r7
-    3f10:	b002      	add	sp, #8
-    3f12:	bd80      	pop	{r7, pc}
-    3f14:	00003f29 	.word	0x00003f29
-    3f18:	20000188 	.word	0x20000188
-    3f1c:	2000005c 	.word	0x2000005c
-    3f20:	00001379 	.word	0x00001379
-    3f24:	00003f55 	.word	0x00003f55
+    40aa:	46bd      	mov	sp, r7
+    40ac:	b002      	add	sp, #8
+    40ae:	bd80      	pop	{r7, pc}
+    40b0:	000040c5 	.word	0x000040c5
+    40b4:	20000188 	.word	0x20000188
+    40b8:	2000005c 	.word	0x2000005c
+    40bc:	00001379 	.word	0x00001379
+    40c0:	000040f1 	.word	0x000040f1
 
-00003f28 <select>:
+000040c4 <select>:
 
 // select the RFM69 transceiver (save SPI settings, set CS low)
 void select() {
-    3f28:	b580      	push	{r7, lr}
-    3f2a:	af00      	add	r7, sp, #0
+    40c4:	b580      	push	{r7, lr}
+    40c6:	af00      	add	r7, sp, #0
   system_interrupt_disable_global(); //noInterrupts(); // CHANGE //
-    3f2c:	4b05      	ldr	r3, [pc, #20]	; (3f44 <select+0x1c>)
-    3f2e:	4798      	blx	r3
+    40c8:	4b05      	ldr	r3, [pc, #20]	; (40e0 <select+0x1c>)
+    40ca:	4798      	blx	r3
 
   // set RFM69 SPI settings
   //SPI.setDataMode(SPI_MODE0); // CHANGE //
   //SPI.setBitOrder(MSBFIRST); // CHANGE //
   //SPI.setClockDivider(SPI_CLOCK_DIV4); // decided to slow down from DIV2 after SPI stalling in some instances, especially visible on mega1284p when RFM69 and FLASH chip both present // CHANGE //
   spi_select_slave(&spi_master_instance, &slave, true); //digitalWrite(_slaveSelectPin, LOW); // CHANGE //
-    3f30:	4a05      	ldr	r2, [pc, #20]	; (3f48 <select+0x20>)
-    3f32:	4b06      	ldr	r3, [pc, #24]	; (3f4c <select+0x24>)
-    3f34:	1c10      	adds	r0, r2, #0
-    3f36:	1c19      	adds	r1, r3, #0
-    3f38:	2201      	movs	r2, #1
-    3f3a:	4b05      	ldr	r3, [pc, #20]	; (3f50 <select+0x28>)
-    3f3c:	4798      	blx	r3
+    40cc:	4a05      	ldr	r2, [pc, #20]	; (40e4 <select+0x20>)
+    40ce:	4b06      	ldr	r3, [pc, #24]	; (40e8 <select+0x24>)
+    40d0:	1c10      	adds	r0, r2, #0
+    40d2:	1c19      	adds	r1, r3, #0
+    40d4:	2201      	movs	r2, #1
+    40d6:	4b05      	ldr	r3, [pc, #20]	; (40ec <select+0x28>)
+    40d8:	4798      	blx	r3
 }
-    3f3e:	46bd      	mov	sp, r7
-    3f40:	bd80      	pop	{r7, pc}
-    3f42:	46c0      	nop			; (mov r8, r8)
-    3f44:	00002e71 	.word	0x00002e71
-    3f48:	20000188 	.word	0x20000188
-    3f4c:	200001c8 	.word	0x200001c8
-    3f50:	000014c1 	.word	0x000014c1
+    40da:	46bd      	mov	sp, r7
+    40dc:	bd80      	pop	{r7, pc}
+    40de:	46c0      	nop			; (mov r8, r8)
+    40e0:	00002e71 	.word	0x00002e71
+    40e4:	20000188 	.word	0x20000188
+    40e8:	200001c8 	.word	0x200001c8
+    40ec:	000014c1 	.word	0x000014c1
 
-00003f54 <unselect>:
+000040f0 <unselect>:
 
 // unselect the RFM69 transceiver (set CS high, restore SPI settings)
 void unselect() {
-    3f54:	b580      	push	{r7, lr}
-    3f56:	af00      	add	r7, sp, #0
+    40f0:	b580      	push	{r7, lr}
+    40f2:	af00      	add	r7, sp, #0
   spi_select_slave(&spi_master_instance, &slave, false); //digitalWrite(_slaveSelectPin, HIGH); // CHANGE //
-    3f58:	4a05      	ldr	r2, [pc, #20]	; (3f70 <unselect+0x1c>)
-    3f5a:	4b06      	ldr	r3, [pc, #24]	; (3f74 <unselect+0x20>)
-    3f5c:	1c10      	adds	r0, r2, #0
-    3f5e:	1c19      	adds	r1, r3, #0
-    3f60:	2200      	movs	r2, #0
-    3f62:	4b05      	ldr	r3, [pc, #20]	; (3f78 <unselect+0x24>)
-    3f64:	4798      	blx	r3
+    40f4:	4a05      	ldr	r2, [pc, #20]	; (410c <unselect+0x1c>)
+    40f6:	4b06      	ldr	r3, [pc, #24]	; (4110 <unselect+0x20>)
+    40f8:	1c10      	adds	r0, r2, #0
+    40fa:	1c19      	adds	r1, r3, #0
+    40fc:	2200      	movs	r2, #0
+    40fe:	4b05      	ldr	r3, [pc, #20]	; (4114 <unselect+0x24>)
+    4100:	4798      	blx	r3
   maybeInterrupts();
-    3f66:	4b05      	ldr	r3, [pc, #20]	; (3f7c <unselect+0x28>)
-    3f68:	4798      	blx	r3
+    4102:	4b05      	ldr	r3, [pc, #20]	; (4118 <unselect+0x28>)
+    4104:	4798      	blx	r3
 }
-    3f6a:	46bd      	mov	sp, r7
-    3f6c:	bd80      	pop	{r7, pc}
-    3f6e:	46c0      	nop			; (mov r8, r8)
-    3f70:	20000188 	.word	0x20000188
-    3f74:	200001c8 	.word	0x200001c8
-    3f78:	000014c1 	.word	0x000014c1
-    3f7c:	00003fc5 	.word	0x00003fc5
+    4106:	46bd      	mov	sp, r7
+    4108:	bd80      	pop	{r7, pc}
+    410a:	46c0      	nop			; (mov r8, r8)
+    410c:	20000188 	.word	0x20000188
+    4110:	200001c8 	.word	0x200001c8
+    4114:	000014c1 	.word	0x000014c1
+    4118:	00004161 	.word	0x00004161
 
-00003f80 <setHighPowerRegs>:
+0000411c <setHighPowerRegs>:
   _promiscuousMode = onOff;
   //writeReg(REG_PACKETCONFIG1, (readReg(REG_PACKETCONFIG1) & 0xF9) | (onOff ? RF_PACKET1_ADRSFILTERING_OFF : RF_PACKET1_ADRSFILTERING_NODEBROADCAST));
 }
 
 // internal function
 void setHighPowerRegs(bool onOff) {
-    3f80:	b580      	push	{r7, lr}
-    3f82:	b082      	sub	sp, #8
-    3f84:	af00      	add	r7, sp, #0
-    3f86:	1c02      	adds	r2, r0, #0
-    3f88:	1dfb      	adds	r3, r7, #7
-    3f8a:	701a      	strb	r2, [r3, #0]
+    411c:	b580      	push	{r7, lr}
+    411e:	b082      	sub	sp, #8
+    4120:	af00      	add	r7, sp, #0
+    4122:	1c02      	adds	r2, r0, #0
+    4124:	1dfb      	adds	r3, r7, #7
+    4126:	701a      	strb	r2, [r3, #0]
   writeReg(REG_TESTPA1, onOff ? 0x5D : 0x55);
-    3f8c:	1dfb      	adds	r3, r7, #7
-    3f8e:	781b      	ldrb	r3, [r3, #0]
-    3f90:	2b00      	cmp	r3, #0
-    3f92:	d001      	beq.n	3f98 <setHighPowerRegs+0x18>
-    3f94:	235d      	movs	r3, #93	; 0x5d
-    3f96:	e000      	b.n	3f9a <setHighPowerRegs+0x1a>
-    3f98:	2355      	movs	r3, #85	; 0x55
-    3f9a:	205a      	movs	r0, #90	; 0x5a
-    3f9c:	1c19      	adds	r1, r3, #0
-    3f9e:	4b08      	ldr	r3, [pc, #32]	; (3fc0 <setHighPowerRegs+0x40>)
-    3fa0:	4798      	blx	r3
+    4128:	1dfb      	adds	r3, r7, #7
+    412a:	781b      	ldrb	r3, [r3, #0]
+    412c:	2b00      	cmp	r3, #0
+    412e:	d001      	beq.n	4134 <setHighPowerRegs+0x18>
+    4130:	235d      	movs	r3, #93	; 0x5d
+    4132:	e000      	b.n	4136 <setHighPowerRegs+0x1a>
+    4134:	2355      	movs	r3, #85	; 0x55
+    4136:	205a      	movs	r0, #90	; 0x5a
+    4138:	1c19      	adds	r1, r3, #0
+    413a:	4b08      	ldr	r3, [pc, #32]	; (415c <setHighPowerRegs+0x40>)
+    413c:	4798      	blx	r3
   writeReg(REG_TESTPA2, onOff ? 0x7C : 0x70);
-    3fa2:	1dfb      	adds	r3, r7, #7
-    3fa4:	781b      	ldrb	r3, [r3, #0]
-    3fa6:	2b00      	cmp	r3, #0
-    3fa8:	d001      	beq.n	3fae <setHighPowerRegs+0x2e>
-    3faa:	237c      	movs	r3, #124	; 0x7c
-    3fac:	e000      	b.n	3fb0 <setHighPowerRegs+0x30>
-    3fae:	2370      	movs	r3, #112	; 0x70
-    3fb0:	205c      	movs	r0, #92	; 0x5c
-    3fb2:	1c19      	adds	r1, r3, #0
-    3fb4:	4b02      	ldr	r3, [pc, #8]	; (3fc0 <setHighPowerRegs+0x40>)
-    3fb6:	4798      	blx	r3
+    413e:	1dfb      	adds	r3, r7, #7
+    4140:	781b      	ldrb	r3, [r3, #0]
+    4142:	2b00      	cmp	r3, #0
+    4144:	d001      	beq.n	414a <setHighPowerRegs+0x2e>
+    4146:	237c      	movs	r3, #124	; 0x7c
+    4148:	e000      	b.n	414c <setHighPowerRegs+0x30>
+    414a:	2370      	movs	r3, #112	; 0x70
+    414c:	205c      	movs	r0, #92	; 0x5c
+    414e:	1c19      	adds	r1, r3, #0
+    4150:	4b02      	ldr	r3, [pc, #8]	; (415c <setHighPowerRegs+0x40>)
+    4152:	4798      	blx	r3
 }
-    3fb8:	46bd      	mov	sp, r7
-    3fba:	b002      	add	sp, #8
-    3fbc:	bd80      	pop	{r7, pc}
-    3fbe:	46c0      	nop			; (mov r8, r8)
-    3fc0:	00003ec5 	.word	0x00003ec5
+    4154:	46bd      	mov	sp, r7
+    4156:	b002      	add	sp, #8
+    4158:	bd80      	pop	{r7, pc}
+    415a:	46c0      	nop			; (mov r8, r8)
+    415c:	00004061 	.word	0x00004061
 
-00003fc4 <maybeInterrupts>:
+00004160 <maybeInterrupts>:
   writeReg(REG_OSC1, RF_OSC1_RCCAL_START);
   while ((readReg(REG_OSC1) & RF_OSC1_RCCAL_DONE) == 0x00);
 }
 
 void maybeInterrupts()
 {
-    3fc4:	b580      	push	{r7, lr}
-    3fc6:	af00      	add	r7, sp, #0
+    4160:	b580      	push	{r7, lr}
+    4162:	af00      	add	r7, sp, #0
   // Only reenable interrupts if we're not being called from the ISR
   if (!_inISR) 
-    3fc8:	4b05      	ldr	r3, [pc, #20]	; (3fe0 <maybeInterrupts+0x1c>)
-    3fca:	781b      	ldrb	r3, [r3, #0]
-    3fcc:	b2db      	uxtb	r3, r3
-    3fce:	2201      	movs	r2, #1
-    3fd0:	4053      	eors	r3, r2
-    3fd2:	b2db      	uxtb	r3, r3
-    3fd4:	2b00      	cmp	r3, #0
-    3fd6:	d001      	beq.n	3fdc <maybeInterrupts+0x18>
+    4164:	4b05      	ldr	r3, [pc, #20]	; (417c <maybeInterrupts+0x1c>)
+    4166:	781b      	ldrb	r3, [r3, #0]
+    4168:	b2db      	uxtb	r3, r3
+    416a:	2201      	movs	r2, #1
+    416c:	4053      	eors	r3, r2
+    416e:	b2db      	uxtb	r3, r3
+    4170:	2b00      	cmp	r3, #0
+    4172:	d001      	beq.n	4178 <maybeInterrupts+0x18>
 	  system_interrupt_enable_global(); //interrupts(); // CHANGE //
-    3fd8:	4b02      	ldr	r3, [pc, #8]	; (3fe4 <maybeInterrupts+0x20>)
-    3fda:	4798      	blx	r3
+    4174:	4b02      	ldr	r3, [pc, #8]	; (4180 <maybeInterrupts+0x20>)
+    4176:	4798      	blx	r3
 }
-    3fdc:	46bd      	mov	sp, r7
-    3fde:	bd80      	pop	{r7, pc}
-    3fe0:	200000f9 	.word	0x200000f9
-    3fe4:	00002e59 	.word	0x00002e59
+    4178:	46bd      	mov	sp, r7
+    417a:	bd80      	pop	{r7, pc}
+    417c:	200000f9 	.word	0x200000f9
+    4180:	00002e59 	.word	0x00002e59
 
-00003fe8 <main>:
+00004184 <main>:
 ///////////////////////////////////////////////////////////////////////////
 
 
 
 int main (void)
 {
-    3fe8:	b580      	push	{r7, lr}
-    3fea:	b082      	sub	sp, #8
-    3fec:	af00      	add	r7, sp, #0
+    4184:	b590      	push	{r4, r7, lr}
+    4186:	b08b      	sub	sp, #44	; 0x2c
+    4188:	af02      	add	r7, sp, #8
     /* Initialize system */
 	system_init();
-    3fee:	4b16      	ldr	r3, [pc, #88]	; (4048 <main+0x60>)
-    3ff0:	4798      	blx	r3
+    418a:	4b36      	ldr	r3, [pc, #216]	; (4264 <main+0xe0>)
+    418c:	4798      	blx	r3
 	//while (true) {
 		
 	//}
 
 	// Initialize the RFM69HCW:
 	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
-    3ff2:	205b      	movs	r0, #91	; 0x5b
-    3ff4:	2102      	movs	r1, #2
-    3ff6:	2200      	movs	r2, #0
-    3ff8:	4b14      	ldr	r3, [pc, #80]	; (404c <main+0x64>)
-    3ffa:	4798      	blx	r3
+    418e:	205b      	movs	r0, #91	; 0x5b
+    4190:	2102      	movs	r1, #2
+    4192:	2200      	movs	r2, #0
+    4194:	4b34      	ldr	r3, [pc, #208]	; (4268 <main+0xe4>)
+    4196:	4798      	blx	r3
 	RFM_setHighPower(true); // Always use this for RFM69HCW
-    3ffc:	2001      	movs	r0, #1
-    3ffe:	4b14      	ldr	r3, [pc, #80]	; (4050 <main+0x68>)
-    4000:	4798      	blx	r3
+    4198:	2001      	movs	r0, #1
+    419a:	4b34      	ldr	r3, [pc, #208]	; (426c <main+0xe8>)
+    419c:	4798      	blx	r3
 
 	// Turn on encryption if desired:
 	if (ENCRYPT)
 	RFM_encrypt(ENCRYPTKEY);
-    4002:	4b14      	ldr	r3, [pc, #80]	; (4054 <main+0x6c>)
-    4004:	1c18      	adds	r0, r3, #0
-    4006:	4b14      	ldr	r3, [pc, #80]	; (4058 <main+0x70>)
-    4008:	4798      	blx	r3
+    419e:	4b34      	ldr	r3, [pc, #208]	; (4270 <main+0xec>)
+    41a0:	1c18      	adds	r0, r3, #0
+    41a2:	4b34      	ldr	r3, [pc, #208]	; (4274 <main+0xf0>)
+    41a4:	4798      	blx	r3
 
 
 	int sendlength = 16;
-    400a:	2310      	movs	r3, #16
-    400c:	607b      	str	r3, [r7, #4]
+    41a6:	2310      	movs	r3, #16
+    41a8:	61fb      	str	r3, [r7, #28]
 	int index = 0;
-    400e:	2300      	movs	r3, #0
-    4010:	603b      	str	r3, [r7, #0]
+    41aa:	2300      	movs	r3, #0
+    41ac:	61bb      	str	r3, [r7, #24]
+	while(1)
+	{
+		char sendbuffer[16] = "Hello World!   ";
+    41ae:	1d3b      	adds	r3, r7, #4
+    41b0:	4a31      	ldr	r2, [pc, #196]	; (4278 <main+0xf4>)
+    41b2:	ca13      	ldmia	r2!, {r0, r1, r4}
+    41b4:	c313      	stmia	r3!, {r0, r1, r4}
+    41b6:	6812      	ldr	r2, [r2, #0]
+    41b8:	601a      	str	r2, [r3, #0]
+		// Set up a "buffer" for characters that we'll send:
+		index++;
+    41ba:	69bb      	ldr	r3, [r7, #24]
+    41bc:	3301      	adds	r3, #1
+    41be:	61bb      	str	r3, [r7, #24]
+		if(index < 10)
+    41c0:	69bb      	ldr	r3, [r7, #24]
+    41c2:	2b09      	cmp	r3, #9
+    41c4:	dc06      	bgt.n	41d4 <main+0x50>
+			sendbuffer[15] = index + '0';
+    41c6:	69bb      	ldr	r3, [r7, #24]
+    41c8:	b2db      	uxtb	r3, r3
+    41ca:	3330      	adds	r3, #48	; 0x30
+    41cc:	b2da      	uxtb	r2, r3
+    41ce:	1d3b      	adds	r3, r7, #4
+    41d0:	73da      	strb	r2, [r3, #15]
+    41d2:	e01b      	b.n	420c <main+0x88>
+		else if(index > 10 && index < 100)
+    41d4:	69bb      	ldr	r3, [r7, #24]
+    41d6:	2b0a      	cmp	r3, #10
+    41d8:	dd18      	ble.n	420c <main+0x88>
+    41da:	69bb      	ldr	r3, [r7, #24]
+    41dc:	2b63      	cmp	r3, #99	; 0x63
+    41de:	dc15      	bgt.n	420c <main+0x88>
+		{
+			sendbuffer[14] = index/10 + '0';
+    41e0:	69ba      	ldr	r2, [r7, #24]
+    41e2:	4b26      	ldr	r3, [pc, #152]	; (427c <main+0xf8>)
+    41e4:	1c10      	adds	r0, r2, #0
+    41e6:	210a      	movs	r1, #10
+    41e8:	4798      	blx	r3
+    41ea:	1c03      	adds	r3, r0, #0
+    41ec:	b2db      	uxtb	r3, r3
+    41ee:	3330      	adds	r3, #48	; 0x30
+    41f0:	b2da      	uxtb	r2, r3
+    41f2:	1d3b      	adds	r3, r7, #4
+    41f4:	739a      	strb	r2, [r3, #14]
+			sendbuffer[15] = index%10 + '0';
+    41f6:	69ba      	ldr	r2, [r7, #24]
+    41f8:	4b21      	ldr	r3, [pc, #132]	; (4280 <main+0xfc>)
+    41fa:	1c10      	adds	r0, r2, #0
+    41fc:	210a      	movs	r1, #10
+    41fe:	4798      	blx	r3
+    4200:	1c0b      	adds	r3, r1, #0
+    4202:	b2db      	uxtb	r3, r3
+    4204:	3330      	adds	r3, #48	; 0x30
+    4206:	b2da      	uxtb	r2, r3
+    4208:	1d3b      	adds	r3, r7, #4
+    420a:	73da      	strb	r2, [r3, #15]
+			//dbg_print_str("]\n");
+			  
+			// If you want acknowledgements, use RFM_sendWithRetry(): 
+			if (USEACK)
+			{
+				int ACK = 0;
+    420c:	2300      	movs	r3, #0
+    420e:	617b      	str	r3, [r7, #20]
+				if (RFM_sendWithRetry(TONODEID, sendbuffer, sendlength, 2, 40))
+    4210:	69fb      	ldr	r3, [r7, #28]
+    4212:	b2da      	uxtb	r2, r3
+    4214:	1d39      	adds	r1, r7, #4
+    4216:	2328      	movs	r3, #40	; 0x28
+    4218:	9300      	str	r3, [sp, #0]
+    421a:	2001      	movs	r0, #1
+    421c:	2302      	movs	r3, #2
+    421e:	4c19      	ldr	r4, [pc, #100]	; (4284 <main+0x100>)
+    4220:	47a0      	blx	r4
+    4222:	1e03      	subs	r3, r0, #0
+    4224:	d002      	beq.n	422c <main+0xa8>
+					ACK = 1;
+    4226:	2301      	movs	r3, #1
+    4228:	617b      	str	r3, [r7, #20]
+    422a:	e001      	b.n	4230 <main+0xac>
+				else
+					ACK = 0;
+    422c:	2300      	movs	r3, #0
+    422e:	617b      	str	r3, [r7, #20]
 			else // don't use ACK
 			{
 				RFM_send(TONODEID, sendbuffer, sendlength, false);
-			}*/
+			}
 			  
 			sendlength = 0; // reset the packet
-    4012:	2300      	movs	r3, #0
-    4014:	607b      	str	r3, [r7, #4]
+    4230:	2300      	movs	r3, #0
+    4232:	61fb      	str	r3, [r7, #28]
 	// RECEIVING
 
 	// In this section, we'll check with the RFM69HCW to see
 	// if it has received any packets:
 
 	if (RFM_receiveDone()) // Got one!
-    4016:	4b11      	ldr	r3, [pc, #68]	; (405c <main+0x74>)
-    4018:	4798      	blx	r3
-    401a:	1e03      	subs	r3, r0, #0
-    401c:	d012      	beq.n	4044 <main+0x5c>
+    4234:	4b14      	ldr	r3, [pc, #80]	; (4288 <main+0x104>)
+    4236:	4798      	blx	r3
+    4238:	1e03      	subs	r3, r0, #0
+    423a:	d012      	beq.n	4262 <main+0xde>
 		// The actual message is contained in the RFM_DATA array,
 		// and is RFM_DATALEN bytes in size:
 		  
 		//for (byte i = 0; i < RFM_DATALEN; i++)
 		//dbg_print_str((char)RFM_DATA[i]);
 		RFM_DATALEN = RFM_DATALEN;
-    401e:	4b10      	ldr	r3, [pc, #64]	; (4060 <main+0x78>)
-    4020:	781b      	ldrb	r3, [r3, #0]
-    4022:	b2da      	uxtb	r2, r3
-    4024:	4b0e      	ldr	r3, [pc, #56]	; (4060 <main+0x78>)
-    4026:	701a      	strb	r2, [r3, #0]
+    423c:	4b13      	ldr	r3, [pc, #76]	; (428c <main+0x108>)
+    423e:	781b      	ldrb	r3, [r3, #0]
+    4240:	b2da      	uxtb	r2, r3
+    4242:	4b12      	ldr	r3, [pc, #72]	; (428c <main+0x108>)
+    4244:	701a      	strb	r2, [r3, #0]
 		// RFM_RSSI is the "Receive Signal Strength Indicator",
 		// smaller numbers mean higher power.
 		  
 		//dbg_print_str("], RSSI ");
 		//dbg_print_str("%d\n", RFM_RSSI);
 		RFM_RSSI = RFM_RSSI;
-    4028:	4b0e      	ldr	r3, [pc, #56]	; (4064 <main+0x7c>)
-    402a:	881b      	ldrh	r3, [r3, #0]
-    402c:	b29a      	uxth	r2, r3
-    402e:	4b0d      	ldr	r3, [pc, #52]	; (4064 <main+0x7c>)
-    4030:	801a      	strh	r2, [r3, #0]
+    4246:	4b12      	ldr	r3, [pc, #72]	; (4290 <main+0x10c>)
+    4248:	881b      	ldrh	r3, [r3, #0]
+    424a:	b29a      	uxth	r2, r3
+    424c:	4b10      	ldr	r3, [pc, #64]	; (4290 <main+0x10c>)
+    424e:	801a      	strh	r2, [r3, #0]
 
 		// Send an ACK if requested.
 		// (You don't need this code if you're not using ACKs.)
 		  
 		if (RFM_ACKRequested())
-    4032:	4b0d      	ldr	r3, [pc, #52]	; (4068 <main+0x80>)
-    4034:	4798      	blx	r3
-    4036:	1e03      	subs	r3, r0, #0
-    4038:	d004      	beq.n	4044 <main+0x5c>
+    4250:	4b10      	ldr	r3, [pc, #64]	; (4294 <main+0x110>)
+    4252:	4798      	blx	r3
+    4254:	1e03      	subs	r3, r0, #0
+    4256:	d004      	beq.n	4262 <main+0xde>
 		{
 			RFM_sendACK("", 0);
-    403a:	4b0c      	ldr	r3, [pc, #48]	; (406c <main+0x84>)
-    403c:	1c18      	adds	r0, r3, #0
-    403e:	2100      	movs	r1, #0
-    4040:	4b0b      	ldr	r3, [pc, #44]	; (4070 <main+0x88>)
-    4042:	4798      	blx	r3
+    4258:	4b0f      	ldr	r3, [pc, #60]	; (4298 <main+0x114>)
+    425a:	1c18      	adds	r0, r3, #0
+    425c:	2100      	movs	r1, #0
+    425e:	4b0f      	ldr	r3, [pc, #60]	; (429c <main+0x118>)
+    4260:	4798      	blx	r3
 		//	dbg_print_str("ACK sent\n");
 		}
 	}
   }
-    4044:	e7e5      	b.n	4012 <main+0x2a>
-    4046:	46c0      	nop			; (mov r8, r8)
-    4048:	00002bf1 	.word	0x00002bf1
-    404c:	00003479 	.word	0x00003479
-    4050:	000033c1 	.word	0x000033c1
-    4054:	000042b4 	.word	0x000042b4
-    4058:	00003d59 	.word	0x00003d59
-    405c:	00003cfd 	.word	0x00003cfd
-    4060:	2000013e 	.word	0x2000013e
-    4064:	200001c4 	.word	0x200001c4
-    4068:	0000396d 	.word	0x0000396d
-    406c:	000042c8 	.word	0x000042c8
-    4070:	000039a1 	.word	0x000039a1
+    4262:	e7a4      	b.n	41ae <main+0x2a>
+    4264:	00002bf1 	.word	0x00002bf1
+    4268:	00003479 	.word	0x00003479
+    426c:	000033c1 	.word	0x000033c1
+    4270:	000046c0 	.word	0x000046c0
+    4274:	00003ef5 	.word	0x00003ef5
+    4278:	000046d8 	.word	0x000046d8
+    427c:	000043c1 	.word	0x000043c1
+    4280:	0000458d 	.word	0x0000458d
+    4284:	00003a0d 	.word	0x00003a0d
+    4288:	00003e99 	.word	0x00003e99
+    428c:	2000013e 	.word	0x2000013e
+    4290:	200001c4 	.word	0x200001c4
+    4294:	00003b09 	.word	0x00003b09
+    4298:	000046d4 	.word	0x000046d4
+    429c:	00003b3d 	.word	0x00003b3d
 
-00004074 <__aeabi_uidiv>:
-    4074:	2200      	movs	r2, #0
-    4076:	0843      	lsrs	r3, r0, #1
-    4078:	428b      	cmp	r3, r1
-    407a:	d374      	bcc.n	4166 <__aeabi_uidiv+0xf2>
-    407c:	0903      	lsrs	r3, r0, #4
-    407e:	428b      	cmp	r3, r1
-    4080:	d35f      	bcc.n	4142 <__aeabi_uidiv+0xce>
-    4082:	0a03      	lsrs	r3, r0, #8
-    4084:	428b      	cmp	r3, r1
-    4086:	d344      	bcc.n	4112 <__aeabi_uidiv+0x9e>
-    4088:	0b03      	lsrs	r3, r0, #12
-    408a:	428b      	cmp	r3, r1
-    408c:	d328      	bcc.n	40e0 <__aeabi_uidiv+0x6c>
-    408e:	0c03      	lsrs	r3, r0, #16
-    4090:	428b      	cmp	r3, r1
-    4092:	d30d      	bcc.n	40b0 <__aeabi_uidiv+0x3c>
-    4094:	22ff      	movs	r2, #255	; 0xff
-    4096:	0209      	lsls	r1, r1, #8
-    4098:	ba12      	rev	r2, r2
-    409a:	0c03      	lsrs	r3, r0, #16
-    409c:	428b      	cmp	r3, r1
-    409e:	d302      	bcc.n	40a6 <__aeabi_uidiv+0x32>
-    40a0:	1212      	asrs	r2, r2, #8
-    40a2:	0209      	lsls	r1, r1, #8
-    40a4:	d065      	beq.n	4172 <__aeabi_uidiv+0xfe>
-    40a6:	0b03      	lsrs	r3, r0, #12
-    40a8:	428b      	cmp	r3, r1
-    40aa:	d319      	bcc.n	40e0 <__aeabi_uidiv+0x6c>
-    40ac:	e000      	b.n	40b0 <__aeabi_uidiv+0x3c>
-    40ae:	0a09      	lsrs	r1, r1, #8
-    40b0:	0bc3      	lsrs	r3, r0, #15
-    40b2:	428b      	cmp	r3, r1
-    40b4:	d301      	bcc.n	40ba <__aeabi_uidiv+0x46>
-    40b6:	03cb      	lsls	r3, r1, #15
-    40b8:	1ac0      	subs	r0, r0, r3
-    40ba:	4152      	adcs	r2, r2
-    40bc:	0b83      	lsrs	r3, r0, #14
-    40be:	428b      	cmp	r3, r1
-    40c0:	d301      	bcc.n	40c6 <__aeabi_uidiv+0x52>
-    40c2:	038b      	lsls	r3, r1, #14
-    40c4:	1ac0      	subs	r0, r0, r3
-    40c6:	4152      	adcs	r2, r2
-    40c8:	0b43      	lsrs	r3, r0, #13
-    40ca:	428b      	cmp	r3, r1
-    40cc:	d301      	bcc.n	40d2 <__aeabi_uidiv+0x5e>
-    40ce:	034b      	lsls	r3, r1, #13
-    40d0:	1ac0      	subs	r0, r0, r3
-    40d2:	4152      	adcs	r2, r2
-    40d4:	0b03      	lsrs	r3, r0, #12
-    40d6:	428b      	cmp	r3, r1
-    40d8:	d301      	bcc.n	40de <__aeabi_uidiv+0x6a>
-    40da:	030b      	lsls	r3, r1, #12
-    40dc:	1ac0      	subs	r0, r0, r3
-    40de:	4152      	adcs	r2, r2
-    40e0:	0ac3      	lsrs	r3, r0, #11
-    40e2:	428b      	cmp	r3, r1
-    40e4:	d301      	bcc.n	40ea <__aeabi_uidiv+0x76>
-    40e6:	02cb      	lsls	r3, r1, #11
-    40e8:	1ac0      	subs	r0, r0, r3
-    40ea:	4152      	adcs	r2, r2
-    40ec:	0a83      	lsrs	r3, r0, #10
-    40ee:	428b      	cmp	r3, r1
-    40f0:	d301      	bcc.n	40f6 <__aeabi_uidiv+0x82>
-    40f2:	028b      	lsls	r3, r1, #10
-    40f4:	1ac0      	subs	r0, r0, r3
-    40f6:	4152      	adcs	r2, r2
-    40f8:	0a43      	lsrs	r3, r0, #9
-    40fa:	428b      	cmp	r3, r1
-    40fc:	d301      	bcc.n	4102 <__aeabi_uidiv+0x8e>
-    40fe:	024b      	lsls	r3, r1, #9
-    4100:	1ac0      	subs	r0, r0, r3
-    4102:	4152      	adcs	r2, r2
-    4104:	0a03      	lsrs	r3, r0, #8
-    4106:	428b      	cmp	r3, r1
-    4108:	d301      	bcc.n	410e <__aeabi_uidiv+0x9a>
-    410a:	020b      	lsls	r3, r1, #8
-    410c:	1ac0      	subs	r0, r0, r3
-    410e:	4152      	adcs	r2, r2
-    4110:	d2cd      	bcs.n	40ae <__aeabi_uidiv+0x3a>
-    4112:	09c3      	lsrs	r3, r0, #7
-    4114:	428b      	cmp	r3, r1
-    4116:	d301      	bcc.n	411c <__aeabi_uidiv+0xa8>
-    4118:	01cb      	lsls	r3, r1, #7
-    411a:	1ac0      	subs	r0, r0, r3
-    411c:	4152      	adcs	r2, r2
-    411e:	0983      	lsrs	r3, r0, #6
-    4120:	428b      	cmp	r3, r1
-    4122:	d301      	bcc.n	4128 <__aeabi_uidiv+0xb4>
-    4124:	018b      	lsls	r3, r1, #6
-    4126:	1ac0      	subs	r0, r0, r3
-    4128:	4152      	adcs	r2, r2
-    412a:	0943      	lsrs	r3, r0, #5
-    412c:	428b      	cmp	r3, r1
-    412e:	d301      	bcc.n	4134 <__aeabi_uidiv+0xc0>
-    4130:	014b      	lsls	r3, r1, #5
-    4132:	1ac0      	subs	r0, r0, r3
-    4134:	4152      	adcs	r2, r2
-    4136:	0903      	lsrs	r3, r0, #4
-    4138:	428b      	cmp	r3, r1
-    413a:	d301      	bcc.n	4140 <__aeabi_uidiv+0xcc>
-    413c:	010b      	lsls	r3, r1, #4
-    413e:	1ac0      	subs	r0, r0, r3
-    4140:	4152      	adcs	r2, r2
-    4142:	08c3      	lsrs	r3, r0, #3
-    4144:	428b      	cmp	r3, r1
-    4146:	d301      	bcc.n	414c <__aeabi_uidiv+0xd8>
-    4148:	00cb      	lsls	r3, r1, #3
-    414a:	1ac0      	subs	r0, r0, r3
-    414c:	4152      	adcs	r2, r2
-    414e:	0883      	lsrs	r3, r0, #2
-    4150:	428b      	cmp	r3, r1
-    4152:	d301      	bcc.n	4158 <__aeabi_uidiv+0xe4>
-    4154:	008b      	lsls	r3, r1, #2
-    4156:	1ac0      	subs	r0, r0, r3
-    4158:	4152      	adcs	r2, r2
-    415a:	0843      	lsrs	r3, r0, #1
-    415c:	428b      	cmp	r3, r1
-    415e:	d301      	bcc.n	4164 <__aeabi_uidiv+0xf0>
-    4160:	004b      	lsls	r3, r1, #1
-    4162:	1ac0      	subs	r0, r0, r3
-    4164:	4152      	adcs	r2, r2
-    4166:	1a41      	subs	r1, r0, r1
-    4168:	d200      	bcs.n	416c <__aeabi_uidiv+0xf8>
-    416a:	4601      	mov	r1, r0
-    416c:	4152      	adcs	r2, r2
-    416e:	4610      	mov	r0, r2
-    4170:	4770      	bx	lr
-    4172:	e7ff      	b.n	4174 <__aeabi_uidiv+0x100>
-    4174:	b501      	push	{r0, lr}
-    4176:	2000      	movs	r0, #0
-    4178:	f000 f80c 	bl	4194 <__aeabi_idiv0>
-    417c:	bd02      	pop	{r1, pc}
-    417e:	46c0      	nop			; (mov r8, r8)
+000042a0 <__aeabi_uidiv>:
+    42a0:	2200      	movs	r2, #0
+    42a2:	0843      	lsrs	r3, r0, #1
+    42a4:	428b      	cmp	r3, r1
+    42a6:	d374      	bcc.n	4392 <__aeabi_uidiv+0xf2>
+    42a8:	0903      	lsrs	r3, r0, #4
+    42aa:	428b      	cmp	r3, r1
+    42ac:	d35f      	bcc.n	436e <__aeabi_uidiv+0xce>
+    42ae:	0a03      	lsrs	r3, r0, #8
+    42b0:	428b      	cmp	r3, r1
+    42b2:	d344      	bcc.n	433e <__aeabi_uidiv+0x9e>
+    42b4:	0b03      	lsrs	r3, r0, #12
+    42b6:	428b      	cmp	r3, r1
+    42b8:	d328      	bcc.n	430c <__aeabi_uidiv+0x6c>
+    42ba:	0c03      	lsrs	r3, r0, #16
+    42bc:	428b      	cmp	r3, r1
+    42be:	d30d      	bcc.n	42dc <__aeabi_uidiv+0x3c>
+    42c0:	22ff      	movs	r2, #255	; 0xff
+    42c2:	0209      	lsls	r1, r1, #8
+    42c4:	ba12      	rev	r2, r2
+    42c6:	0c03      	lsrs	r3, r0, #16
+    42c8:	428b      	cmp	r3, r1
+    42ca:	d302      	bcc.n	42d2 <__aeabi_uidiv+0x32>
+    42cc:	1212      	asrs	r2, r2, #8
+    42ce:	0209      	lsls	r1, r1, #8
+    42d0:	d065      	beq.n	439e <__aeabi_uidiv+0xfe>
+    42d2:	0b03      	lsrs	r3, r0, #12
+    42d4:	428b      	cmp	r3, r1
+    42d6:	d319      	bcc.n	430c <__aeabi_uidiv+0x6c>
+    42d8:	e000      	b.n	42dc <__aeabi_uidiv+0x3c>
+    42da:	0a09      	lsrs	r1, r1, #8
+    42dc:	0bc3      	lsrs	r3, r0, #15
+    42de:	428b      	cmp	r3, r1
+    42e0:	d301      	bcc.n	42e6 <__aeabi_uidiv+0x46>
+    42e2:	03cb      	lsls	r3, r1, #15
+    42e4:	1ac0      	subs	r0, r0, r3
+    42e6:	4152      	adcs	r2, r2
+    42e8:	0b83      	lsrs	r3, r0, #14
+    42ea:	428b      	cmp	r3, r1
+    42ec:	d301      	bcc.n	42f2 <__aeabi_uidiv+0x52>
+    42ee:	038b      	lsls	r3, r1, #14
+    42f0:	1ac0      	subs	r0, r0, r3
+    42f2:	4152      	adcs	r2, r2
+    42f4:	0b43      	lsrs	r3, r0, #13
+    42f6:	428b      	cmp	r3, r1
+    42f8:	d301      	bcc.n	42fe <__aeabi_uidiv+0x5e>
+    42fa:	034b      	lsls	r3, r1, #13
+    42fc:	1ac0      	subs	r0, r0, r3
+    42fe:	4152      	adcs	r2, r2
+    4300:	0b03      	lsrs	r3, r0, #12
+    4302:	428b      	cmp	r3, r1
+    4304:	d301      	bcc.n	430a <__aeabi_uidiv+0x6a>
+    4306:	030b      	lsls	r3, r1, #12
+    4308:	1ac0      	subs	r0, r0, r3
+    430a:	4152      	adcs	r2, r2
+    430c:	0ac3      	lsrs	r3, r0, #11
+    430e:	428b      	cmp	r3, r1
+    4310:	d301      	bcc.n	4316 <__aeabi_uidiv+0x76>
+    4312:	02cb      	lsls	r3, r1, #11
+    4314:	1ac0      	subs	r0, r0, r3
+    4316:	4152      	adcs	r2, r2
+    4318:	0a83      	lsrs	r3, r0, #10
+    431a:	428b      	cmp	r3, r1
+    431c:	d301      	bcc.n	4322 <__aeabi_uidiv+0x82>
+    431e:	028b      	lsls	r3, r1, #10
+    4320:	1ac0      	subs	r0, r0, r3
+    4322:	4152      	adcs	r2, r2
+    4324:	0a43      	lsrs	r3, r0, #9
+    4326:	428b      	cmp	r3, r1
+    4328:	d301      	bcc.n	432e <__aeabi_uidiv+0x8e>
+    432a:	024b      	lsls	r3, r1, #9
+    432c:	1ac0      	subs	r0, r0, r3
+    432e:	4152      	adcs	r2, r2
+    4330:	0a03      	lsrs	r3, r0, #8
+    4332:	428b      	cmp	r3, r1
+    4334:	d301      	bcc.n	433a <__aeabi_uidiv+0x9a>
+    4336:	020b      	lsls	r3, r1, #8
+    4338:	1ac0      	subs	r0, r0, r3
+    433a:	4152      	adcs	r2, r2
+    433c:	d2cd      	bcs.n	42da <__aeabi_uidiv+0x3a>
+    433e:	09c3      	lsrs	r3, r0, #7
+    4340:	428b      	cmp	r3, r1
+    4342:	d301      	bcc.n	4348 <__aeabi_uidiv+0xa8>
+    4344:	01cb      	lsls	r3, r1, #7
+    4346:	1ac0      	subs	r0, r0, r3
+    4348:	4152      	adcs	r2, r2
+    434a:	0983      	lsrs	r3, r0, #6
+    434c:	428b      	cmp	r3, r1
+    434e:	d301      	bcc.n	4354 <__aeabi_uidiv+0xb4>
+    4350:	018b      	lsls	r3, r1, #6
+    4352:	1ac0      	subs	r0, r0, r3
+    4354:	4152      	adcs	r2, r2
+    4356:	0943      	lsrs	r3, r0, #5
+    4358:	428b      	cmp	r3, r1
+    435a:	d301      	bcc.n	4360 <__aeabi_uidiv+0xc0>
+    435c:	014b      	lsls	r3, r1, #5
+    435e:	1ac0      	subs	r0, r0, r3
+    4360:	4152      	adcs	r2, r2
+    4362:	0903      	lsrs	r3, r0, #4
+    4364:	428b      	cmp	r3, r1
+    4366:	d301      	bcc.n	436c <__aeabi_uidiv+0xcc>
+    4368:	010b      	lsls	r3, r1, #4
+    436a:	1ac0      	subs	r0, r0, r3
+    436c:	4152      	adcs	r2, r2
+    436e:	08c3      	lsrs	r3, r0, #3
+    4370:	428b      	cmp	r3, r1
+    4372:	d301      	bcc.n	4378 <__aeabi_uidiv+0xd8>
+    4374:	00cb      	lsls	r3, r1, #3
+    4376:	1ac0      	subs	r0, r0, r3
+    4378:	4152      	adcs	r2, r2
+    437a:	0883      	lsrs	r3, r0, #2
+    437c:	428b      	cmp	r3, r1
+    437e:	d301      	bcc.n	4384 <__aeabi_uidiv+0xe4>
+    4380:	008b      	lsls	r3, r1, #2
+    4382:	1ac0      	subs	r0, r0, r3
+    4384:	4152      	adcs	r2, r2
+    4386:	0843      	lsrs	r3, r0, #1
+    4388:	428b      	cmp	r3, r1
+    438a:	d301      	bcc.n	4390 <__aeabi_uidiv+0xf0>
+    438c:	004b      	lsls	r3, r1, #1
+    438e:	1ac0      	subs	r0, r0, r3
+    4390:	4152      	adcs	r2, r2
+    4392:	1a41      	subs	r1, r0, r1
+    4394:	d200      	bcs.n	4398 <__aeabi_uidiv+0xf8>
+    4396:	4601      	mov	r1, r0
+    4398:	4152      	adcs	r2, r2
+    439a:	4610      	mov	r0, r2
+    439c:	4770      	bx	lr
+    439e:	e7ff      	b.n	43a0 <__aeabi_uidiv+0x100>
+    43a0:	b501      	push	{r0, lr}
+    43a2:	2000      	movs	r0, #0
+    43a4:	f000 f8fc 	bl	45a0 <__aeabi_idiv0>
+    43a8:	bd02      	pop	{r1, pc}
+    43aa:	46c0      	nop			; (mov r8, r8)
 
-00004180 <__aeabi_uidivmod>:
-    4180:	2900      	cmp	r1, #0
-    4182:	d0f7      	beq.n	4174 <__aeabi_uidiv+0x100>
-    4184:	b503      	push	{r0, r1, lr}
-    4186:	f7ff ff75 	bl	4074 <__aeabi_uidiv>
-    418a:	bc0e      	pop	{r1, r2, r3}
-    418c:	4342      	muls	r2, r0
-    418e:	1a89      	subs	r1, r1, r2
-    4190:	4718      	bx	r3
-    4192:	46c0      	nop			; (mov r8, r8)
+000043ac <__aeabi_uidivmod>:
+    43ac:	2900      	cmp	r1, #0
+    43ae:	d0f7      	beq.n	43a0 <__aeabi_uidiv+0x100>
+    43b0:	b503      	push	{r0, r1, lr}
+    43b2:	f7ff ff75 	bl	42a0 <__aeabi_uidiv>
+    43b6:	bc0e      	pop	{r1, r2, r3}
+    43b8:	4342      	muls	r2, r0
+    43ba:	1a89      	subs	r1, r1, r2
+    43bc:	4718      	bx	r3
+    43be:	46c0      	nop			; (mov r8, r8)
 
-00004194 <__aeabi_idiv0>:
-    4194:	4770      	bx	lr
-    4196:	46c0      	nop			; (mov r8, r8)
+000043c0 <__aeabi_idiv>:
+    43c0:	4603      	mov	r3, r0
+    43c2:	430b      	orrs	r3, r1
+    43c4:	d47f      	bmi.n	44c6 <__aeabi_idiv+0x106>
+    43c6:	2200      	movs	r2, #0
+    43c8:	0843      	lsrs	r3, r0, #1
+    43ca:	428b      	cmp	r3, r1
+    43cc:	d374      	bcc.n	44b8 <__aeabi_idiv+0xf8>
+    43ce:	0903      	lsrs	r3, r0, #4
+    43d0:	428b      	cmp	r3, r1
+    43d2:	d35f      	bcc.n	4494 <__aeabi_idiv+0xd4>
+    43d4:	0a03      	lsrs	r3, r0, #8
+    43d6:	428b      	cmp	r3, r1
+    43d8:	d344      	bcc.n	4464 <__aeabi_idiv+0xa4>
+    43da:	0b03      	lsrs	r3, r0, #12
+    43dc:	428b      	cmp	r3, r1
+    43de:	d328      	bcc.n	4432 <__aeabi_idiv+0x72>
+    43e0:	0c03      	lsrs	r3, r0, #16
+    43e2:	428b      	cmp	r3, r1
+    43e4:	d30d      	bcc.n	4402 <__aeabi_idiv+0x42>
+    43e6:	22ff      	movs	r2, #255	; 0xff
+    43e8:	0209      	lsls	r1, r1, #8
+    43ea:	ba12      	rev	r2, r2
+    43ec:	0c03      	lsrs	r3, r0, #16
+    43ee:	428b      	cmp	r3, r1
+    43f0:	d302      	bcc.n	43f8 <__aeabi_idiv+0x38>
+    43f2:	1212      	asrs	r2, r2, #8
+    43f4:	0209      	lsls	r1, r1, #8
+    43f6:	d065      	beq.n	44c4 <__aeabi_idiv+0x104>
+    43f8:	0b03      	lsrs	r3, r0, #12
+    43fa:	428b      	cmp	r3, r1
+    43fc:	d319      	bcc.n	4432 <__aeabi_idiv+0x72>
+    43fe:	e000      	b.n	4402 <__aeabi_idiv+0x42>
+    4400:	0a09      	lsrs	r1, r1, #8
+    4402:	0bc3      	lsrs	r3, r0, #15
+    4404:	428b      	cmp	r3, r1
+    4406:	d301      	bcc.n	440c <__aeabi_idiv+0x4c>
+    4408:	03cb      	lsls	r3, r1, #15
+    440a:	1ac0      	subs	r0, r0, r3
+    440c:	4152      	adcs	r2, r2
+    440e:	0b83      	lsrs	r3, r0, #14
+    4410:	428b      	cmp	r3, r1
+    4412:	d301      	bcc.n	4418 <__aeabi_idiv+0x58>
+    4414:	038b      	lsls	r3, r1, #14
+    4416:	1ac0      	subs	r0, r0, r3
+    4418:	4152      	adcs	r2, r2
+    441a:	0b43      	lsrs	r3, r0, #13
+    441c:	428b      	cmp	r3, r1
+    441e:	d301      	bcc.n	4424 <__aeabi_idiv+0x64>
+    4420:	034b      	lsls	r3, r1, #13
+    4422:	1ac0      	subs	r0, r0, r3
+    4424:	4152      	adcs	r2, r2
+    4426:	0b03      	lsrs	r3, r0, #12
+    4428:	428b      	cmp	r3, r1
+    442a:	d301      	bcc.n	4430 <__aeabi_idiv+0x70>
+    442c:	030b      	lsls	r3, r1, #12
+    442e:	1ac0      	subs	r0, r0, r3
+    4430:	4152      	adcs	r2, r2
+    4432:	0ac3      	lsrs	r3, r0, #11
+    4434:	428b      	cmp	r3, r1
+    4436:	d301      	bcc.n	443c <__aeabi_idiv+0x7c>
+    4438:	02cb      	lsls	r3, r1, #11
+    443a:	1ac0      	subs	r0, r0, r3
+    443c:	4152      	adcs	r2, r2
+    443e:	0a83      	lsrs	r3, r0, #10
+    4440:	428b      	cmp	r3, r1
+    4442:	d301      	bcc.n	4448 <__aeabi_idiv+0x88>
+    4444:	028b      	lsls	r3, r1, #10
+    4446:	1ac0      	subs	r0, r0, r3
+    4448:	4152      	adcs	r2, r2
+    444a:	0a43      	lsrs	r3, r0, #9
+    444c:	428b      	cmp	r3, r1
+    444e:	d301      	bcc.n	4454 <__aeabi_idiv+0x94>
+    4450:	024b      	lsls	r3, r1, #9
+    4452:	1ac0      	subs	r0, r0, r3
+    4454:	4152      	adcs	r2, r2
+    4456:	0a03      	lsrs	r3, r0, #8
+    4458:	428b      	cmp	r3, r1
+    445a:	d301      	bcc.n	4460 <__aeabi_idiv+0xa0>
+    445c:	020b      	lsls	r3, r1, #8
+    445e:	1ac0      	subs	r0, r0, r3
+    4460:	4152      	adcs	r2, r2
+    4462:	d2cd      	bcs.n	4400 <__aeabi_idiv+0x40>
+    4464:	09c3      	lsrs	r3, r0, #7
+    4466:	428b      	cmp	r3, r1
+    4468:	d301      	bcc.n	446e <__aeabi_idiv+0xae>
+    446a:	01cb      	lsls	r3, r1, #7
+    446c:	1ac0      	subs	r0, r0, r3
+    446e:	4152      	adcs	r2, r2
+    4470:	0983      	lsrs	r3, r0, #6
+    4472:	428b      	cmp	r3, r1
+    4474:	d301      	bcc.n	447a <__aeabi_idiv+0xba>
+    4476:	018b      	lsls	r3, r1, #6
+    4478:	1ac0      	subs	r0, r0, r3
+    447a:	4152      	adcs	r2, r2
+    447c:	0943      	lsrs	r3, r0, #5
+    447e:	428b      	cmp	r3, r1
+    4480:	d301      	bcc.n	4486 <__aeabi_idiv+0xc6>
+    4482:	014b      	lsls	r3, r1, #5
+    4484:	1ac0      	subs	r0, r0, r3
+    4486:	4152      	adcs	r2, r2
+    4488:	0903      	lsrs	r3, r0, #4
+    448a:	428b      	cmp	r3, r1
+    448c:	d301      	bcc.n	4492 <__aeabi_idiv+0xd2>
+    448e:	010b      	lsls	r3, r1, #4
+    4490:	1ac0      	subs	r0, r0, r3
+    4492:	4152      	adcs	r2, r2
+    4494:	08c3      	lsrs	r3, r0, #3
+    4496:	428b      	cmp	r3, r1
+    4498:	d301      	bcc.n	449e <__aeabi_idiv+0xde>
+    449a:	00cb      	lsls	r3, r1, #3
+    449c:	1ac0      	subs	r0, r0, r3
+    449e:	4152      	adcs	r2, r2
+    44a0:	0883      	lsrs	r3, r0, #2
+    44a2:	428b      	cmp	r3, r1
+    44a4:	d301      	bcc.n	44aa <__aeabi_idiv+0xea>
+    44a6:	008b      	lsls	r3, r1, #2
+    44a8:	1ac0      	subs	r0, r0, r3
+    44aa:	4152      	adcs	r2, r2
+    44ac:	0843      	lsrs	r3, r0, #1
+    44ae:	428b      	cmp	r3, r1
+    44b0:	d301      	bcc.n	44b6 <__aeabi_idiv+0xf6>
+    44b2:	004b      	lsls	r3, r1, #1
+    44b4:	1ac0      	subs	r0, r0, r3
+    44b6:	4152      	adcs	r2, r2
+    44b8:	1a41      	subs	r1, r0, r1
+    44ba:	d200      	bcs.n	44be <__aeabi_idiv+0xfe>
+    44bc:	4601      	mov	r1, r0
+    44be:	4152      	adcs	r2, r2
+    44c0:	4610      	mov	r0, r2
+    44c2:	4770      	bx	lr
+    44c4:	e05d      	b.n	4582 <__aeabi_idiv+0x1c2>
+    44c6:	0fca      	lsrs	r2, r1, #31
+    44c8:	d000      	beq.n	44cc <__aeabi_idiv+0x10c>
+    44ca:	4249      	negs	r1, r1
+    44cc:	1003      	asrs	r3, r0, #32
+    44ce:	d300      	bcc.n	44d2 <__aeabi_idiv+0x112>
+    44d0:	4240      	negs	r0, r0
+    44d2:	4053      	eors	r3, r2
+    44d4:	2200      	movs	r2, #0
+    44d6:	469c      	mov	ip, r3
+    44d8:	0903      	lsrs	r3, r0, #4
+    44da:	428b      	cmp	r3, r1
+    44dc:	d32d      	bcc.n	453a <__aeabi_idiv+0x17a>
+    44de:	0a03      	lsrs	r3, r0, #8
+    44e0:	428b      	cmp	r3, r1
+    44e2:	d312      	bcc.n	450a <__aeabi_idiv+0x14a>
+    44e4:	22fc      	movs	r2, #252	; 0xfc
+    44e6:	0189      	lsls	r1, r1, #6
+    44e8:	ba12      	rev	r2, r2
+    44ea:	0a03      	lsrs	r3, r0, #8
+    44ec:	428b      	cmp	r3, r1
+    44ee:	d30c      	bcc.n	450a <__aeabi_idiv+0x14a>
+    44f0:	0189      	lsls	r1, r1, #6
+    44f2:	1192      	asrs	r2, r2, #6
+    44f4:	428b      	cmp	r3, r1
+    44f6:	d308      	bcc.n	450a <__aeabi_idiv+0x14a>
+    44f8:	0189      	lsls	r1, r1, #6
+    44fa:	1192      	asrs	r2, r2, #6
+    44fc:	428b      	cmp	r3, r1
+    44fe:	d304      	bcc.n	450a <__aeabi_idiv+0x14a>
+    4500:	0189      	lsls	r1, r1, #6
+    4502:	d03a      	beq.n	457a <__aeabi_idiv+0x1ba>
+    4504:	1192      	asrs	r2, r2, #6
+    4506:	e000      	b.n	450a <__aeabi_idiv+0x14a>
+    4508:	0989      	lsrs	r1, r1, #6
+    450a:	09c3      	lsrs	r3, r0, #7
+    450c:	428b      	cmp	r3, r1
+    450e:	d301      	bcc.n	4514 <__aeabi_idiv+0x154>
+    4510:	01cb      	lsls	r3, r1, #7
+    4512:	1ac0      	subs	r0, r0, r3
+    4514:	4152      	adcs	r2, r2
+    4516:	0983      	lsrs	r3, r0, #6
+    4518:	428b      	cmp	r3, r1
+    451a:	d301      	bcc.n	4520 <__aeabi_idiv+0x160>
+    451c:	018b      	lsls	r3, r1, #6
+    451e:	1ac0      	subs	r0, r0, r3
+    4520:	4152      	adcs	r2, r2
+    4522:	0943      	lsrs	r3, r0, #5
+    4524:	428b      	cmp	r3, r1
+    4526:	d301      	bcc.n	452c <__aeabi_idiv+0x16c>
+    4528:	014b      	lsls	r3, r1, #5
+    452a:	1ac0      	subs	r0, r0, r3
+    452c:	4152      	adcs	r2, r2
+    452e:	0903      	lsrs	r3, r0, #4
+    4530:	428b      	cmp	r3, r1
+    4532:	d301      	bcc.n	4538 <__aeabi_idiv+0x178>
+    4534:	010b      	lsls	r3, r1, #4
+    4536:	1ac0      	subs	r0, r0, r3
+    4538:	4152      	adcs	r2, r2
+    453a:	08c3      	lsrs	r3, r0, #3
+    453c:	428b      	cmp	r3, r1
+    453e:	d301      	bcc.n	4544 <__aeabi_idiv+0x184>
+    4540:	00cb      	lsls	r3, r1, #3
+    4542:	1ac0      	subs	r0, r0, r3
+    4544:	4152      	adcs	r2, r2
+    4546:	0883      	lsrs	r3, r0, #2
+    4548:	428b      	cmp	r3, r1
+    454a:	d301      	bcc.n	4550 <__aeabi_idiv+0x190>
+    454c:	008b      	lsls	r3, r1, #2
+    454e:	1ac0      	subs	r0, r0, r3
+    4550:	4152      	adcs	r2, r2
+    4552:	d2d9      	bcs.n	4508 <__aeabi_idiv+0x148>
+    4554:	0843      	lsrs	r3, r0, #1
+    4556:	428b      	cmp	r3, r1
+    4558:	d301      	bcc.n	455e <__aeabi_idiv+0x19e>
+    455a:	004b      	lsls	r3, r1, #1
+    455c:	1ac0      	subs	r0, r0, r3
+    455e:	4152      	adcs	r2, r2
+    4560:	1a41      	subs	r1, r0, r1
+    4562:	d200      	bcs.n	4566 <__aeabi_idiv+0x1a6>
+    4564:	4601      	mov	r1, r0
+    4566:	4663      	mov	r3, ip
+    4568:	4152      	adcs	r2, r2
+    456a:	105b      	asrs	r3, r3, #1
+    456c:	4610      	mov	r0, r2
+    456e:	d301      	bcc.n	4574 <__aeabi_idiv+0x1b4>
+    4570:	4240      	negs	r0, r0
+    4572:	2b00      	cmp	r3, #0
+    4574:	d500      	bpl.n	4578 <__aeabi_idiv+0x1b8>
+    4576:	4249      	negs	r1, r1
+    4578:	4770      	bx	lr
+    457a:	4663      	mov	r3, ip
+    457c:	105b      	asrs	r3, r3, #1
+    457e:	d300      	bcc.n	4582 <__aeabi_idiv+0x1c2>
+    4580:	4240      	negs	r0, r0
+    4582:	b501      	push	{r0, lr}
+    4584:	2000      	movs	r0, #0
+    4586:	f000 f80b 	bl	45a0 <__aeabi_idiv0>
+    458a:	bd02      	pop	{r1, pc}
 
-00004198 <__libc_init_array>:
-    4198:	4b0e      	ldr	r3, [pc, #56]	; (41d4 <__libc_init_array+0x3c>)
-    419a:	b570      	push	{r4, r5, r6, lr}
-    419c:	2500      	movs	r5, #0
-    419e:	1c1e      	adds	r6, r3, #0
-    41a0:	4c0d      	ldr	r4, [pc, #52]	; (41d8 <__libc_init_array+0x40>)
-    41a2:	1ae4      	subs	r4, r4, r3
-    41a4:	10a4      	asrs	r4, r4, #2
-    41a6:	42a5      	cmp	r5, r4
-    41a8:	d004      	beq.n	41b4 <__libc_init_array+0x1c>
-    41aa:	00ab      	lsls	r3, r5, #2
-    41ac:	58f3      	ldr	r3, [r6, r3]
-    41ae:	4798      	blx	r3
-    41b0:	3501      	adds	r5, #1
-    41b2:	e7f8      	b.n	41a6 <__libc_init_array+0xe>
-    41b4:	f000 f88a 	bl	42cc <_init>
-    41b8:	4b08      	ldr	r3, [pc, #32]	; (41dc <__libc_init_array+0x44>)
-    41ba:	2500      	movs	r5, #0
-    41bc:	1c1e      	adds	r6, r3, #0
-    41be:	4c08      	ldr	r4, [pc, #32]	; (41e0 <__libc_init_array+0x48>)
-    41c0:	1ae4      	subs	r4, r4, r3
-    41c2:	10a4      	asrs	r4, r4, #2
-    41c4:	42a5      	cmp	r5, r4
-    41c6:	d004      	beq.n	41d2 <__libc_init_array+0x3a>
-    41c8:	00ab      	lsls	r3, r5, #2
-    41ca:	58f3      	ldr	r3, [r6, r3]
-    41cc:	4798      	blx	r3
-    41ce:	3501      	adds	r5, #1
-    41d0:	e7f8      	b.n	41c4 <__libc_init_array+0x2c>
-    41d2:	bd70      	pop	{r4, r5, r6, pc}
-    41d4:	000042d8 	.word	0x000042d8
-    41d8:	000042d8 	.word	0x000042d8
-    41dc:	000042d8 	.word	0x000042d8
-    41e0:	000042dc 	.word	0x000042dc
+0000458c <__aeabi_idivmod>:
+    458c:	2900      	cmp	r1, #0
+    458e:	d0f8      	beq.n	4582 <__aeabi_idiv+0x1c2>
+    4590:	b503      	push	{r0, r1, lr}
+    4592:	f7ff ff15 	bl	43c0 <__aeabi_idiv>
+    4596:	bc0e      	pop	{r1, r2, r3}
+    4598:	4342      	muls	r2, r0
+    459a:	1a89      	subs	r1, r1, r2
+    459c:	4718      	bx	r3
+    459e:	46c0      	nop			; (mov r8, r8)
 
-000041e4 <memcpy>:
-    41e4:	2300      	movs	r3, #0
-    41e6:	b510      	push	{r4, lr}
-    41e8:	4293      	cmp	r3, r2
-    41ea:	d003      	beq.n	41f4 <memcpy+0x10>
-    41ec:	5ccc      	ldrb	r4, [r1, r3]
-    41ee:	54c4      	strb	r4, [r0, r3]
-    41f0:	3301      	adds	r3, #1
-    41f2:	e7f9      	b.n	41e8 <memcpy+0x4>
-    41f4:	bd10      	pop	{r4, pc}
+000045a0 <__aeabi_idiv0>:
+    45a0:	4770      	bx	lr
+    45a2:	46c0      	nop			; (mov r8, r8)
 
-000041f6 <memset>:
-    41f6:	1c03      	adds	r3, r0, #0
-    41f8:	1882      	adds	r2, r0, r2
-    41fa:	4293      	cmp	r3, r2
-    41fc:	d002      	beq.n	4204 <memset+0xe>
-    41fe:	7019      	strb	r1, [r3, #0]
-    4200:	3301      	adds	r3, #1
-    4202:	e7fa      	b.n	41fa <memset+0x4>
-    4204:	4770      	bx	lr
+000045a4 <__libc_init_array>:
+    45a4:	4b0e      	ldr	r3, [pc, #56]	; (45e0 <__libc_init_array+0x3c>)
+    45a6:	b570      	push	{r4, r5, r6, lr}
+    45a8:	2500      	movs	r5, #0
+    45aa:	1c1e      	adds	r6, r3, #0
+    45ac:	4c0d      	ldr	r4, [pc, #52]	; (45e4 <__libc_init_array+0x40>)
+    45ae:	1ae4      	subs	r4, r4, r3
+    45b0:	10a4      	asrs	r4, r4, #2
+    45b2:	42a5      	cmp	r5, r4
+    45b4:	d004      	beq.n	45c0 <__libc_init_array+0x1c>
+    45b6:	00ab      	lsls	r3, r5, #2
+    45b8:	58f3      	ldr	r3, [r6, r3]
+    45ba:	4798      	blx	r3
+    45bc:	3501      	adds	r5, #1
+    45be:	e7f8      	b.n	45b2 <__libc_init_array+0xe>
+    45c0:	f000 f892 	bl	46e8 <_init>
+    45c4:	4b08      	ldr	r3, [pc, #32]	; (45e8 <__libc_init_array+0x44>)
+    45c6:	2500      	movs	r5, #0
+    45c8:	1c1e      	adds	r6, r3, #0
+    45ca:	4c08      	ldr	r4, [pc, #32]	; (45ec <__libc_init_array+0x48>)
+    45cc:	1ae4      	subs	r4, r4, r3
+    45ce:	10a4      	asrs	r4, r4, #2
+    45d0:	42a5      	cmp	r5, r4
+    45d2:	d004      	beq.n	45de <__libc_init_array+0x3a>
+    45d4:	00ab      	lsls	r3, r5, #2
+    45d6:	58f3      	ldr	r3, [r6, r3]
+    45d8:	4798      	blx	r3
+    45da:	3501      	adds	r5, #1
+    45dc:	e7f8      	b.n	45d0 <__libc_init_array+0x2c>
+    45de:	bd70      	pop	{r4, r5, r6, pc}
+    45e0:	000046f4 	.word	0x000046f4
+    45e4:	000046f4 	.word	0x000046f4
+    45e8:	000046f4 	.word	0x000046f4
+    45ec:	000046f8 	.word	0x000046f8
+
+000045f0 <memcpy>:
+    45f0:	2300      	movs	r3, #0
+    45f2:	b510      	push	{r4, lr}
+    45f4:	4293      	cmp	r3, r2
+    45f6:	d003      	beq.n	4600 <memcpy+0x10>
+    45f8:	5ccc      	ldrb	r4, [r1, r3]
+    45fa:	54c4      	strb	r4, [r0, r3]
+    45fc:	3301      	adds	r3, #1
+    45fe:	e7f9      	b.n	45f4 <memcpy+0x4>
+    4600:	bd10      	pop	{r4, pc}
+
+00004602 <memset>:
+    4602:	1c03      	adds	r3, r0, #0
+    4604:	1882      	adds	r2, r0, r2
+    4606:	4293      	cmp	r3, r2
+    4608:	d002      	beq.n	4610 <memset+0xe>
+    460a:	7019      	strb	r1, [r3, #0]
+    460c:	3301      	adds	r3, #1
+    460e:	e7fa      	b.n	4606 <memset+0x4>
+    4610:	4770      	bx	lr
 	...
 
-00004208 <_tcc_intflag>:
-    4208:	0001 0000 0002 0000 0004 0000 0008 0000     ................
-    4218:	1000 0000 2000 0000 4000 0000 8000 0000     ..... ...@......
-    4228:	0000 0001 0000 0002 0000 0004 0000 0008     ................
-    4238:	0800 4200 0c00 4200 1000 4200 1400 4200     ...B...B...B...B
-    4248:	1800 4200 1c00 4200 0a09 0c0b 0e0d 0000     ...B...B........
-    4258:	212e 0000 21aa 0000 21aa 0000 2150 0000     .!...!...!..P!..
-    4268:	214a 0000 2156 0000 2134 0000 215c 0000     J!..V!..4!..\!..
-    4278:	2190 0000 2350 0000 23a0 0000 23a0 0000     .!..P#...#...#..
-    4288:	239c 0000 2342 0000 2362 0000 2332 0000     .#..B#..b#..2#..
-    4298:	2374 0000 2386 0000 38c4 0000 389c 0000     t#...#...8...8..
-    42a8:	3874 0000 383a 0000 3800 0000 4f54 5350     t8..:8...8..TOPS
-    42b8:	4345 4552 5054 5341 5753 4452 0000 0000     ECRETPASSWRD....
-    42c8:	0000 0000                                   ....
+00004614 <_tcc_intflag>:
+    4614:	0001 0000 0002 0000 0004 0000 0008 0000     ................
+    4624:	1000 0000 2000 0000 4000 0000 8000 0000     ..... ...@......
+    4634:	0000 0001 0000 0002 0000 0004 0000 0008     ................
+    4644:	0800 4200 0c00 4200 1000 4200 1400 4200     ...B...B...B...B
+    4654:	1800 4200 1c00 4200 0a09 0c0b 0e0d 0000     ...B...B........
+    4664:	212e 0000 21aa 0000 21aa 0000 2150 0000     .!...!...!..P!..
+    4674:	214a 0000 2156 0000 2134 0000 215c 0000     J!..V!..4!..\!..
+    4684:	2190 0000 2350 0000 23a0 0000 23a0 0000     .!..P#...#...#..
+    4694:	239c 0000 2342 0000 2362 0000 2332 0000     .#..B#..b#..2#..
+    46a4:	2374 0000 2386 0000 38c4 0000 389c 0000     t#...#...8...8..
+    46b4:	3874 0000 383a 0000 3800 0000 4f54 5350     t8..:8...8..TOPS
+    46c4:	4345 4552 5054 5341 5753 4452 0000 0000     ECRETPASSWRD....
+    46d4:	0000 0000 6548 6c6c 206f 6f57 6c72 2164     ....Hello World!
+    46e4:	2020 0020                                      .
 
-000042cc <_init>:
-    42cc:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
-    42ce:	46c0      	nop			; (mov r8, r8)
-    42d0:	bcf8      	pop	{r3, r4, r5, r6, r7}
-    42d2:	bc08      	pop	{r3}
-    42d4:	469e      	mov	lr, r3
-    42d6:	4770      	bx	lr
+000046e8 <_init>:
+    46e8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+    46ea:	46c0      	nop			; (mov r8, r8)
+    46ec:	bcf8      	pop	{r3, r4, r5, r6, r7}
+    46ee:	bc08      	pop	{r3}
+    46f0:	469e      	mov	lr, r3
+    46f2:	4770      	bx	lr
 
-000042d8 <__init_array_start>:
-    42d8:	000000dd 	.word	0x000000dd
+000046f4 <__init_array_start>:
+    46f4:	000000dd 	.word	0x000000dd
 
-000042dc <_fini>:
-    42dc:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
-    42de:	46c0      	nop			; (mov r8, r8)
-    42e0:	bcf8      	pop	{r3, r4, r5, r6, r7}
-    42e2:	bc08      	pop	{r3}
-    42e4:	469e      	mov	lr, r3
-    42e6:	4770      	bx	lr
+000046f8 <_fini>:
+    46f8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+    46fa:	46c0      	nop			; (mov r8, r8)
+    46fc:	bcf8      	pop	{r3, r4, r5, r6, r7}
+    46fe:	bc08      	pop	{r3}
+    4700:	469e      	mov	lr, r3
+    4702:	4770      	bx	lr
 
-000042e8 <__fini_array_start>:
-    42e8:	000000b5 	.word	0x000000b5
+00004704 <__fini_array_start>:
+    4704:	000000b5 	.word	0x000000b5

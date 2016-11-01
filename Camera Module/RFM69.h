@@ -30,29 +30,8 @@
 // **********************************************************************************
 #ifndef RFM69_h
 #define RFM69_h
-#include <Arduino.h>            // assumes Arduino IDE v1.0 or greater
-
+#include <stdint.h>
 #define RF69_MAX_DATA_LEN       61 // to take advantage of the built in AES/CRC we want to limit the frame size to the internal FIFO size (66 bytes - 3 bytes overhead - 2 bytes crc)
-#define RF69_SPI_CS             SS // SS is the SPI slave select pin, for instance D10 on ATmega328
-
-// INT0 on AVRs should be connected to RFM69's DIO0 (ex on ATmega328 it's D2, on ATmega644/1284 it's D2)
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)
-  #define RF69_IRQ_PIN          2
-  #define RF69_IRQ_NUM          0
-#elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
-  #define RF69_IRQ_PIN          2
-  #define RF69_IRQ_NUM          2
-#elif defined(__AVR_ATmega32U4__)
-  #define RF69_IRQ_PIN          3
-  #define RF69_IRQ_NUM          0
-#elif defined(__arm__)//Use pin 10 or any pin you want
-  #define RF69_IRQ_PIN          10
-  #define RF69_IRQ_NUM          10
-#else 
-  #define RF69_IRQ_PIN          2
-  #define RF69_IRQ_NUM          0  
-#endif
-
 
 #define CSMA_LIMIT              -90 // upper RX signal sensitivity threshold in dBm for carrier sense access
 #define RF69_MODE_SLEEP         0 // XTAL OFF
@@ -78,6 +57,11 @@
 #define RFM69_CTL_SENDACK   0x80
 #define RFM69_CTL_REQACK    0x40
 
+#define SPI_CHANNEL 0 // we will be using channel 0
+
+#define RF69_IRQ_PIN 24 // we will be using GPIO 24
+#define RF69_IRQ_NUM 0 // idk what this should be right now...............................................................
+
 class RFM69 {
   public:
     static volatile uint8_t DATA[RF69_MAX_DATA_LEN]; // recv/xmit buf, including header & crc bytes
@@ -90,8 +74,7 @@ class RFM69 {
     static volatile int16_t RSSI; // most accurate RSSI during reception (closest to the reception)
     static volatile uint8_t _mode; // should be protected?
 
-    RFM69(uint8_t slaveSelectPin=RF69_SPI_CS, uint8_t interruptPin=RF69_IRQ_PIN, bool isRFM69HW=false, uint8_t interruptNum=RF69_IRQ_NUM) {
-      _slaveSelectPin = slaveSelectPin;
+    RFM69(uint8_t interruptPin=RF69_IRQ_PIN, bool isRFM69HW=false, uint8_t interruptNum=RF69_IRQ_NUM) {
       _interruptPin = interruptPin;
       _interruptNum = interruptNum;
       _mode = RF69_MODE_STANDBY;

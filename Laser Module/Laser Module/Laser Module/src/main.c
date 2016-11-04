@@ -32,8 +32,8 @@
 
 // Addresses for this node.
 #define NETWORKID     0   // Must be the same for all nodes (0 to 255)
-#define MYNODEID      1   // My node ID (0 to 255)
-#define TONODEID      2   // Destination node ID (0 to 254, 255 = broadcast)
+#define MYNODEID      2   // My node ID (0 to 255)
+#define TONODEID      1   // Destination node ID (0 to 254, 255 = broadcast)
 
 // RFM69 frequency:
 #define FREQUENCY     RF69_915MHZ
@@ -105,18 +105,28 @@ int main (void)
 
 	// Initialize the RFM69HCW:
 	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
-	RFM_setHighPower(); // Always use this for RFM69HCW
+	RFM_setHighPower(true); // Always use this for RFM69HCW
 
 	// Turn on encryption if desired:
 	if (ENCRYPT)
 	RFM_encrypt(ENCRYPTKEY);
 
+
+	int sendlength = 16;
+	int index = 0;
 	while(1)
 	{
+		char sendbuffer[16] = "Hello World!   ";
 		// Set up a "buffer" for characters that we'll send:
-		  
-		static char sendbuffer[12] = "Hello World!";
-		static int sendlength = 12;
+		index++;
+		if(index < 10)
+			sendbuffer[15] = index + '0';
+		else if(index > 10 && index < 100)
+		{
+			sendbuffer[14] = index/10 + '0';
+			sendbuffer[15] = index%10 + '0';
+		}
+			
 
 		// SENDING
 
@@ -135,28 +145,24 @@ int main (void)
 			//dbg_print_str(sendbuffer[i]);
 			//dbg_print_str("]\n");
 			  
-			// There are two ways to send packets. If you want
-			// acknowledgements, use RFM_sendWithRetry():
-			  
+			// If you want acknowledgements, use RFM_sendWithRetry(): 
 			if (USEACK)
 			{
 				int ACK = 0;
-				if (RFM_sendWithRetry(TONODEID, sendbuffer, sendlength))
+				if (RFM_sendWithRetry(TONODEID, sendbuffer, sendlength, 2, 40))
 					ACK = 1;
 				else
 					ACK = 0;
 			}
-
-			// If you don't need acknowledgements, just use RFM_send():
 			  
 			else // don't use ACK
 			{
-				RFM_send(TONODEID, sendbuffer, sendlength);
+				RFM_send(TONODEID, sendbuffer, sendlength, false);
 			}
 			  
 			sendlength = 0; // reset the packet
-		}
-	}
+		//}
+	//}
 
 	// RECEIVING
 
@@ -189,7 +195,7 @@ int main (void)
 		  
 		if (RFM_ACKRequested())
 		{
-			RFM_sendACK();
+			RFM_sendACK("", 0);
 		//	dbg_print_str("ACK sent\n");
 		}
 	}

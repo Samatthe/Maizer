@@ -28,6 +28,9 @@
 // Please maintain this license information along with authorship
 // and copyright notices in any redistribution of this code
 // **********************************************************************************
+#ifndef RFM69_H
+#define RFM69_H
+
 #include <asf.h>
 #include "RFM69registers.h"
 
@@ -58,106 +61,110 @@
 #define RFM69_CTL_SENDACK   0x80
 #define RFM69_CTL_REQACK    0x40
 
-static volatile uint8_t RFM_DATA[RF69_MAX_DATA_LEN]; // recv/xmit buf, including header & crc bytes
-static volatile uint8_t RFM_DATALEN;
-static volatile uint8_t RFM_SENDERID;
-static volatile uint8_t TARGETID; // should match _address
-static volatile uint8_t PAYLOADLEN;
-static volatile uint8_t ACK_REQUESTED;
-static volatile uint8_t ACK_RECEIVED; // should be polled immediately after sending a packet with ACK request
-static volatile int16_t RFM_RSSI; // most accurate RSSI during reception (closest to the reception)
-static volatile uint8_t _mode; // should be protected?
+volatile uint8_t RFM_DATA[RF69_MAX_DATA_LEN]; // recv/xmit buf, including header & crc bytes
+volatile uint8_t RFM_DATALEN;
+volatile uint8_t RFM_SENDERID;
+volatile uint8_t TARGETID; // should match _address
+volatile uint8_t PAYLOADLEN;
+volatile uint8_t ACK_REQUESTED;
+volatile uint8_t ACK_RECEIVED; // should be polled immediately after sending a packet with ACK request
+volatile int16_t RFM_RSSI; // most accurate RSSI during reception (closest to the reception)
+volatile uint8_t _mode; // should be protected?
 
-RFM69(uint8_t slaveSelectPin, uint8_t interruptPin, bool isRFM69HW, uint8_t interruptNum=RF69_IRQ_NUM) {
-    _slaveSelectPin = ;
-    _interruptPin = ;
-    _interruptNum = ;
-    _mode = RF69_MODE_STANDBY;
-    _promiscuousMode = false;
-    _powerLevel = 31;
-    _isRFM69HW = false;
-}
 
-bool RFM_initialize(uint8_t freqBand, uint8_t ID, uint8_t networkID=1);
+void RFM69(void);
+bool RFM_initialize(uint8_t freqBand, uint8_t ID, uint8_t networkID);
 void setAddress(uint8_t addr);
 void setNetwork(uint8_t networkID);
 bool canSend(void);
-void RFM_send(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool requestACK=false);
-bool RFM_sendWithRetry(uint8_t toAddress, const void* buffer, uint8_t bufferSize, uint8_t retries=2, uint8_t retryWaitTime=40); // 40ms roundtrip req for 61byte packets
+void RFM_send(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool requestACK);
+bool RFM_sendWithRetry(uint8_t toAddress, const void* buffer, uint8_t bufferSize, uint8_t retries, uint8_t retryWaitTime); // 40ms roundtrip req for 61byte packets
 bool RFM_receiveDone(void);
 bool ACKReceived(uint8_t fromNodeID);
 bool RFM_ACKRequested(void);
-void RFM_sendACK(const void* buffer = "", uint8_t bufferSize=0);
+void RFM_sendACK(const void* buffer, uint8_t bufferSize);
 uint32_t getFrequency(void);
 void setFrequency(uint32_t freqHz);
-void encrypt(const char* key);
+void RFM_encrypt(const char* key);
 void setCS(uint8_t newSPISlaveSelect);
-int16_t readRSSI(bool forceTrigger=false);
-void promiscuous(bool onOff=true);
-void RFM_setHighPower(bool onOFF=true); // has to be called after RFM_initialize() for RFM69HW
+int16_t readRSSI(void);
+void RFM_promiscuous(bool onOff);
+void RFM_setHighPower(bool onOFF); // has to be called after RFM_initialize() for RFM69HW
 void setPowerLevel(uint8_t level); // reduce/increase transmit power level
 void sleep(void);
-uint8_t readTemperature(uint8_t calFactor=0); // get CMOS temperature (8bit)
+uint8_t readTemperature(uint8_t calFactor); // get CMOS temperature (8bit)
 void rcCalibration(void); // calibrate the internal RC oscillator for use in wide temperature variations - see datasheet section [4.3.5. RC Timer Accuracy]
 
 // allow hacking registers by making these public
-uint8_t readReg(uint8_t addr);
+uint8_t readReg(volatile uint16_t addr);
 void writeReg(uint8_t addr, uint8_t val);
 
 static void isr0(void);
 void interruptHandler(void);
-void interruptHook(uint8_t CTLbyte) {};
-static volatile bool _inISR;
-void sendFrame(uint8_t toAddress, const void* buffer, uint8_t size, bool requestACK=false, bool RFM_sendACK=false);
+volatile bool _inISR;
+void sendFrame(uint8_t toAddress, const void* buffer, uint8_t size, bool requestACK, bool sendACK);
 
-static RFM69* selfPointer;
-uint8_t _slaveSelectPin;
-uint8_t _interruptPin;
-uint8_t _interruptNum;
-uint8_t _address;
-bool _promiscuousMode;
+volatile uint8_t _slaveSelectPin;
+volatile uint8_t _interruptPin;
+volatile uint8_t _interruptNum;
+volatile uint8_t _address;
+volatile bool _promiscuousMode;
 uint8_t _powerLevel;
-bool _isRFM69HW;
+volatile bool _isRFM69HW;
 
 void receiveBegin(void);
 void setMode(uint8_t mode);
 void setHighPowerRegs(bool onOff);
 void select(void);
 void unselect(void);
-inline void maybeInterrupts(void);
+void maybeInterrupts(void);
 
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void configure_extint_channel(void);
+void configure_extint_callbacks(void);
+void configure_port_pins(void);
+
+// Configure the LED selection port as output
+void configure_port_pins(void)
+{
+	struct port_config config_port_pin;
+	port_get_config_defaults(&config_port_pin);
+	config_port_pin.direction = PORT_PIN_DIR_INPUT;
+	port_pin_set_config(PIN_PA03, &config_port_pin);
+}
 
 ///////////////////////// EXT INT ////////////////
 void configure_extint_channel(void)
 {
 	struct extint_chan_conf config_extint_chan;
 	extint_chan_get_config_defaults(&config_extint_chan);
-	config_extint_chan.gpio_pin           = PIN_PA27A_EIC_EXTINT15;
-	config_extint_chan.gpio_pin_mux       = MUX_PA27A_EIC_EXTINT15;
+	config_extint_chan.gpio_pin           = PIN_PA03A_EIC_EXTINT3;
+	config_extint_chan.gpio_pin_mux       = MUX_PA03A_EIC_EXTINT3;
 	config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
 	config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
 	extint_chan_set_config(15, &config_extint_chan);
 }
 void configure_extint_callbacks(void)
 {
-	extint_register_callback(extint_detection_callback, 15, EXTINT_CALLBACK_TYPE_DETECT);
-	extint_chan_enable_callback(15, EXTINT_CALLBACK_TYPE_DETECT);
+	extint_register_callback(isr0, 3, EXTINT_CALLBACK_TYPE_DETECT);
+	extint_chan_enable_callback(3, EXTINT_CALLBACK_TYPE_DETECT);
 }
 ///////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// SPI ////////////////////
-static uint8_t buffer[BUF_LENGTH] = {
-	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
-	0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13
-};
-#define BUF_LENGTH 20
+//static uint8_t buffer[BUF_LENGTH] = {
+//	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
+//	0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13
+//};
+//#define BUF_LENGTH 20
 #define SLAVE_SELECT_PIN PIN_PA18
 struct spi_module spi_master_instance;
 struct spi_slave_inst slave;
+void configure_RFM69_spi(void);
+volatile uint16_t read_buf = 0;
 
 void configure_RFM69_spi(void)
 {
@@ -187,31 +194,11 @@ void configure_RFM69_spi(void)
 
 	spi_select_slave(&spi_master_instance, &slave, false);
 }
-
-void configure_spi_master_callbacks(void)
-{
-	spi_register_callback(&spi_master_instance, callback_spi_master,
-	SPI_CALLBACK_BUFFER_RECEIVED);
-	spi_enable_callback(&spi_master_instance, SPI_CALLBACK_BUFFER_TRANSMITTED);
-}
 ///////////////////////////////////////////////////////////////////////////////
-
-/* SYSTEM_CLOCK_SOURCE_OSC32K configuration - Internal 32KHz oscillator */
-#  define CONF_CLOCK_OSC32K_ENABLE                true
-#  define CONF_CLOCK_OSC32K_STARTUP_TIME          SYSTEM_OSC32K_STARTUP_130
-#  define CONF_CLOCK_OSC32K_ENABLE_1KHZ_OUTPUT    true
-#  define CONF_CLOCK_OSC32K_ENABLE_32KHZ_OUTPUT   true
-#  define CONF_CLOCK_OSC32K_ON_DEMAND             true
-#  define CONF_CLOCK_OSC32K_RUN_IN_STANDBY        false
-
-/* Configure GCLK generator 2 (RTC) */
-#  define CONF_CLOCK_GCLK_2_ENABLE                true
-#  define CONF_CLOCK_GCLK_2_RUN_IN_STANDBY        false
-#  define CONF_CLOCK_GCLK_2_CLOCK_SOURCE          SYSTEM_CLOCK_SOURCE_OSC32K
-#  define CONF_CLOCK_GCLK_2_PRESCALER             32
-#  define CONF_CLOCK_GCLK_2_OUTPUT_ENABLE         false
-
 struct rtc_module rtc_instance;
+void configure_rtc_count(void);
+uint32_t millis(void);
+void reset_millis(void);
 
 ////////////////////// RTC for millis() ///////////////////////////////////////
 void configure_rtc_count(void)
@@ -221,34 +208,89 @@ void configure_rtc_count(void)
 	config_rtc_count.prescaler           = RTC_COUNT_PRESCALER_DIV_1;
 	config_rtc_count.mode                = RTC_COUNT_MODE_16BIT;
 	config_rtc_count.continuously_update = true;
+	//config_rtc_count.compare_values[0] = 1000;
 	rtc_count_init(&rtc_instance, RTC, &config_rtc_count);
 	rtc_count_enable(&rtc_instance);
+
+	rtc_count_set_period(&rtc_instance, 2000);
+}
+
+void reset_millis(void)
+{
+	rtc_count_set_count(&rtc_instance, 10);
+	rtc_count_enable(&rtc_instance);
+}
+
+uint32_t millis(void)
+{
+    //rtc_count_set_count(&rtc_instance, 20);
+	volatile uint32_t milli = 0;
+	milli = rtc_count_get_count(&rtc_instance);
+	milli = milli;
+	return milli;
 }
 //////////////////////////////////////////////////////////////////////////////
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+// internal function
+void sendFrame(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool requestACK, bool sendACK)
+{
+	setMode(RF69_MODE_STANDBY); // turn off receiver to prevent reception while filling fifo
+	while ((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00); // wait for ModeReady
+	writeReg(REG_DIOMAPPING1, RF_DIOMAPPING1_DIO0_00); // DIO0 is "Packet Sent"
+	if (bufferSize > RF69_MAX_DATA_LEN) bufferSize = RF69_MAX_DATA_LEN;
 
+	// control byte
+	volatile uint8_t CTLbyte = 0x00;
+	if (sendACK)
+	CTLbyte = RFM69_CTL_SENDACK;
+	else if (requestACK)
+	CTLbyte = RFM69_CTL_REQACK;
 
-#include <RFM69registers.h>
+	// write to FIFO
+	select();
+	spi_transceive_wait(&spi_master_instance, REG_FIFO | 0x80, &read_buf); //SPI.transfer(REG_FIFO | 0x80); // CHANGE //
+	spi_transceive_wait(&spi_master_instance, bufferSize + 3, &read_buf); //SPI.transfer(bufferSize + 3); // CHANGE //
+	spi_transceive_wait(&spi_master_instance, toAddress, &read_buf); //SPI.transfer(toAddress); // CHANGE //
+	spi_transceive_wait(&spi_master_instance, _address, &read_buf); //SPI.transfer(_address); // CHANGE //
+	spi_transceive_wait(&spi_master_instance, CTLbyte, &read_buf); //SPI.transfer(CTLbyte); // CHANGE //
 
-volatile uint8_t RFM_DATA[RF69_MAX_DATA_LEN];
-volatile uint8_t _mode;        // current transceiver state
-volatile uint8_t RFM_DATALEN;
-volatile uint8_t RFM_SENDERID;
-volatile uint8_t TARGETID;     // should match _address
-volatile uint8_t PAYLOADLEN;
-volatile uint8_t ACK_REQUESTED;
-volatile uint8_t ACK_RECEIVED; // should be polled immediately after sending a packet with ACK request
-volatile int16_t RFM_RSSI;          // most accurate RSSI during reception (closest to the reception)
-volatile bool _inISR;
-RFM69* selfPointer;
+	for (uint8_t i = 0; i < bufferSize; i++)
+	spi_transceive_wait(&spi_master_instance, ((uint8_t*) buffer)[i], &read_buf); //SPI.transfer(((uint8_t*) buffer)[i]); // CHANGE //
+	unselect();
+
+	// no need to wait for transmit mode to be ready since its handled by the radio
+	setMode(RF69_MODE_TX);
+	reset_millis(); //uint32_t txStart = millis(); // CHANGE //
+	while (port_pin_get_input_level(PIN_PA03) == 0 && millis() < RF69_TX_LIMIT_MS); // wait for DIO0 to turn HIGH signalling transmission finish // CHANGE //
+	setMode(RF69_MODE_STANDBY);
+}
+
+// for RFM69HW only: you must call RFM_setHighPower(true) after RFM_initialize() or else transmission won't work
+void RFM_setHighPower(bool onOff) {
+	_isRFM69HW = onOff;
+	writeReg(REG_OCP, _isRFM69HW ? RF_OCP_OFF : RF_OCP_ON);
+	if (_isRFM69HW) // turning ON
+	writeReg(REG_PALEVEL, (readReg(REG_PALEVEL) & 0x1F) | RF_PALEVEL_PA1_ON | RF_PALEVEL_PA2_ON); // enable P1 & P2 amplifier stages
+	else
+	writeReg(REG_PALEVEL, RF_PALEVEL_PA0_ON | RF_PALEVEL_PA1_OFF | RF_PALEVEL_PA2_OFF | _powerLevel); // enable P0 only
+}
+
+void RFM69()
+{
+	_mode = RF69_MODE_STANDBY;
+	_promiscuousMode = false;
+	_powerLevel = 31;
+	_isRFM69HW = false;
+}
 
 bool RFM_initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
 {
+  RFM69();
+
   const uint8_t CONFIG[][2] =
   {
     /* 0x01 */ { REG_OPMODE, RF_OPMODE_SEQUENCER_ON | RF_OPMODE_LISTEN_OFF | RF_OPMODE_STANDBY },
@@ -296,30 +338,33 @@ bool RFM_initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
   //SPI.begin(); // CHANGE //
 
   configure_RFM69_spi();
+  configure_rtc_count(); // Configure the RTC module for millis()
 
-  unsigned long start = millis(); // CHANGE // 
-  uint8_t timeout = 50;
-  do writeReg(REG_SYNCVALUE1, 0xAA); while (readReg(REG_SYNCVALUE1) != 0xaa && millis()-start < timeout); // CHANGE // 
-  start = millis(); // CHANGE // 
-  do writeReg(REG_SYNCVALUE1, 0x55); while (readReg(REG_SYNCVALUE1) != 0x55 && millis()-start < timeout); // CHANGE // 
+  reset_millis(); //unsigned long start = millis(); // CHANGE // 
+  volatile uint8_t timeout = 50;
+  do 
+	writeReg(REG_SYNCVALUE1, 0xAA); 
+  while (readReg(REG_SYNCVALUE1) != 0xaa && millis() < timeout); // CHANGE // 
+  
+  reset_millis(); //start = millis(); // CHANGE // 
+  do writeReg(REG_SYNCVALUE1, 0x55); while (readReg(REG_SYNCVALUE1) != 0x55 && millis() < timeout); // CHANGE // 
 
   for (uint8_t i = 0; CONFIG[i][0] != 255; i++)
     writeReg(CONFIG[i][0], CONFIG[i][1]);
 
   // Encryption is persistent between resets and can trip you up during debugging.
   // Disable it during initialization so we always start from a known state.
-  encrypt(0);
+  RFM_encrypt(0);
 
   RFM_setHighPower(_isRFM69HW); // called regardless if it's a RFM69W or RFM69HW
   setMode(RF69_MODE_STANDBY);
-  start = get_timer();
-  while (((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00) && millis()-start < timeout); // wait for ModeReady  // CHANGE //
-  if (millis()-start >= timeout) // CHANGE //
+  reset_millis(); //start = get_timer();
+  while (((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00) && millis() < timeout); // wait for ModeReady  // CHANGE //
+  if (millis() >= timeout) // CHANGE //
     return false;
   _inISR = false;
 
   configure_extint_callbacks(); //attachInterrupt(_interruptNum, isr0, RISING); // CHANGE //
-  configure_rtc_count(); // Configure the RTC module for millis()
 
   _address = nodeID;
   return true;
@@ -334,7 +379,7 @@ uint32_t getFrequency()
 // set the frequency (in Hz)
 void setFrequency(uint32_t freqHz)
 {
-  uint8_t oldMode = _mode;
+  volatile uint8_t oldMode = _mode;
   if (oldMode == RF69_MODE_TX) {
     setMode(RF69_MODE_RX);
   }
@@ -427,8 +472,8 @@ bool canSend()
 void RFM_send(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool requestACK)
 {
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
-  uint32_t now = millis(); // CHANGE //
-  while (!canSend() && millis() - now < RF69_CSMA_LIMIT_MS) RFM_receiveDone(); // CHANGE //
+  reset_millis(); //uint32_t now = millis(); // CHANGE //
+  while (!canSend() && millis() < RF69_CSMA_LIMIT_MS) RFM_receiveDone(); // CHANGE //
   sendFrame(toAddress, buffer, bufferSize, requestACK, false);
 }
 
@@ -439,12 +484,12 @@ void RFM_send(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool re
 // requires user action to read the received data and decide what to do with it
 // replies usually take only 5..8ms at 50kbps@915MHz
 bool RFM_sendWithRetry(uint8_t toAddress, const void* buffer, uint8_t bufferSize, uint8_t retries, uint8_t retryWaitTime) {
-  uint32_t sentTime;
+  //uint32_t sentTime;
   for (uint8_t i = 0; i <= retries; i++)
   {
-    send(toAddress, buffer, bufferSize, true);
-    sentTime = millis(); // CHANGE //
-    while (millis() - sentTime < retryWaitTime) // CHANGE //
+    RFM_send(toAddress, buffer, bufferSize, true);
+    reset_millis(); //sentTime = millis(); // CHANGE //
+    while (millis() < retryWaitTime) // CHANGE //
     {
       if (ACKReceived(toAddress))
       {
@@ -470,48 +515,14 @@ bool RFM_ACKRequested() {
 // should be called immediately after reception in case sender wants ACK
 void RFM_sendACK(const void* buffer, uint8_t bufferSize) {
   ACK_REQUESTED = 0;   // TWS added to make sure we don't end up in a timing race and infinite loop sending Acks
-  uint8_t sender = RFM_SENDERID;
-  int16_t _RSSI = RFM_RSSI; // save payload received RSSI value
+  volatile uint8_t sender = RFM_SENDERID;
+  volatile int16_t _RSSI = RFM_RSSI; // save payload received RSSI value
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
-  uint32_t now = millis(); // CHANGE //
-  while (!canSend() && millis() - now < RF69_CSMA_LIMIT_MS) RFM_receiveDone(); // CHANGE //
+  reset_millis(); //uint32_t now = millis(); // CHANGE //
+  while (!canSend() && millis() < RF69_CSMA_LIMIT_MS) RFM_receiveDone(); // CHANGE //
   RFM_SENDERID = sender;    // TWS: Restore SenderID after it gets wiped out by RFM_receiveDone()
   sendFrame(sender, buffer, bufferSize, false, true);
   RFM_RSSI = _RSSI; // restore payload RSSI
-}
-
-// internal function
-void sendFrame(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool requestACK, bool RFM_sendACK)
-{
-  setMode(RF69_MODE_STANDBY); // turn off receiver to prevent reception while filling fifo
-  while ((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00); // wait for ModeReady
-  writeReg(REG_DIOMAPPING1, RF_DIOMAPPING1_DIO0_00); // DIO0 is "Packet Sent"
-  if (bufferSize > RF69_MAX_DATA_LEN) bufferSize = RF69_MAX_DATA_LEN;
-
-  // control byte
-  uint8_t CTLbyte = 0x00;
-  if (RFM_sendACK)
-    CTLbyte = RFM69_CTL_SENDACK;
-  else if (requestACK)
-    CTLbyte = RFM69_CTL_REQACK;
-
-  // write to FIFO
-  select();
-  spi_write(REG_FIFO | 0x80); //spi_write(REG_FIFO | 0x80); //SPI.transfer(REG_FIFO | 0x80); // CHANGE //
-  spi_write(bufferSize + 3); //spi_write(bufferSize + 3); //SPI.transfer(bufferSize + 3); // CHANGE //
-  spi_write(toAddress); //spi_write(toAddress); //SPI.transfer(toAddress); // CHANGE //
-  spi_write(_address); //spi_write(_address) //SPI.transfer(_address); // CHANGE //
-  spi_write(CTLbyte); //spi_write(CTLbyte); //SPI.transfer(CTLbyte); // CHANGE //
-
-  for (uint8_t i = 0; i < bufferSize; i++)
-    spi_write(((uint8_t*) buffer)[i]); //SPI.transfer(((uint8_t*) buffer)[i]); // CHANGE //
-  unselect();
-
-  // no need to wait for transmit mode to be ready since its handled by the radio
-  setMode(RF69_MODE_TX);
-  uint32_t txStart = millis(); // CHANGE //
-  while (digitalRead(_interruptPin) == 0 && millis() - txStart < RF69_TX_LIMIT_MS); // wait for DIO0 to turn HIGH signalling transmission finish // CHANGE //
-  setMode(RF69_MODE_STANDBY);
 }
 
 // internal function - interrupt gets called when a packet is received
@@ -520,10 +531,10 @@ void interruptHandler() {
   {
     setMode(RF69_MODE_STANDBY);
     select();
-    spi_write(REG_FIFO & 0x7F); //SPI.transfer(REG_FIFO & 0x7F); // CHANGE //
-    PAYLOADLEN = spi_write(0); //SPI.transfer(0); // CHANGE //
+    spi_transceive_wait(&spi_master_instance, REG_FIFO & 0x7F, &read_buf); //SPI.transfer(REG_FIFO & 0x7F); // CHANGE //
+    PAYLOADLEN = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
     PAYLOADLEN = PAYLOADLEN > 66 ? 66 : PAYLOADLEN; // precaution
-    TARGETID = spi_write(0); //SPI.transfer(0); // CHANGE //
+    TARGETID = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
     if(!(_promiscuousMode || TARGETID == _address || TARGETID == RF69_BROADCAST_ADDR) // match this node's address, or broadcast address or anything in promiscuous mode
        || PAYLOADLEN < 3) // address situation could receive packets that are malformed and don't fit this libraries extra fields
     {
@@ -534,17 +545,15 @@ void interruptHandler() {
     }
 
     RFM_DATALEN = PAYLOADLEN - 3;
-    RFM_SENDERID = spi_write(0); //SPI.transfer(0); // CHANGE //
-    uint8_t CTLbyte = spi_write(0); //SPI.transfer(0); // CHANGE //
+    RFM_SENDERID = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
+    volatile uint8_t CTLbyte = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
 
     ACK_RECEIVED = CTLbyte & RFM69_CTL_SENDACK; // extract ACK-received flag
     ACK_REQUESTED = CTLbyte & RFM69_CTL_REQACK; // extract ACK-requested flag
-    
-    interruptHook(CTLbyte);     // TWS: hook to derived class interrupt function
 
     for (uint8_t i = 0; i < RFM_DATALEN; i++)
     {
-      RFM_DATA[i] = spi_write(0); //SPI.transfer(0); // CHANGE //
+      RFM_DATA[i] = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
     }
     if (RFM_DATALEN < RF69_MAX_DATA_LEN) RFM_DATA[RFM_DATALEN] = 0; // add null at end of string
     unselect();
@@ -554,7 +563,12 @@ void interruptHandler() {
 }
 
 // internal function
-void isr0() { _inISR = true; interruptHandler(); _inISR = false; } // CHANGE //?
+void isr0()
+{ 
+	_inISR = true; 
+	interruptHandler(); 
+	_inISR = false;
+} // CHANGE //?
 
 // internal function
 void receiveBegin() {
@@ -592,47 +606,42 @@ bool RFM_receiveDone() {
 // To enable encryption: radio.encrypt("ABCDEFGHIJKLMNOP");
 // To disable encryption: radio.encrypt(null) or radio.encrypt(0)
 // KEY HAS TO BE 16 bytes !!!
-RFM_encrypt(const char* key) {
+void RFM_encrypt(const char* key) {
   setMode(RF69_MODE_STANDBY);
   if (key != 0)
   {
     select();
-    spi_write(REG_AESKEY1 | 0x80); //SPI.transfer(REG_AESKEY1 | 0x80); // CHANGE //
+    spi_transceive_wait(&spi_master_instance, REG_AESKEY1 | 0x80, &read_buf); //SPI.transfer(REG_AESKEY1 | 0x80); // CHANGE //
     for (uint8_t i = 0; i < 16; i++)
-      spi_write(key[i]); //SPI.transfer(key[i]); // CHANGE //
+      spi_transceive_wait(&spi_master_instance, key[i], &read_buf); //SPI.transfer(key[i]); // CHANGE //
     unselect();
   }
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFE) | (key ? 1 : 0));
 }
 
 // get the received signal strength indicator (RFM_RSSI)
-int16_t readRSSI(bool forceTrigger) {
-  int16_t rssi = 0;
-  if (forceTrigger)
-  {
-    // RSSI trigger not needed if DAGC is in continuous mode
-    writeReg(REG_RSSICONFIG, RF_RSSI_START);
-    while ((readReg(REG_RSSICONFIG) & RF_RSSI_DONE) == 0x00); // wait for RSSI_Ready
-  }
+int16_t readRSSI() {
+  volatile int16_t rssi = 0;
   rssi = -readReg(REG_RSSIVALUE);
   rssi >>= 1;
   return rssi;
 }
 
-uint8_t readReg(uint8_t addr)
+uint8_t readReg(volatile uint16_t addr)
 {
   select();
-  spi_write(addr & 0x7F); //SPI.transfer(addr & 0x7F); // CHANGE //
-  uint8_t regval = spi_write(0); //SPI.transfer(0); // CHANGE //
+  spi_transceive_wait(&spi_master_instance, addr & 0x7F, &read_buf); //SPI.transfer(addr & 0x7F); // CHANGE //
+  volatile uint16_t regval = 0;
+  spi_transceive_wait(&spi_master_instance, 0, &regval); //SPI.transfer(0); // CHANGE //
   unselect();
-  return regval;
+  return (uint8_t)regval;
 }
 
 void writeReg(uint8_t addr, uint8_t value)
 {
   select();
-  spi_write(addr | 0x80); //SPI.transfer(addr | 0x80); // CHANGE //
-  spi_write(value); //SPI.transfer(value); // CHANGE //
+  spi_transceive_wait(&spi_master_instance, addr | 0x80, &read_buf); //SPI.transfer(addr | 0x80); // CHANGE //
+  spi_transceive_wait(&spi_master_instance, value, &read_buf); //SPI.transfer(value); // CHANGE //
   unselect();
 }
 
@@ -655,19 +664,9 @@ void unselect() {
 
 // true  = disable filtering to capture all frames on network
 // false = enable node/broadcast filtering to capture only frames sent to this/broadcast address
-void promiscuous(bool onOff) {
+void RFM_promiscuous(bool onOff) {
   _promiscuousMode = onOff;
   //writeReg(REG_PACKETCONFIG1, (readReg(REG_PACKETCONFIG1) & 0xF9) | (onOff ? RF_PACKET1_ADRSFILTERING_OFF : RF_PACKET1_ADRSFILTERING_NODEBROADCAST));
-}
-
-// for RFM69HW only: you must call RFM_setHighPower(true) after RFM_initialize() or else transmission won't work
-void RFM_setHighPower(bool onOff) {
-  _isRFM69HW = onOff;
-  writeReg(REG_OCP, _isRFM69HW ? RF_OCP_OFF : RF_OCP_ON);
-  if (_isRFM69HW) // turning ON
-    writeReg(REG_PALEVEL, (readReg(REG_PALEVEL) & 0x1F) | RF_PALEVEL_PA1_ON | RF_PALEVEL_PA2_ON); // enable P1 & P2 amplifier stages
-  else
-    writeReg(REG_PALEVEL, RF_PALEVEL_PA0_ON | RF_PALEVEL_PA1_OFF | RF_PALEVEL_PA2_OFF | _powerLevel); // enable P0 only
 }
 
 // internal function
@@ -678,7 +677,7 @@ void setHighPowerRegs(bool onOff) {
 
 // set the slave select (CS) pin 
 void setCS(uint8_t newSPISlaveSelect) {
-  _slaveSelectPin = newSPISlaveSelect;
+  //_slaveSelectPin = newSPISlaveSelect;
   //digitalWrite(_slaveSelectPin, HIGH); // CHANGE //
   //pinMode(_slaveSelectPin, OUTPUT); // CHANGE //
   spi_select_slave(&spi_master_instance, &slave, false);
@@ -687,11 +686,11 @@ void setCS(uint8_t newSPISlaveSelect) {
 //for debugging
 #define REGISTER_DETAIL 0
 
-void readAllRegs()
+/*void readAllRegs()
 {
   uint8_t regVal;
   
-  Serial.println("Address - HEX - BIN");
+  //Serial.println("Address - HEX - BIN");
   for (uint8_t regAddr = 1; regAddr <= 0x4F; regAddr++)
   {
     select();
@@ -706,7 +705,7 @@ void readAllRegs()
     //Serial.println(regVal,BIN); // CHANGE //
   }
   unselect();
-}
+}*/
 
 void rcCalibration()
 {
@@ -714,7 +713,7 @@ void rcCalibration()
   while ((readReg(REG_OSC1) & RF_OSC1_RCCAL_DONE) == 0x00);
 }
 
-inline void maybeInterrupts()
+void maybeInterrupts()
 {
   // Only reenable interrupts if we're not being called from the ISR
   if (!_inISR) 

@@ -149,7 +149,7 @@ int main (void)
 			if (USEACK)
 			{
 				int ACK = 0;
-				if (RFM_sendWithRetry(TONODEID, sendbuffer, sendlength, 2, 40))
+				if (RFM_sendWithRetry(TONODEID, sendbuffer, sendlength, 2, 100))
 					ACK = 1;
 				else
 					ACK = 0;

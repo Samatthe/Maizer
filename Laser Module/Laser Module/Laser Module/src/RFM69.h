@@ -61,15 +61,15 @@
 #define RFM69_CTL_SENDACK   0x80
 #define RFM69_CTL_REQACK    0x40
 
-volatile uint8_t RFM_DATA[RF69_MAX_DATA_LEN]; // recv/xmit buf, including header & crc bytes
-volatile uint8_t RFM_DATALEN;
-volatile uint8_t RFM_SENDERID;
-volatile uint8_t TARGETID; // should match _address
-volatile uint8_t PAYLOADLEN;
-volatile uint8_t ACK_REQUESTED;
-volatile uint8_t ACK_RECEIVED; // should be polled immediately after sending a packet with ACK request
+volatile uint16_t RFM_DATA[RF69_MAX_DATA_LEN]; // recv/xmit buf, including header & crc bytes
+volatile uint16_t RFM_DATALEN;
+volatile uint16_t RFM_SENDERID;
+volatile uint16_t TARGETID; // should match _address
+volatile uint16_t PAYLOADLEN;
+volatile uint16_t ACK_REQUESTED;
+volatile uint16_t ACK_RECEIVED; // should be polled immediately after sending a packet with ACK request
 volatile int16_t RFM_RSSI; // most accurate RSSI during reception (closest to the reception)
-volatile uint8_t _mode; // should be protected?
+volatile uint16_t _mode; // should be protected?
 
 
 void RFM69(void);
@@ -144,8 +144,8 @@ void configure_extint_channel(void)
 	config_extint_chan.gpio_pin           = PIN_PA03A_EIC_EXTINT3;
 	config_extint_chan.gpio_pin_mux       = MUX_PA03A_EIC_EXTINT3;
 	config_extint_chan.gpio_pin_pull      = EXTINT_PULL_UP;
-	config_extint_chan.detection_criteria = EXTINT_DETECT_BOTH;
-	extint_chan_set_config(15, &config_extint_chan);
+	config_extint_chan.detection_criteria = EXTINT_DETECT_RISING;
+	extint_chan_set_config(3, &config_extint_chan);
 }
 void configure_extint_callbacks(void)
 {
@@ -212,12 +212,12 @@ void configure_rtc_count(void)
 	rtc_count_init(&rtc_instance, RTC, &config_rtc_count);
 	rtc_count_enable(&rtc_instance);
 
-	rtc_count_set_period(&rtc_instance, 2000);
+	rtc_count_set_period(&rtc_instance, 10000);
 }
 
 void reset_millis(void)
 {
-	rtc_count_set_count(&rtc_instance, 10);
+	rtc_count_set_count(&rtc_instance, 0);
 	rtc_count_enable(&rtc_instance);
 }
 
@@ -226,7 +226,6 @@ uint32_t millis(void)
     //rtc_count_set_count(&rtc_instance, 20);
 	volatile uint32_t milli = 0;
 	milli = rtc_count_get_count(&rtc_instance);
-	milli = milli;
 	return milli;
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -338,7 +337,10 @@ bool RFM_initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
   //SPI.begin(); // CHANGE //
 
   configure_RFM69_spi();
-  configure_rtc_count(); // Configure the RTC module for millis()
+  configure_rtc_count(); // Configure the RTC module for millis
+  configure_port_pins();
+  configure_extint_channel();
+
 
   reset_millis(); //unsigned long start = millis(); // CHANGE // 
   volatile uint8_t timeout = 50;
@@ -527,14 +529,14 @@ void RFM_sendACK(const void* buffer, uint8_t bufferSize) {
 
 // internal function - interrupt gets called when a packet is received
 void interruptHandler() {
-  if (_mode == RF69_MODE_RX && (readReg(REG_IRQFLAGS2) & RF_IRQFLAGS2_PAYLOADREADY))
+  if (_mode == RF69_MODE_RX && (readReg(REG_IRQFLAGS2) & RF_IRQFLAGS2_PAYLOADREADY)) //
   {
     setMode(RF69_MODE_STANDBY);
     select();
     spi_transceive_wait(&spi_master_instance, REG_FIFO & 0x7F, &read_buf); //SPI.transfer(REG_FIFO & 0x7F); // CHANGE //
-    PAYLOADLEN = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
+    spi_transceive_wait(&spi_master_instance, 0, &PAYLOADLEN); //SPI.transfer(0); // CHANGE //
     PAYLOADLEN = PAYLOADLEN > 66 ? 66 : PAYLOADLEN; // precaution
-    TARGETID = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
+    spi_transceive_wait(&spi_master_instance, 0, &TARGETID); //SPI.transfer(0); // CHANGE //
     if(!(_promiscuousMode || TARGETID == _address || TARGETID == RF69_BROADCAST_ADDR) // match this node's address, or broadcast address or anything in promiscuous mode
        || PAYLOADLEN < 3) // address situation could receive packets that are malformed and don't fit this libraries extra fields
     {
@@ -545,15 +547,16 @@ void interruptHandler() {
     }
 
     RFM_DATALEN = PAYLOADLEN - 3;
-    RFM_SENDERID = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
-    volatile uint8_t CTLbyte = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
+    spi_transceive_wait(&spi_master_instance, 0, &RFM_SENDERID); //SPI.transfer(0); // CHANGE //
+    uint8_t CTLbyte = 0;
+	spi_transceive_wait(&spi_master_instance, 0, &CTLbyte); //SPI.transfer(0); // CHANGE //
 
     ACK_RECEIVED = CTLbyte & RFM69_CTL_SENDACK; // extract ACK-received flag
     ACK_REQUESTED = CTLbyte & RFM69_CTL_REQACK; // extract ACK-requested flag
 
     for (uint8_t i = 0; i < RFM_DATALEN; i++)
     {
-      RFM_DATA[i] = spi_transceive_wait(&spi_master_instance, 0, &read_buf); //SPI.transfer(0); // CHANGE //
+      spi_transceive_wait(&spi_master_instance, 0, RFM_DATA + i); //SPI.transfer(0); // CHANGE //
     }
     if (RFM_DATALEN < RF69_MAX_DATA_LEN) RFM_DATA[RFM_DATALEN] = 0; // add null at end of string
     unselect();

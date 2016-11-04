@@ -49,23 +49,20 @@ int main() {
     // SENDING
     
     // send "hello" every 1000 iterations:
-    if (delayer == 1000)
+    if (delayer == 100000000)
     {
       delayer = 0;
     
       // Send the packet!
       cout << "sending to node " << TONODEID << ": [";
-cout << "in loop" << endl;
 
       for (unsigned int i = 0; i < sendlength; i++)
         cout << sendbuffer[i];
-      cout << "]" << endl;
-cout << "in loop1" << endl;      
+      cout << "]" << endl;     
       // There are two ways to send packets. If you want
       // acknowledgements, use sendWithRetry():
       if (USEACK)
       {
-cout << "in loop2" << endl;
         if (radio.sendWithRetry(TONODEID, sendbuffer, sendlength))
           cout << "ACK received!" << endl;
         else
@@ -75,8 +72,7 @@ cout << "in loop2" << endl;
       else // don't use ACK
       {
         radio.send(TONODEID, sendbuffer, sendlength);
-      }
-cout << "in loop3" << endl;      
+      }    
       //sendlength = 0; // reset the packet
     }
 

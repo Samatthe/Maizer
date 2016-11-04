@@ -28,7 +28,8 @@
 // Please maintain this license information along with authorship
 // and copyright notices in any redistribution of this code
 // **********************************************************************************
-#define ISR_PIN 24 //may be 5?
+#define ISR_PIN 24 //interrupt pin (to output 0 on RFM69)
+#define SELECT_PIN 25 //select pin
 
 #include "RFM69registers.h"
 #include "RFM69.h"
@@ -52,6 +53,8 @@ volatile uint8_t RFM69::ACK_REQUESTED;
 volatile uint8_t RFM69::ACK_RECEIVED; // should be polled immediately after sending a packet with ACK request
 volatile int16_t RFM69::RSSI;          // most accurate RSSI during reception (closest to the reception)
 RFM69* RFM69::selfPointer;
+
+unsigned char SPIbuffer[1] = {0};
 
 bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
 {
@@ -98,9 +101,16 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
   };
 
   int fd, result;
-  fd = wiringPiSPISetup(SPI_CHANNEL, 4000000); //fd is the filehandle for spi
+  fd = wiringPiSPISetup(SPI_CHANNEL, 60000); //fd is the filehandle for spi
+
+  wiringPiSetupGpio(); //setup slave select pin
+  pinMode(SELECT_PIN, OUTPUT);
+
+  digitalWrite(SELECT_PIN, HIGH);// set the pin initallity high
+
   unsigned long start = millis();
   uint8_t timeout = 50;
+
   do writeReg(REG_SYNCVALUE1, 0xAA); while (readReg(REG_SYNCVALUE1) != 0xaa && millis()-start < timeout);
   start = millis();
   do writeReg(REG_SYNCVALUE1, 0x55); while (readReg(REG_SYNCVALUE1) != 0x55 && millis()-start < timeout);
@@ -226,14 +236,10 @@ bool RFM69::canSend()
 
 void RFM69::send(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool requestACK)
 {
-cout << "in send" << endl;
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
-cout << "reg written" << endl;
   uint32_t now = millis();
-cout << "still in send" << endl;
   while (!canSend() && millis() - now < RF69_CSMA_LIMIT_MS) receiveDone();
   sendFrame(toAddress, buffer, bufferSize, requestACK, false);
-cout << "end of send" << endl;
 }
 
 // to increase the chance of getting a packet across, call this function instead of send
@@ -289,41 +295,53 @@ void RFM69::sendACK(const void* buffer, uint8_t bufferSize) {
 // internal function
 void RFM69::sendFrame(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool requestACK, bool sendACK)
 {
-cout << "in send frame" << endl;
   setMode(RF69_MODE_STANDBY); // turn off receiver to prevent reception while filling fifo
-cout << "2" << endl;
   while ((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00); // wait for ModeReady
-cout << "3" << endl;
   writeReg(REG_DIOMAPPING1, RF_DIOMAPPING1_DIO0_00); // DIO0 is "Packet Sent"
-cout << "4" << endl;
   if (bufferSize > RF69_MAX_DATA_LEN) bufferSize = RF69_MAX_DATA_LEN;
-cout << "still in frame" << endl;
   // control byte
   uint8_t CTLbyte = 0x00;
   if (sendACK)
     CTLbyte = RFM69_CTL_SENDACK;
   else if (requestACK)
     CTLbyte = RFM69_CTL_REQACK;
-cout << "still in frame2" << endl;
   // write to FIFO
   select();
-  wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(REG_FIFO | 0x80), 1);//SPI.transfer(REG_FIFO | 0x80);
-  wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(bufferSize + 3), 1);//SPI.transfer(bufferSize + 3);
-  wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(toAddress), 1);//SPI.transfer(toAddress);
-  wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(_address), 1);//SPI.transfer(_address);
-  wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(CTLbyte), 1);//SPI.transfer(CTLbyte);
-cout << "still in frame3" << endl;
-  for (uint8_t i = 0; i < bufferSize; i++)
-    wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)((uint8_t*) buffer)[i], 1);//SPI.transfer(((uint8_t*) buffer)[i]);
+
+  SPIbuffer[0] = 0;
+  SPIbuffer[0] = REG_FIFO | 0x80;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(REG_FIFO | 0x80);
+
+  SPIbuffer[0] = 0;
+  SPIbuffer[0] = bufferSize + 3;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(bufferSize + 3);
+
+  SPIbuffer[0] = 0;
+  SPIbuffer[0] = toAddress;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(toAddress);
+
+  SPIbuffer[0] = 0;
+  SPIbuffer[0] = _address;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(_address);
+
+  SPIbuffer[0] = 0;
+  SPIbuffer[0] = CTLbyte;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(CTLbyte);
+
+  for (uint8_t i = 0; i < bufferSize; i++) {
+    SPIbuffer[0] = 0;
+    SPIbuffer[0] = ((uint8_t*) buffer)[i];
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(((uint8_t*) buffer)[i]);
+    //wiringPiSPIDataRW(SPI_CHANNEL, &((uint8_t*) buffer)[i], 1);
+
+  }
   unselect();
-cout << "still in frame4" << endl;
   // no need to wait for transmit mode to be ready since its handled by the radio
   setMode(RF69_MODE_TX);
   uint32_t txStart = millis();
   while (digitalRead(_interruptPin) == 0 && millis() - txStart < RF69_TX_LIMIT_MS); // wait for DIO0 to turn HIGH signalling transmission finish
   //while (readReg(REG_IRQFLAGS2) & RF_IRQFLAGS2_PACKETSENT == 0x00); // wait for ModeReady
   setMode(RF69_MODE_STANDBY);
-cout << "still in frame5" << endl;
 }
 
 // internal function - interrupt gets called when a packet is received
@@ -335,10 +353,21 @@ void RFM69::interruptHandler() {
     //RSSI = readRSSI();
     setMode(RF69_MODE_STANDBY);
     select();
-    wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(REG_FIFO & 0x7F), 1);//SPI.transfer(REG_FIFO & 0x7F);
-    PAYLOADLEN = wiringPiSPIDataRW(SPI_CHANNEL, 0, 1); // SPI.transfer(0);
+
+    SPIbuffer[0] = 0;
+    SPIbuffer[0] = REG_FIFO & 0x7F;
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(REG_FIFO & 0x7F);
+
+    SPIbuffer[0] = 0;
+
+    //PAYLOADLEN = wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); // SPI.transfer(0);
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);
+    PAYLOADLEN = SPIbuffer[0];
     PAYLOADLEN = PAYLOADLEN > 66 ? 66 : PAYLOADLEN; // precaution
-    TARGETID = wiringPiSPIDataRW(SPI_CHANNEL, 0, 1);//SPI.transfer(0);
+
+    SPIbuffer[0] = 0;
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(0);
+    TARGETID = SPIbuffer[0];
     if(!(_promiscuousMode || TARGETID == _address || TARGETID == RF69_BROADCAST_ADDR) // match this node's address, or broadcast address or anything in promiscuous mode
        || PAYLOADLEN < 3) // address situation could receive packets that are malformed and don't fit this libraries extra fields
     {
@@ -350,8 +379,12 @@ void RFM69::interruptHandler() {
     }
 
     DATALEN = PAYLOADLEN - 3;
-    SENDERID = wiringPiSPIDataRW(SPI_CHANNEL, 0, 1);//SPI.transfer(0);
-    uint8_t CTLbyte = wiringPiSPIDataRW(SPI_CHANNEL, 0, 1);//SPI.transfer(0);
+
+    SPIbuffer[0] = 0;
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(0);
+    SENDERID = SPIbuffer[0];
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(0);
+    uint8_t CTLbyte = SPIbuffer[0];
 
     ACK_RECEIVED = CTLbyte & RFM69_CTL_SENDACK; // extract ACK-received flag
     ACK_REQUESTED = CTLbyte & RFM69_CTL_REQACK; // extract ACK-requested flag
@@ -360,7 +393,9 @@ void RFM69::interruptHandler() {
 
     for (uint8_t i = 0; i < DATALEN; i++)
     {
-      DATA[i] = wiringPiSPIDataRW(SPI_CHANNEL, 0, 1);;
+      SPIbuffer[0] = 0;
+      wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);
+      DATA[i] = SPIbuffer[0];
     }
     if (DATALEN < RF69_MAX_DATA_LEN) DATA[DATALEN] = 0; // add null at end of string
     unselect();
@@ -416,9 +451,16 @@ void RFM69::encrypt(const char* key) {
   if (key != 0)
   {
     select();
-    wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(REG_AESKEY1 | 0x80), 1);//SPI.transfer(REG_AESKEY1 | 0x80);
-    for (uint8_t i = 0; i < 16; i++)
-      wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(key[i]), 1);//SPI.transfer(key[i]);
+
+    SPIbuffer[0] = 0;
+    SPIbuffer[0] = REG_AESKEY1 | 0x80;
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(REG_AESKEY1 | 0x80);
+
+    for (uint8_t i = 0; i < 16; i++) {
+      SPIbuffer[0] = 0;
+      SPIbuffer[0] = key[i];
+      wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(key[i]);
+    }
     unselect();
   }
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFE) | (key ? 1 : 0));
@@ -440,23 +482,30 @@ int16_t RFM69::readRSSI(bool forceTrigger) {
 
 uint8_t RFM69::readReg(uint8_t addr)
 {
-	cout << "here" << endl;
   select();
-  cout << "there" << endl;
-  wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(addr & 0x7F), 1);//SPI.transfer(addr & 0x7F);
-  cout << "plzwork" << endl;
-  uint8_t regval = wiringPiSPIDataRW(SPI_CHANNEL, 0, 1); //SPI.transfer(0);
-  cout << "srslyplzwork " << regval << endl;
+
+  SPIbuffer[0] = 0;
+  SPIbuffer[0] = addr & 0x7F;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(addr & 0x7F);
+
+  SPIbuffer[0] = 0;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); //SPI.transfer(0);
   unselect();
-  cout << "prttyplz" << endl;
-  return regval;
+  return SPIbuffer[0];
 }
 
 void RFM69::writeReg(uint8_t addr, uint8_t value)
 {
   select();
-  wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(addr | 0x80), 1); //SPI.transfer(addr | 0x80);
-  wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(value), 1); //SPI.transfer(value);
+
+  SPIbuffer[0] = 0;
+  SPIbuffer[0] = addr | 0x80;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); //SPI.transfer(addr | 0x80);
+
+  SPIbuffer[0] = 0;
+  SPIbuffer[0] = value;
+  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); //SPI.transfer(value);
+
   unselect();
 }
 
@@ -471,17 +520,19 @@ void RFM69::select() {
   // set RFM69 SPI settings
   //SPI.setDataMode(SPI_MODE0);
   //SPI.setBitOrder(MSBFIRST);
-  //digitalWrite(_slaveSelectPin, LOW);
+  delay(.1);
+  digitalWrite(SELECT_PIN, LOW);
 }
 
 // unselect the RFM69 transceiver (set CS high, restore SPI settings)
 void RFM69::unselect() {
-  //digitalWrite(_slaveSelectPin, HIGH);
+  digitalWrite(SELECT_PIN, HIGH);
   // restore SPI settings to what they were before talking to RFM69
 #if defined (SPCR) && defined (SPSR)
   SPCR = _SPCR;
   SPSR = _SPSR;
 #endif
+  delay(.1);
   //interrupts(); // CHANGE //
 }
 
@@ -510,7 +561,7 @@ void RFM69::setHighPowerRegs(bool onOff) {
 
 // set the slave select (CS) pin 
 void RFM69::setCS(uint8_t newSPISlaveSelect) {
-  _slaveSelectPin = newSPISlaveSelect;
+  //_slaveSelectPin = newSPISlaveSelect;
   //digitalWrite(_slaveSelectPin, HIGH);
   //pinMode(_slaveSelectPin, OUTPUT);
 }
@@ -548,8 +599,14 @@ void RFM69::readAllRegs()
   for (uint8_t regAddr = 1; regAddr <= 0x4F; regAddr++)
   {
     select();
-    wiringPiSPIDataRW(SPI_CHANNEL, (unsigned char*)(regAddr & 0x7F), 1); //SPI.transfer(regAddr & 0x7F); // send address + r/w bit
-    regVal = wiringPiSPIDataRW(SPI_CHANNEL, 0, 1);// SPI.transfer(0);
+
+    SPIbuffer[0] = 0;
+    SPIbuffer[0] = regAddr & 0x7F;
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); //SPI.transfer(regAddr & 0x7F); // send address + r/w bit
+
+    SPIbuffer[0] = 0;
+    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);// SPI.transfer(0);
+    regVal = SPIbuffer[0];
     unselect();
 
     cout << hex << regAddr;

@@ -110,13 +110,10 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
 
   unsigned long start = millis();
   uint8_t timeout = 50;
-  cout << "here" << endl;
+
   do writeReg(REG_SYNCVALUE1, 0xAA); while (readReg(REG_SYNCVALUE1) != 0xaa && millis()-start < timeout);
-  cout << "here2" << endl;
   start = millis();
-  cout << "here3" << endl;
   do writeReg(REG_SYNCVALUE1, 0x55); while (readReg(REG_SYNCVALUE1) != 0x55 && millis()-start < timeout);
-  cout << "here4" << endl;
 
   for (uint8_t i = 0; CONFIG[i][0] != 255; i++)
     writeReg(CONFIG[i][0], CONFIG[i][1]);

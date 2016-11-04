@@ -55,17 +55,17 @@ int main() {
     
       // Send the packet!
       cout << "sending to node " << TONODEID << ": [";
-cout << "in loop" << endl;
+//cout << "in loop" << endl;
 
       for (unsigned int i = 0; i < sendlength; i++)
         cout << sendbuffer[i];
       cout << "]" << endl;
-cout << "in loop1" << endl;      
+//cout << "in loop1" << endl;      
       // There are two ways to send packets. If you want
       // acknowledgements, use sendWithRetry():
       if (USEACK)
       {
-cout << "in loop2" << endl;
+//cout << "in loop2" << endl;
         if (radio.sendWithRetry(TONODEID, sendbuffer, sendlength))
           cout << "ACK received!" << endl;
         else
@@ -75,8 +75,7 @@ cout << "in loop2" << endl;
       else // don't use ACK
       {
         radio.send(TONODEID, sendbuffer, sendlength);
-      }
-cout << "in loop3" << endl;      
+      }    
       //sendlength = 0; // reset the packet
     }
 

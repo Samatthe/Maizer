@@ -1309,6 +1309,20 @@ Standard decoupling cap</description>
 <text x="-2" y="-4.1" size="1.27" layer="27" font="vector">&gt;VALUE</text>
 <wire x1="-2.5" y1="1.5" x2="-1.5" y2="2.5" width="0.127" layer="21"/>
 </package>
+<package name="SOT-23">
+<smd name="1" x="-1.27" y="-1.27" dx="1.05" dy="0.6" layer="1" rot="R90"/>
+<smd name="2" x="0" y="-1.27" dx="1.05" dy="0.6" layer="1" rot="R90"/>
+<smd name="3" x="1.27" y="-1.27" dx="1.05" dy="0.6" layer="1" rot="R90"/>
+<smd name="4" x="1.27" y="1.27" dx="1.05" dy="0.6" layer="1" rot="R90"/>
+<smd name="5" x="-1.27" y="1.27" dx="1.05" dy="0.6" layer="1" rot="R90"/>
+<wire x1="-1.525" y1="0.875" x2="1.525" y2="0.875" width="0.127" layer="21"/>
+<wire x1="1.525" y1="0.875" x2="1.525" y2="-0.875" width="0.127" layer="21"/>
+<wire x1="1.525" y1="-0.875" x2="-1.525" y2="-0.875" width="0.127" layer="21"/>
+<wire x1="-1.525" y1="-0.875" x2="-1.525" y2="0.875" width="0.127" layer="21"/>
+<circle x="-1.1" y="-0.4" radius="0.2" width="0" layer="21"/>
+<text x="-1.6" y="2.1" size="0.6096" layer="25">&gt;NAME</text>
+<text x="-1.6" y="-2.7" size="0.6096" layer="25">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="APA102">
@@ -1323,6 +1337,19 @@ Standard decoupling cap</description>
 <pin name="CKO" x="12.7" y="0" length="middle" rot="R180"/>
 <pin name="VCC" x="12.7" y="-5.08" length="middle" rot="R180"/>
 <text x="-6.6" y="1.4" size="2.54" layer="94">APA102</text>
+</symbol>
+<symbol name="SPST_CMOS_SWITCH">
+<pin name="COM" x="-10.16" y="2.54" length="middle"/>
+<pin name="NO" x="-10.16" y="0" length="middle"/>
+<pin name="GND" x="-10.16" y="-2.54" length="middle"/>
+<pin name="IN" x="12.7" y="-2.54" length="middle" rot="R180"/>
+<pin name="V+" x="12.7" y="2.54" length="middle" rot="R180"/>
+<wire x1="-5.08" y1="5.08" x2="7.62" y2="5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="5.08" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-5.08" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="-5.08" x2="-5.08" y2="5.08" width="0.254" layer="94"/>
+<text x="-5.08" y="6.35" size="1.27" layer="95">&gt;NAME</text>
+<text x="-5.08" y="-7.62" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -1339,6 +1366,25 @@ Standard decoupling cap</description>
 <connect gate="G$1" pin="SDI" pad="SDI"/>
 <connect gate="G$1" pin="SDO" pad="SDO"/>
 <connect gate="G$1" pin="VCC" pad="VCC"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TS12A4514">
+<gates>
+<gate name="G$1" symbol="SPST_CMOS_SWITCH" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SOT-23">
+<connects>
+<connect gate="G$1" pin="COM" pad="1"/>
+<connect gate="G$1" pin="GND" pad="3"/>
+<connect gate="G$1" pin="IN" pad="5"/>
+<connect gate="G$1" pin="NO" pad="2"/>
+<connect gate="G$1" pin="V+" pad="4"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -1378,6 +1424,9 @@ Standard decoupling cap</description>
 <part name="C3" library="SparkFun-Capacitors" deviceset="0.1UF-25V(+80/-20%)(0603)" device="" value="0.1uF"/>
 <part name="SUPPLY6" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="GND7" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
+<part name="U$2" library="SAUVE" deviceset="TS12A4514" device=""/>
+<part name="SUPPLY7" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
+<part name="GND8" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1390,15 +1439,20 @@ Standard decoupling cap</description>
 <wire x1="0" y1="0.254" x2="0" y2="68.58" width="0.1524" layer="94"/>
 <text x="45.72" y="63.5" size="3.81" layer="94" ratio="15">RFM69</text>
 <text x="10.16" y="101.6" size="3.81" layer="94">HEADER</text>
-<wire x1="0" y1="106.68" x2="40.64" y2="106.68" width="0.1524" layer="94"/>
-<wire x1="40.64" y1="106.68" x2="40.64" y2="71.12" width="0.1524" layer="94"/>
-<wire x1="40.64" y1="71.12" x2="0" y2="71.12" width="0.1524" layer="94"/>
+<wire x1="0" y1="106.68" x2="43.18" y2="106.68" width="0.1524" layer="94"/>
+<wire x1="43.18" y1="106.68" x2="43.18" y2="71.12" width="0.1524" layer="94"/>
+<wire x1="43.18" y1="71.12" x2="0" y2="71.12" width="0.1524" layer="94"/>
 <wire x1="0" y1="71.12" x2="0" y2="106.68" width="0.1524" layer="94"/>
 <text x="76.2" y="101.6" size="3.81" layer="94">APA102</text>
-<wire x1="58.42" y1="106.68" x2="114.3" y2="106.68" width="0.1524" layer="94"/>
+<wire x1="48.26" y1="106.68" x2="114.3" y2="106.68" width="0.1524" layer="94"/>
 <wire x1="114.3" y1="106.68" x2="114.3" y2="71.12" width="0.1524" layer="94"/>
-<wire x1="114.3" y1="71.12" x2="58.42" y2="71.12" width="0.1524" layer="94"/>
-<wire x1="58.42" y1="71.12" x2="58.42" y2="106.68" width="0.1524" layer="94"/>
+<wire x1="114.3" y1="71.12" x2="48.26" y2="71.12" width="0.1524" layer="94"/>
+<wire x1="48.26" y1="71.12" x2="48.26" y2="106.68" width="0.1524" layer="94"/>
+<wire x1="119.38" y1="106.68" x2="119.38" y2="71.12" width="0.1524" layer="94"/>
+<wire x1="119.38" y1="71.12" x2="167.64" y2="71.12" width="0.1524" layer="94"/>
+<wire x1="167.64" y1="71.12" x2="167.64" y2="106.68" width="0.1524" layer="94"/>
+<wire x1="167.64" y1="106.68" x2="119.38" y2="106.68" width="0.1524" layer="94"/>
+<text x="127" y="99.06" size="2.54" layer="94">APA CHIP SELECT</text>
 </plain>
 <instances>
 <instance part="J1" gate="G$1" x="20.32" y="86.36"/>
@@ -1421,6 +1475,9 @@ Standard decoupling cap</description>
 <instance part="C3" gate="G$1" x="104.14" y="83.82"/>
 <instance part="SUPPLY6" gate="G$1" x="104.14" y="93.98"/>
 <instance part="GND7" gate="1" x="104.14" y="76.2"/>
+<instance part="U$2" gate="G$1" x="144.78" y="83.82"/>
+<instance part="SUPPLY7" gate="G$1" x="160.02" y="88.9"/>
+<instance part="GND8" gate="1" x="132.08" y="76.2"/>
 </instances>
 <busses>
 </busses>
@@ -1469,6 +1526,12 @@ Standard decoupling cap</description>
 <pinref part="GND7" gate="1" pin="GND"/>
 <wire x1="104.14" y1="78.74" x2="104.14" y2="81.28" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="GND"/>
+<pinref part="GND8" gate="1" pin="GND"/>
+<wire x1="134.62" y1="81.28" x2="132.08" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="132.08" y1="81.28" x2="132.08" y2="78.74" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="3.3V" class="0">
 <segment>
@@ -1503,6 +1566,12 @@ Standard decoupling cap</description>
 <pinref part="C3" gate="G$1" pin="1"/>
 <pinref part="SUPPLY6" gate="G$1" pin="3.3V"/>
 <wire x1="104.14" y1="93.98" x2="104.14" y2="88.9" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="V+"/>
+<pinref part="SUPPLY7" gate="G$1" pin="3.3V"/>
+<wire x1="157.48" y1="86.36" x2="160.02" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="86.36" x2="160.02" y2="88.9" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="ANT" class="0">
@@ -1548,14 +1617,14 @@ Standard decoupling cap</description>
 <label x="10.16" y="83.82" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<pinref part="U$1" gate="G$1" pin="CKI"/>
-<wire x1="68.58" y1="86.36" x2="66.04" y2="86.36" width="0.1524" layer="91"/>
-<label x="66.04" y="86.36" size="1.27" layer="95" rot="R180" xref="yes"/>
-</segment>
-<segment>
 <pinref part="U2" gate="G$1" pin="SCK"/>
 <wire x1="55.88" y1="27.94" x2="60.96" y2="27.94" width="0.1524" layer="91"/>
 <label x="55.88" y="27.94" size="1.27" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="COM"/>
+<wire x1="134.62" y1="86.36" x2="132.08" y2="86.36" width="0.1524" layer="91"/>
+<label x="132.08" y="86.36" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="CE0" class="0">
@@ -1564,11 +1633,6 @@ Standard decoupling cap</description>
 <wire x1="27.94" y1="83.82" x2="33.02" y2="83.82" width="0.1524" layer="91"/>
 <label x="33.02" y="83.82" size="1.27" layer="95" xref="yes"/>
 </segment>
-<segment>
-<pinref part="U2" gate="G$1" pin="NSS"/>
-<wire x1="55.88" y1="25.4" x2="60.96" y2="25.4" width="0.1524" layer="91"/>
-<label x="55.88" y="25.4" size="1.27" layer="95" rot="R180" xref="yes"/>
-</segment>
 </net>
 <net name="CE1" class="0">
 <segment>
@@ -1576,17 +1640,46 @@ Standard decoupling cap</description>
 <wire x1="27.94" y1="81.28" x2="33.02" y2="81.28" width="0.1524" layer="91"/>
 <label x="33.02" y="81.28" size="1.27" layer="95" xref="yes"/>
 </segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="IN"/>
+<wire x1="157.48" y1="81.28" x2="160.02" y2="81.28" width="0.1524" layer="91"/>
+<label x="160.02" y="81.28" size="1.27" layer="95" xref="yes"/>
+</segment>
 </net>
-<net name="INT" class="0">
+<net name="GPIO25" class="0">
+<segment>
+<pinref part="J1" gate="G$1" pin="6"/>
+<wire x1="27.94" y1="86.36" x2="33.02" y2="86.36" width="0.1524" layer="91"/>
+<label x="33.02" y="86.36" size="1.27" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="U2" gate="G$1" pin="NSS"/>
+<wire x1="55.88" y1="25.4" x2="60.96" y2="25.4" width="0.1524" layer="91"/>
+<label x="55.88" y="25.4" size="1.27" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="GPIO24" class="0">
+<segment>
+<pinref part="J1" gate="G$1" pin="2"/>
+<wire x1="27.94" y1="91.44" x2="30.48" y2="91.44" width="0.1524" layer="91"/>
+<label x="30.48" y="91.44" size="1.27" layer="95" xref="yes"/>
+</segment>
 <segment>
 <pinref part="U2" gate="G$1" pin="DIO0"/>
 <wire x1="91.44" y1="40.64" x2="93.98" y2="40.64" width="0.1524" layer="91"/>
 <label x="93.98" y="40.64" size="1.27" layer="95" xref="yes"/>
 </segment>
+</net>
+<net name="APA_SCLK" class="0">
 <segment>
-<pinref part="J1" gate="G$1" pin="2"/>
-<wire x1="27.94" y1="91.44" x2="30.48" y2="91.44" width="0.1524" layer="91"/>
-<label x="30.48" y="91.44" size="1.27" layer="95" xref="yes"/>
+<pinref part="U$1" gate="G$1" pin="CKI"/>
+<wire x1="68.58" y1="86.36" x2="66.04" y2="86.36" width="0.1524" layer="91"/>
+<label x="66.04" y="86.36" size="1.27" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="NO"/>
+<wire x1="134.62" y1="83.82" x2="132.08" y2="83.82" width="0.1524" layer="91"/>
+<label x="132.08" y="83.82" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>

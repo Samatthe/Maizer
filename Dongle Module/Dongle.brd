@@ -150,6 +150,9 @@
 <wire x1="45" y1="25.5" x2="42.5" y2="28" width="0" layer="20"/>
 <wire x1="42.5" y1="28" x2="5" y2="28" width="0" layer="20"/>
 <wire x1="5" y1="28" x2="0" y2="23" width="0" layer="20"/>
+<text x="32.6" y="23.4" size="2.1844" layer="22" ratio="12" rot="MR0">AIZER</text>
+<text x="37.8" y="21.9" size="0.8128" layer="22" ratio="12" rot="MR0">Dongle Module</text>
+<text x="41.2" y="0.9" size="0.8128" layer="22" ratio="10" rot="MR0">Designed By: Matt Sauvé</text>
 </plain>
 <libraries>
 <library name="SparkFun-Capacitors">
@@ -720,6 +723,92 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </package>
 </packages>
 </library>
+<library name="MAAV_BlockM">
+<packages>
+<package name="BLOCK-M-5MM">
+<polygon width="0" layer="21">
+<vertex x="2.286" y="-1.651"/>
+<vertex x="0.5588" y="-1.651"/>
+<vertex x="0.5588" y="-0.6985"/>
+<vertex x="0.9271" y="-0.6985"/>
+<vertex x="0.9271" y="0.2667"/>
+<vertex x="0" y="-1.0541"/>
+<vertex x="-0.9271" y="0.2667"/>
+<vertex x="-0.9271" y="-0.6985"/>
+<vertex x="-0.5588" y="-0.6985"/>
+<vertex x="-0.5588" y="-1.651"/>
+<vertex x="-2.286" y="-1.651"/>
+<vertex x="-2.286" y="-0.6985"/>
+<vertex x="-1.9304" y="-0.6985"/>
+<vertex x="-1.9304" y="0.8001"/>
+<vertex x="-2.286" y="0.8001"/>
+<vertex x="-2.286" y="1.778"/>
+<vertex x="-0.9398" y="1.778"/>
+<vertex x="0" y="0.4318"/>
+<vertex x="0.9398" y="1.778"/>
+<vertex x="2.286" y="1.778"/>
+<vertex x="2.286" y="0.8001"/>
+<vertex x="1.9304" y="0.8001"/>
+<vertex x="1.9304" y="-0.6985"/>
+<vertex x="2.286" y="-0.6985"/>
+</polygon>
+</package>
+<package name="BLOCK-M-5MM-MASK">
+<polygon width="0" layer="29">
+<vertex x="2.286" y="-1.651"/>
+<vertex x="0.5588" y="-1.651"/>
+<vertex x="0.5588" y="-0.6985"/>
+<vertex x="0.9271" y="-0.6985"/>
+<vertex x="0.9271" y="0.2667"/>
+<vertex x="0" y="-1.0541"/>
+<vertex x="-0.9271" y="0.2667"/>
+<vertex x="-0.9271" y="-0.6985"/>
+<vertex x="-0.5588" y="-0.6985"/>
+<vertex x="-0.5588" y="-1.651"/>
+<vertex x="-2.286" y="-1.651"/>
+<vertex x="-2.286" y="-0.6985"/>
+<vertex x="-1.9304" y="-0.6985"/>
+<vertex x="-1.9304" y="0.8001"/>
+<vertex x="-2.286" y="0.8001"/>
+<vertex x="-2.286" y="1.778"/>
+<vertex x="-0.9398" y="1.778"/>
+<vertex x="0" y="0.4318"/>
+<vertex x="0.9398" y="1.778"/>
+<vertex x="2.286" y="1.778"/>
+<vertex x="2.286" y="0.8001"/>
+<vertex x="1.9304" y="0.8001"/>
+<vertex x="1.9304" y="-0.6985"/>
+<vertex x="2.286" y="-0.6985"/>
+</polygon>
+<polygon width="0.1524" layer="1">
+<vertex x="2.286" y="-1.651"/>
+<vertex x="0.5588" y="-1.651"/>
+<vertex x="0.5588" y="-0.6985"/>
+<vertex x="0.9271" y="-0.6985"/>
+<vertex x="0.9271" y="0.2667"/>
+<vertex x="0" y="-1.0541"/>
+<vertex x="-0.9271" y="0.2667"/>
+<vertex x="-0.9271" y="-0.6985"/>
+<vertex x="-0.5588" y="-0.6985"/>
+<vertex x="-0.5588" y="-1.651"/>
+<vertex x="-2.286" y="-1.651"/>
+<vertex x="-2.286" y="-0.6985"/>
+<vertex x="-1.9304" y="-0.6985"/>
+<vertex x="-1.9304" y="0.8001"/>
+<vertex x="-2.286" y="0.8001"/>
+<vertex x="-2.286" y="1.778"/>
+<vertex x="-0.9398" y="1.778"/>
+<vertex x="0" y="0.4318"/>
+<vertex x="0.9398" y="1.778"/>
+<vertex x="2.286" y="1.778"/>
+<vertex x="2.286" y="0.8001"/>
+<vertex x="1.9304" y="0.8001"/>
+<vertex x="1.9304" y="-0.6985"/>
+<vertex x="2.286" y="-0.6985"/>
+</polygon>
+</package>
+</packages>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -925,13 +1014,13 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="PROD_ID" value="CAP-12416" x="26.23" y="5.22" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="26.9285" y="6.109" size="0.4064" layer="25" rot="R270"/>
 </element>
-<element name="C16" library="samd21-temp" package="0402-CAP" value="15pF" x="38.37" y="3.89" smashed="yes" rot="R90">
-<attribute name="PROD_ID" value="CAP-13063" x="38.37" y="3.89" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="37.6715" y="3.001" size="0.4064" layer="25" rot="R90"/>
+<element name="C16" library="samd21-temp" package="0402-CAP" value="15pF" x="40.47" y="3.59" smashed="yes" rot="R90">
+<attribute name="PROD_ID" value="CAP-13063" x="40.47" y="3.59" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="39.7715" y="2.701" size="0.4064" layer="25" rot="R90"/>
 </element>
-<element name="C17" library="samd21-temp" package="0402-CAP" value="15pF" x="39.23" y="7.1" smashed="yes" rot="R90">
-<attribute name="PROD_ID" value="CAP-13063" x="39.23" y="7.1" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="40.5315" y="6.511" size="0.4064" layer="25" rot="R90"/>
+<element name="C17" library="samd21-temp" package="0402-CAP" value="15pF" x="40.43" y="7.1" smashed="yes" rot="R90">
+<attribute name="PROD_ID" value="CAP-13063" x="40.43" y="7.1" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="NAME" x="41.7315" y="6.511" size="0.4064" layer="25" rot="R90"/>
 </element>
 <element name="C18" library="SparkFun-Capacitors" package="0805-CAP" value="1.0uF" x="35.39" y="18.51" smashed="yes" rot="R270">
 <attribute name="PROD_ID" value="CAP-11625" x="35.39" y="18.51" size="1.778" layer="27" rot="R270" display="off"/>
@@ -994,9 +1083,9 @@ Please make sure your boards conform to these design rules.</description>
 <attribute name="PROD_ID" value="VREG-12457" x="31.38" y="18.47" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="31.521" y="18.081" size="0.4064" layer="25" rot="R90"/>
 </element>
-<element name="Y1" library="samd21-temp" package="CRYSTAL-SMD-3.2X1.5MM" value="32.768kHz" x="41.9" y="5.38" smashed="yes" rot="R270">
-<attribute name="PROD_ID" value="XTAL-13062" x="41.9" y="5.38" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="43.043" y="5.38" size="0.8128" layer="25" rot="R270" align="bottom-center"/>
+<element name="Y1" library="samd21-temp" package="CRYSTAL-SMD-3.2X1.5MM" value="32.768kHz" x="42.6" y="5.38" smashed="yes" rot="R270">
+<attribute name="PROD_ID" value="XTAL-13062" x="42.6" y="5.38" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="42.82" y="2.443" size="0.8128" layer="25" align="bottom-center"/>
 </element>
 <element name="S1" library="SparkFun-Electromechanical" package="TACTILE_SWITCH_TALL" value="SWITCH-MOMENTARY-2SMD-4" x="5.5" y="14" smashed="yes" rot="R90">
 <attribute name="PROD_ID" value="SWCH-11966" x="5.5" y="14" size="1.778" layer="27" rot="R90" display="off"/>
@@ -1004,13 +1093,13 @@ Please make sure your boards conform to these design rules.</description>
 <element name="R1" library="SparkFun-Resistors" package="0603-RES" value="330" x="6.9" y="20.5">
 <attribute name="PROD_ID" value="RES-00818" x="6.9" y="20.5" size="1.778" layer="27" display="off"/>
 </element>
-<element name="U$1" library="SAUVE" package="APA102" value="APA102" x="22" y="13.9" smashed="yes" rot="R180">
-<attribute name="VALUE" x="25.3" y="18" size="1.27" layer="27" font="vector" rot="R180"/>
-</element>
+<element name="U$1" library="SAUVE" package="APA102" value="APA102" x="22" y="13.9" smashed="yes" rot="R180"/>
 <element name="ANT" library="SparkFun-Connectors" package="1X01_NO_SILK" value="" x="15.9" y="2.9" smashed="yes">
-<attribute name="NAME" x="14.2712" y="1.4938" size="1.27" layer="25" rot="R90"/>
+<attribute name="NAME" x="14.7062" y="3.4712" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="14.63" y="-0.275" size="1.27" layer="27"/>
 </element>
+<element name="U$2" library="MAAV_BlockM" package="BLOCK-M-5MM" value="" x="35.6" y="25.1" rot="MR0"/>
+<element name="U$3" library="MAAV_BlockM" package="BLOCK-M-5MM-MASK" value="" x="13.4" y="23.6"/>
 </elements>
 <signals>
 <signal name="GND">
@@ -1062,8 +1151,6 @@ Please make sure your boards conform to these design rules.</description>
 <vertex x="45" y="25.5"/>
 <vertex x="45" y="2.5"/>
 </polygon>
-<wire x1="36.92" y1="8" x2="38.91" y2="8" width="0.3048" layer="1"/>
-<wire x1="38.91" y1="8" x2="39.23" y2="7.68" width="0.3048" layer="1"/>
 <wire x1="32.42" y1="4.5" x2="32.42" y2="2.7" width="0.3048" layer="1"/>
 <wire x1="32.42" y1="2.7" x2="32.2" y2="2.7" width="0.3048" layer="1"/>
 <wire x1="32.2" y1="2.7" x2="32.4" y2="2.9" width="0.3048" layer="1"/>
@@ -1076,6 +1163,8 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="41.3" y1="15.3" x2="40.3" y2="15.3" width="0.4064" layer="1"/>
 <wire x1="40.3" y1="15.3" x2="39.6" y2="16" width="0.4064" layer="1"/>
 <via x="32" y="15.4" extent="1-16" drill="0.6" shape="square"/>
+<wire x1="36.92" y1="8" x2="38.2" y2="8" width="0.3048" layer="1"/>
+<wire x1="38.2" y1="8" x2="38.7" y2="8.5" width="0.3048" layer="1"/>
 </signal>
 <signal name="3.3V">
 <contactref element="C2" pad="1"/>
@@ -1233,19 +1322,19 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="U8" pad="1"/>
 <contactref element="Y1" pad="P$2"/>
 <contactref element="C16" pad="2"/>
-<wire x1="38.37" y1="4.47" x2="38.37" y2="4.55" width="0.3048" layer="1"/>
-<wire x1="38.37" y1="4.55" x2="36.92" y2="6" width="0.3048" layer="1"/>
-<wire x1="41.9" y1="4.13" x2="41.46" y2="4.47" width="0.3048" layer="1"/>
-<wire x1="41.46" y1="4.47" x2="38.37" y2="4.47" width="0.3048" layer="1"/>
+<wire x1="42.6" y1="4.13" x2="42.56" y2="4.17" width="0.3048" layer="1"/>
+<wire x1="42.56" y1="4.17" x2="40.47" y2="4.17" width="0.3048" layer="1"/>
+<wire x1="40.47" y1="4.17" x2="38.64" y2="6" width="0.3048" layer="1"/>
+<wire x1="38.64" y1="6" x2="36.92" y2="6" width="0.3048" layer="1"/>
 </signal>
 <signal name="N$13">
 <contactref element="C17" pad="1"/>
 <contactref element="Y1" pad="P$1"/>
 <contactref element="U8" pad="2"/>
-<wire x1="39.23" y1="6.52" x2="39.21" y2="6.5" width="0.3048" layer="1"/>
-<wire x1="39.21" y1="6.5" x2="36.92" y2="6.5" width="0.3048" layer="1"/>
-<wire x1="41.9" y1="6.63" x2="41.89" y2="6.52" width="0.3048" layer="1"/>
-<wire x1="41.89" y1="6.52" x2="39.23" y2="6.52" width="0.3048" layer="1"/>
+<wire x1="42.6" y1="6.63" x2="40.54" y2="6.63" width="0.3048" layer="1"/>
+<wire x1="40.54" y1="6.63" x2="40.43" y2="6.52" width="0.3048" layer="1"/>
+<wire x1="40.43" y1="6.52" x2="40.41" y2="6.5" width="0.3048" layer="1"/>
+<wire x1="40.41" y1="6.5" x2="36.92" y2="6.5" width="0.3048" layer="1"/>
 </signal>
 <signal name="!RESET">
 <contactref element="U8" pad="40"/>
@@ -1485,7 +1574,20 @@ Please make sure your boards conform to these design rules.</description>
 <signal name="RF_INT">
 <contactref element="U1" pad="14"/>
 <contactref element="U8" pad="4"/>
-<wire x1="5.91" y1="6.54" x2="36.92" y2="7.5" width="0" layer="19" extent="1-16"/>
+<via x="38.9" y="7.4" extent="1-16" drill="0.6"/>
+<via x="5.9" y="9.1" extent="1-16" drill="0.6"/>
+<wire x1="38.9" y1="7.4" x2="38.8" y2="7.5" width="0.3048" layer="1"/>
+<wire x1="38.8" y1="7.5" x2="36.92" y2="7.5" width="0.3048" layer="1"/>
+<wire x1="5.91" y1="6.54" x2="5.9" y2="6.55" width="0.3048" layer="16"/>
+<wire x1="5.9" y1="6.55" x2="5.9" y2="9.1" width="0.3048" layer="16"/>
+<wire x1="5.9" y1="9.1" x2="9.6" y2="5.4" width="0.3048" layer="1"/>
+<wire x1="9.6" y1="5.4" x2="16.7" y2="5.4" width="0.3048" layer="1"/>
+<wire x1="16.7" y1="5.4" x2="21.3" y2="0.8" width="0.3048" layer="1"/>
+<wire x1="21.3" y1="0.8" x2="36.1" y2="0.8" width="0.3048" layer="1"/>
+<wire x1="36.1" y1="0.8" x2="37.8" y2="2.5" width="0.3048" layer="1"/>
+<via x="37.8" y="2.5" extent="1-16" drill="0.6"/>
+<wire x1="37.8" y1="2.5" x2="38.9" y2="3.6" width="0.3048" layer="16"/>
+<wire x1="38.9" y1="3.6" x2="38.9" y2="7.4" width="0.3048" layer="16"/>
 </signal>
 </signals>
 </board>

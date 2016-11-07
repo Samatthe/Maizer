@@ -3,6 +3,8 @@
 #include "RFM69.h"
 #include <iostream>
 #include <string>
+#include <wiringPiSPI.h>
+#include <wiringPi.h>
 
 using namespace std;
 
@@ -19,6 +21,31 @@ using namespace std;
 
 // Use ACKnowledge when sending messages (or not):
 #define USEACK        true // Request ACKs or not
+
+// colors can be made by creating an unsigned long int
+// colors are 1 byte each, 0x<blue><green><red>
+const unsigned long int red = 0x0000FF;//red
+const unsigned long int green = 0x00FF00;//green
+const unsigned long int blue = 0xFF0000;//blue
+
+//int blah = wiringPiSPISetup(1, 100000);
+unsigned char LEDSPIbuffer[8];
+
+void setLEDcolor(unsigned long int val) {
+  cout << "attempting to set color" << endl;
+  LEDSPIbuffer[0] = 0x00; //starting frame
+  LEDSPIbuffer[1] = 0x00;
+  LEDSPIbuffer[2] = 0x00;
+  LEDSPIbuffer[3] = 0x00;
+
+  LEDSPIbuffer[4] = 0xFF;
+  LEDSPIbuffer[5] = (val >> 16) & 0xFF;
+  LEDSPIbuffer[6] = (val >> 8) & 0xFF ;
+  LEDSPIbuffer[7] = (val & 0xFF);
+
+  wiringPiSPIDataRW(0, LEDSPIbuffer, 8);
+  delay(100);
+}
 
 
 int main() {
@@ -51,6 +78,7 @@ int main() {
     // send "hello" every 1000 iterations:
     if (delayer == 100000000)
     {
+      setLEDcolor(red);
       delayer = 0;
     
       // Send the packet!
@@ -82,6 +110,7 @@ int main() {
     // if it has received any packets:
     if (radio.receiveDone()) // Got one!
     {
+      setLEDcolor(green);
       // Print out the information:
       cout << "received from node " << radio.SENDERID << ": [";
 

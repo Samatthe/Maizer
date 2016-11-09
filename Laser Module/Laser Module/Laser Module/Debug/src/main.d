@@ -139,7 +139,8 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/sam0/drivers/tc/tc_interrupt.h \
  ../src/ASF/sam0/drivers/tc/tc.h ../src/ASF/sam0/drivers/tcc/tcc.h \
  ../src/ASF/sam0/drivers/tcc/tcc_callback.h \
- ../src/ASF/sam0/drivers/tcc/tcc.h ../src/RFM69.h ../src/RFM69registers.h
+ ../src/ASF/sam0/drivers/tcc/tcc.h ../src/RFM69.h ../src/RFM69registers.h \
+ ../src/BQ27441.h ../src/BQ27441_Definitions.h
 
 ../src/asf.h:
 
@@ -438,3 +439,7 @@ c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\
 ../src/RFM69.h:
 
 ../src/RFM69registers.h:
+
+../src/BQ27441.h:
+
+../src/BQ27441_Definitions.h:

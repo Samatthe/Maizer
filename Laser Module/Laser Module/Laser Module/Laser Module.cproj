@@ -720,6 +720,12 @@
     <None Include="src\ASF\sam0\drivers\rtc\rtc_count.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\BQ27441.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\BQ27441_Definitions.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\RFM69.h">
       <SubType>compile</SubType>
     </Compile>

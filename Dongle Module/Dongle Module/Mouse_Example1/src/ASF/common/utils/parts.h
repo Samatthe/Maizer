@@ -51,7 +51,8 @@
  * \defgroup part_macros_group Atmel part identification macros
  *
  * This collection of macros identify which series and families that the various
- * Atmel parts belong to. These can be used to select part-dependent sections of
+ * Atmel parts belong to. These can be used to 
+  part-dependent sections of
  * code at compile time.
  *
  * @{

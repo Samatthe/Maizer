@@ -115,7 +115,7 @@ volatile bool _isRFM69HW;
 void receiveBegin(void);
 void setMode(uint8_t mode);
 void setHighPowerRegs(bool onOff);
-void select(void);
+void selectrf(void);
 void unselect(void);
 void maybeInterrupts(void);
 
@@ -250,7 +250,7 @@ void sendFrame(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool r
 	CTLbyte = RFM69_CTL_REQACK;
 
 	// write to FIFO
-	select();
+	selectrf();
 	spi_transceive_wait(&spi_master_instance, REG_FIFO | 0x80, &read_buf); //SPI.transfer(REG_FIFO | 0x80); // CHANGE //
 	spi_transceive_wait(&spi_master_instance, bufferSize + 3, &read_buf); //SPI.transfer(bufferSize + 3); // CHANGE //
 	spi_transceive_wait(&spi_master_instance, toAddress, &read_buf); //SPI.transfer(toAddress); // CHANGE //
@@ -532,7 +532,7 @@ void interruptHandler() {
   if (_mode == RF69_MODE_RX && (readReg(REG_IRQFLAGS2) & RF_IRQFLAGS2_PAYLOADREADY)) //
   {
     setMode(RF69_MODE_STANDBY);
-    select();
+    selectrf();
     spi_transceive_wait(&spi_master_instance, REG_FIFO & 0x7F, &read_buf); //SPI.transfer(REG_FIFO & 0x7F); // CHANGE //
     spi_transceive_wait(&spi_master_instance, 0, &PAYLOADLEN); //SPI.transfer(0); // CHANGE //
     PAYLOADLEN = PAYLOADLEN > 66 ? 66 : PAYLOADLEN; // precaution
@@ -613,7 +613,7 @@ void RFM_encrypt(const char* key) {
   setMode(RF69_MODE_STANDBY);
   if (key != 0)
   {
-    select();
+    selectrf();
     spi_transceive_wait(&spi_master_instance, REG_AESKEY1 | 0x80, &read_buf); //SPI.transfer(REG_AESKEY1 | 0x80); // CHANGE //
     for (uint8_t i = 0; i < 16; i++)
       spi_transceive_wait(&spi_master_instance, key[i], &read_buf); //SPI.transfer(key[i]); // CHANGE //
@@ -632,7 +632,7 @@ int16_t readRSSI() {
 
 uint8_t readReg(volatile uint16_t addr)
 {
-  select();
+  selectrf();
   spi_transceive_wait(&spi_master_instance, addr & 0x7F, &read_buf); //SPI.transfer(addr & 0x7F); // CHANGE //
   volatile uint16_t regval = 0;
   spi_transceive_wait(&spi_master_instance, 0, &regval); //SPI.transfer(0); // CHANGE //
@@ -642,14 +642,14 @@ uint8_t readReg(volatile uint16_t addr)
 
 void writeReg(uint8_t addr, uint8_t value)
 {
-  select();
+  selectrf();
   spi_transceive_wait(&spi_master_instance, addr | 0x80, &read_buf); //SPI.transfer(addr | 0x80); // CHANGE //
   spi_transceive_wait(&spi_master_instance, value, &read_buf); //SPI.transfer(value); // CHANGE //
   unselect();
 }
 
 // select the RFM69 transceiver (save SPI settings, set CS low)
-void select() {
+void selectrf(void) {
   system_interrupt_disable_global(); //noInterrupts(); // CHANGE //
 
   // set RFM69 SPI settings

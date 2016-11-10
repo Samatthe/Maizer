@@ -1,6 +1,7 @@
-src/ASF/common/services/usb/udc/udc.d \
- src/ASF/common/services/usb/udc/udc.o: \
- ../src/ASF/common/services/usb/udc/udc.c ../src/config/conf_usb.h \
+src/ASF/sam0/drivers/sercom/spi/spi.d \
+ src/ASF/sam0/drivers/sercom/spi/spi.o: \
+ ../src/ASF/sam0/drivers/sercom/spi/spi.c \
+ ../src/ASF/sam0/drivers/sercom/spi/spi.h \
  ../src/ASF/sam0/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\5.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h ../src/ASF/sam0/utils/status_codes.h \
@@ -106,19 +107,23 @@ src/ASF/common/services/usb/udc/udc.d \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\alloca.h \
  ../src/ASF/common/utils/interrupt.h \
  ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h \
- ../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_conf.h \
- ../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.h \
- ../src/ASF/common/services/usb/usb_protocol.h \
- ../src/ASF/common/services/usb/usb_atmel.h \
- ../src/ASF/common/services/usb/class/hid/usb_protocol_hid.h \
- ../src/ASF/common/services/usb/udc/udc_desc.h \
- ../src/ASF/common/services/usb/udc/udi.h \
- ../src/ASF/common/services/usb/udc/udi.h ../src/main.h \
- ../src/ASF/common/services/usb/udc/udd.h \
- ../src/ASF/common/services/usb/udc/udc_desc.h \
- ../src/ASF/common/services/usb/udc/udc.h
+ ../src/ASF/sam0/drivers/port/port.h \
+ ../src/ASF/sam0/drivers/system/pinmux/pinmux.h \
+ ../src/ASF/sam0/drivers/sercom/sercom.h \
+ ../src/ASF/sam0/drivers/system/system.h \
+ ../src/ASF/sam0/drivers/system/clock/clock.h \
+ ../src/ASF/sam0/drivers/system/clock/gclk.h \
+ ../src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock_feature.h \
+ ../src/ASF/sam0/drivers/system/power/power_sam_d_r/power.h \
+ ../src/ASF/sam0/drivers/system/reset/reset_sam_d_r/reset.h \
+ ../src/ASF/sam0/drivers/system/interrupt/system_interrupt.h \
+ ../src/ASF/sam0/drivers/system/interrupt/system_interrupt_samd21/system_interrupt_features.h \
+ ../src/ASF/sam0/drivers/sercom/sercom_pinout.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h \
+ ../src/config/conf_spi.h
 
-../src/config/conf_usb.h:
+../src/ASF/sam0/drivers/sercom/spi/spi.h:
 
 ../src/ASF/sam0/utils/compiler.h:
 
@@ -332,26 +337,32 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h:
 
-../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_conf.h:
+../src/ASF/sam0/drivers/port/port.h:
 
-../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.h:
+../src/ASF/sam0/drivers/system/pinmux/pinmux.h:
 
-../src/ASF/common/services/usb/usb_protocol.h:
+../src/ASF/sam0/drivers/sercom/sercom.h:
 
-../src/ASF/common/services/usb/usb_atmel.h:
+../src/ASF/sam0/drivers/system/system.h:
 
-../src/ASF/common/services/usb/class/hid/usb_protocol_hid.h:
+../src/ASF/sam0/drivers/system/clock/clock.h:
 
-../src/ASF/common/services/usb/udc/udc_desc.h:
+../src/ASF/sam0/drivers/system/clock/gclk.h:
 
-../src/ASF/common/services/usb/udc/udi.h:
+../src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock_feature.h:
 
-../src/ASF/common/services/usb/udc/udi.h:
+../src/ASF/sam0/drivers/system/power/power_sam_d_r/power.h:
 
-../src/main.h:
+../src/ASF/sam0/drivers/system/reset/reset_sam_d_r/reset.h:
 
-../src/ASF/common/services/usb/udc/udd.h:
+../src/ASF/sam0/drivers/system/interrupt/system_interrupt.h:
 
-../src/ASF/common/services/usb/udc/udc_desc.h:
+../src/ASF/sam0/drivers/system/interrupt/system_interrupt_samd21/system_interrupt_features.h:
 
-../src/ASF/common/services/usb/udc/udc.h:
+../src/ASF/sam0/drivers/sercom/sercom_pinout.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h:
+
+../src/config/conf_spi.h:

@@ -66,7 +66,7 @@
 
 static volatile bool main_b_mouse_enable = false;
 
-void configure_port_pins(void);
+void configure_button_pins(void);
 void setLEDcolor(unsigned long int val);
 
 // colors can be made by creating an unsigned long int
@@ -89,18 +89,18 @@ void setLEDcolor(unsigned long int val) {
 	LEDSPIbuffer[6] = (val >> 8) & 0xFF ;
 	LEDSPIbuffer[7] = (val & 0xFF);
 
-	wiringPiSPIDataRW(0, LEDSPIbuffer, 8);
+	//wiringPiSPIDataRW(0, LEDSPIbuffer, 8);
 	
 	//Delay(100);
 	uint32_t time = millis();
 	do {
 		if(millis() < time)
 			time = millis();
-	} while(millis()-time < 100)
+	} while(millis()-time < 100);
 }
 
 // Configure the LED selection port as output
-void configure_port_pins(void)
+void configure_button_pins(void)
 {
 	struct port_config config_port_pin;
 	port_get_config_defaults(&config_port_pin);

@@ -46,7 +46,6 @@
 
 #include <asf.h>
 #include "ui.h"
-#include "RFM69.h"
 
 #define  MOUSE_MOVE_RANGE 5
 

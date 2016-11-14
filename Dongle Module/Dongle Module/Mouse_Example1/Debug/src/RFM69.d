@@ -1,6 +1,5 @@
-src/ASF/sam0/drivers/sercom/sercom.d src/ASF/sam0/drivers/sercom/sercom.o: \
- ../src/ASF/sam0/drivers/sercom/sercom.c \
- ../src/ASF/sam0/drivers/sercom/sercom.h ../src/ASF/sam0/utils/compiler.h \
+src/RFM69.d src/RFM69.o: ../src/RFM69.c ../src/asf.h \
+ ../src/ASF/sam0/utils/compiler.h \
  c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\4.9.3\include\stddef.h \
  ../src/ASF/common/utils/parts.h ../src/ASF/sam0/utils/status_codes.h \
  c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\4.9.3\include\stdint.h \
@@ -99,18 +98,53 @@ src/ASF/sam0/drivers/sercom/sercom.d src/ASF/sam0/drivers/sercom/sercom.o: \
  c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\alloca.h \
  ../src/ASF/common/utils/interrupt.h \
  ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h \
- ../src/ASF/sam0/drivers/system/system.h \
+ ../src/ASF/sam0/drivers/extint/extint.h \
+ ../src/ASF/sam0/drivers/system/pinmux/pinmux.h \
+ ../src/ASF/sam0/drivers/extint/extint_callback.h \
+ ../src/ASF/sam0/drivers/extint/extint_callback.h \
+ ../src/ASF/common/boards/board.h \
+ ../src/ASF/sam0/boards/samd21_xplained_pro/samd21_xplained_pro.h \
+ ../src/config/conf_board.h ../src/ASF/sam0/drivers/port/port.h \
+ ../src/ASF/sam0/drivers/rtc/rtc_count.h ../src/config/conf_clocks.h \
  ../src/ASF/sam0/drivers/system/clock/clock.h \
  ../src/ASF/sam0/drivers/system/clock/gclk.h \
  ../src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock_feature.h \
- ../src/ASF/sam0/drivers/system/pinmux/pinmux.h \
+ ../src/ASF/sam0/drivers/rtc/rtc_tamper.h \
+ ../src/ASF/sam0/drivers/usb/stack_interface/usb_dual.h \
+ ../src/ASF/sam0/drivers/sercom/sercom.h \
+ ../src/ASF/sam0/drivers/system/system.h \
  ../src/ASF/sam0/drivers/system/power/power_sam_d_r/power.h \
  ../src/ASF/sam0/drivers/system/reset/reset_sam_d_r/reset.h \
  ../src/ASF/sam0/drivers/system/interrupt/system_interrupt.h \
  ../src/ASF/sam0/drivers/system/interrupt/system_interrupt_samd21/system_interrupt_features.h \
- ../src/ASF/sam0/drivers/sercom/sercom_pinout.h
+ ../src/ASF/sam0/drivers/sercom/sercom_pinout.h \
+ ../src/ASF/sam0/drivers/sercom/spi/spi.h \
+ c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h \
+ c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h \
+ ../src/config/conf_spi.h \
+ ../src/ASF/common/services/sleepmgr/samd/sleepmgr.h \
+ ../src/config/conf_sleepmgr.h \
+ ../src/ASF/common/services/sleepmgr/sleepmgr.h \
+ ../src/ASF/common/services/sleepmgr/samd/sleepmgr.h \
+ ../src/ASF/sam0/drivers/usb/usb.h \
+ ../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.h \
+ ../src/config/conf_usb.h \
+ ../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_conf.h \
+ ../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.h \
+ ../src/main.h ../src/ASF/common/services/usb/usb_protocol.h \
+ ../src/ASF/common/services/usb/usb_atmel.h \
+ ../src/ASF/common/services/usb/class/hid/usb_protocol_hid.h \
+ ../src/ASF/common/services/usb/udc/udc_desc.h \
+ ../src/ASF/common/services/usb/udc/udi.h \
+ ../src/ASF/common/services/usb/udc/udi.h \
+ ../src/ASF/common/services/usb/udc/udc.h \
+ ../src/ASF/common/services/usb/udc/udc_desc.h \
+ ../src/ASF/common/services/usb/udc/udd.h \
+ ../src/ASF/common/services/usb/udc/udd.h \
+ ../src/ASF/common/services/usb/class/hid/device/udi_hid.h ../src/RFM69.h \
+ ../src/RFM69registers.h
 
-../src/ASF/sam0/drivers/sercom/sercom.h:
+../src/asf.h:
 
 ../src/ASF/sam0/utils/compiler.h:
 
@@ -312,7 +346,25 @@ c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\
 
 ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h:
 
-../src/ASF/sam0/drivers/system/system.h:
+../src/ASF/sam0/drivers/extint/extint.h:
+
+../src/ASF/sam0/drivers/system/pinmux/pinmux.h:
+
+../src/ASF/sam0/drivers/extint/extint_callback.h:
+
+../src/ASF/sam0/drivers/extint/extint_callback.h:
+
+../src/ASF/common/boards/board.h:
+
+../src/ASF/sam0/boards/samd21_xplained_pro/samd21_xplained_pro.h:
+
+../src/config/conf_board.h:
+
+../src/ASF/sam0/drivers/port/port.h:
+
+../src/ASF/sam0/drivers/rtc/rtc_count.h:
+
+../src/config/conf_clocks.h:
 
 ../src/ASF/sam0/drivers/system/clock/clock.h:
 
@@ -320,7 +372,13 @@ c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\
 
 ../src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock_feature.h:
 
-../src/ASF/sam0/drivers/system/pinmux/pinmux.h:
+../src/ASF/sam0/drivers/rtc/rtc_tamper.h:
+
+../src/ASF/sam0/drivers/usb/stack_interface/usb_dual.h:
+
+../src/ASF/sam0/drivers/sercom/sercom.h:
+
+../src/ASF/sam0/drivers/system/system.h:
 
 ../src/ASF/sam0/drivers/system/power/power_sam_d_r/power.h:
 
@@ -331,3 +389,57 @@ c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\
 ../src/ASF/sam0/drivers/system/interrupt/system_interrupt_samd21/system_interrupt_features.h:
 
 ../src/ASF/sam0/drivers/sercom/sercom_pinout.h:
+
+../src/ASF/sam0/drivers/sercom/spi/spi.h:
+
+c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\string.h:
+
+c:\disks\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\sys\string.h:
+
+../src/config/conf_spi.h:
+
+../src/ASF/common/services/sleepmgr/samd/sleepmgr.h:
+
+../src/config/conf_sleepmgr.h:
+
+../src/ASF/common/services/sleepmgr/sleepmgr.h:
+
+../src/ASF/common/services/sleepmgr/samd/sleepmgr.h:
+
+../src/ASF/sam0/drivers/usb/usb.h:
+
+../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.h:
+
+../src/config/conf_usb.h:
+
+../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_conf.h:
+
+../src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.h:
+
+../src/main.h:
+
+../src/ASF/common/services/usb/usb_protocol.h:
+
+../src/ASF/common/services/usb/usb_atmel.h:
+
+../src/ASF/common/services/usb/class/hid/usb_protocol_hid.h:
+
+../src/ASF/common/services/usb/udc/udc_desc.h:
+
+../src/ASF/common/services/usb/udc/udi.h:
+
+../src/ASF/common/services/usb/udc/udi.h:
+
+../src/ASF/common/services/usb/udc/udc.h:
+
+../src/ASF/common/services/usb/udc/udc_desc.h:
+
+../src/ASF/common/services/usb/udc/udd.h:
+
+../src/ASF/common/services/usb/udc/udd.h:
+
+../src/ASF/common/services/usb/class/hid/device/udi_hid.h:
+
+../src/RFM69.h:
+
+../src/RFM69registers.h:

@@ -4,6 +4,8 @@
 
 src\ASF\sam0\drivers\rtc\rtc_sam_d_r\rtc_count.c
 
+src\RFM69.c
+
 src\ASF\common\services\usb\class\hid\device\mouse\example\samd21j18a_samd21_xplained_pro\ui.c
 
 src\ASF\common\services\sleepmgr\samd\sleepmgr.c

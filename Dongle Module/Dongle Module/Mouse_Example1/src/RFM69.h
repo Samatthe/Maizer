@@ -261,7 +261,9 @@ void sendFrame(uint8_t toAddress, const void* buffer, uint8_t bufferSize, bool r
 	spi_transceive_wait(&spi_master_instance, ((uint8_t*) buffer)[i], &read_buf); //SPI.transfer(((uint8_t*) buffer)[i]); // CHANGE //
 	unselect();
 
-	// no need to wait for transmit mode to be ready since its handled by the radio
+	// no need to wait for transmit mode to be ready since its handled by the 
+	
+	
 	setMode(RF69_MODE_TX);
 	reset_millis(); //uint32_t txStart = millis(); // CHANGE //
 	while (port_pin_get_input_level(PIN_PA03) == 0 && millis() < RF69_TX_LIMIT_MS); // wait for DIO0 to turn HIGH signalling transmission finish // CHANGE //

@@ -62,12 +62,13 @@
 #define ENCRYPTKEY    "TOPSECRETPASSWRD" // Use the same 16-byte key on all nodes
 
 // Use ACKnowledge when sending messages:
-#define USEACK        true
+#define USEACK        false
 
 static volatile bool main_b_mouse_enable = false;
 
 void configure_button_pins(void);
 void setLEDcolor(unsigned long int val);
+void configure_radio();
 
 // colors can be made by creating an unsigned long int
 // colors are 1 byte each, 0x<blue><green><red>
@@ -106,6 +107,15 @@ void configure_button_pins(void)
 	port_get_config_defaults(&config_port_pin);
 	config_port_pin.direction = PORT_PIN_DIR_INPUT;
 	port_pin_set_config(PIN_PA15, &config_port_pin);
+}
+
+//configure the RFM69 module
+void configure_radio(void) {
+	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
+	RFM_setHighPower(true);
+	
+	if (ENCRYPT)
+		RFM_encrypt(ENCRYPTKEY);
 }
 
 int main(void)
@@ -149,7 +159,7 @@ int main(void)
 			}
 		}
 #else /* #ifdef USB_DEVICE_LOW_SPEED */
-		sleepmgr_enter_sleep();
+		//sleepmgr_enter_sleep();
 #endif
 	}
 }

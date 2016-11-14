@@ -47,7 +47,6 @@
 #ifndef _UI_H_
 #define _UI_H_
 
-#include "RFM69.h"
 //! \brief Initializes the user interface
 void ui_init(void);
 

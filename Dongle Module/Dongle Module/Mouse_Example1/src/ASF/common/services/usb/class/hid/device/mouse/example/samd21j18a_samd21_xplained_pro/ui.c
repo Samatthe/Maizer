@@ -46,14 +46,75 @@
 
 #include <asf.h>
 #include "ui.h"
+#include "RFM69.h"
+
+// Addresses for this node.
+#define NETWORKID     0   // Must be the same for all nodes (0 to 255)
+#define MYNODEID      2   // My node ID (0 to 255)
+#define TONODEID      1   // Destination node ID (0 to 254, 255 = broadcast)
+// RFM69 frequency:
+#define FREQUENCY     RF69_915MHZ
+// AES encryption:
+#define ENCRYPT       true // Set to "true" to use encryption
+#define ENCRYPTKEY    "TOPSECRETPASSWRD" // Use the same 16-byte key on all nodes
+// Use ACKnowledge when sending messages:
+#define USEACK        false
+
+
+////////
+#define CAMERA_MODULE_NODE_ID 1
+#define LASER_MODULE_NODE_ID 3
+static char radio_sendbuffer[62];
+static int radio_sendlength = 1;
+////////
+
+void configure_button_pins(void);
+void setLEDcolor(unsigned long int val);
+void configure_radio();
+// colors can be made by creating an unsigned long int
+// colors are 1 byte each, 0x<blue><green><red>
+const unsigned long int red = 0x0000FF;//red
+const unsigned long int green = 0x00FF00;//green
+const unsigned long int blue = 0xFF0000;//blue
+//int blah = wiringPiSPISetup(1, 100000);
+unsigned char LEDSPIbuffer[8];
+void setLEDcolor(unsigned long int val) {
+	LEDSPIbuffer[0] = 0x00; //starting frame
+	LEDSPIbuffer[1] = 0x00;
+	LEDSPIbuffer[2] = 0x00;
+	LEDSPIbuffer[3] = 0x00;
+	LEDSPIbuffer[4] = 0xFF;
+	LEDSPIbuffer[5] = (val >> 16) & 0xFF;
+	LEDSPIbuffer[6] = (val >> 8) & 0xFF ;
+	LEDSPIbuffer[7] = (val & 0xFF);
+	//wiringPiSPIDataRW(0, LEDSPIbuffer, 8);
+		
+	//Delay(100);
+	uint32_t time = millis();
+	do {
+		if(millis() < time)
+		time = millis();
+	} while(millis()-time < 100);
+}
+// Configure the LED selection port as output
+void configure_button_pins(void)
+{
+	struct port_config config_port_pin;
+	port_get_config_defaults(&config_port_pin);
+	config_port_pin.direction = PORT_PIN_DIR_INPUT;
+	port_pin_set_config(PIN_PA15, &config_port_pin);
+}
+//configure the RFM69 module
+void configure_radio(void) {
+	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
+	RFM_setHighPower(true);
+		
+	if (ENCRYPT)
+	RFM_encrypt(ENCRYPTKEY);
+}
 
 #define  MOUSE_MOVE_RANGE 5
 
-#define CAMERA_MODULE_NODE_ID 2
-#define LASER_MODULE_NODE_ID 3
-
-static char radio_sendbuffer[62];
-static int radio_sendlength = 1;
 
 /* Interrupt on "pin change" from push button to do wakeup on USB
  * Note:
@@ -86,6 +147,14 @@ void ui_init(void)
 
 	/* Initialize LEDs */
 	LED_Off(LED_0_PIN);
+	
+	// Initialize the RFM69HCW:
+	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
+	RFM_setHighPower(true); // Always use this for RFM69HCW
+	// Turn on encryption if desired:
+	if (ENCRYPT)
+	RFM_encrypt(ENCRYPTKEY);
+	//configure_port_pins();
 }
 
 void ui_powerdown(void)
@@ -126,14 +195,41 @@ void ui_process(uint16_t framenumber)
 	}
 	cpt_sof = 0;
 
-	/* Mouse movement variables */
-	static uint16_t x = 0; // only the lower 12 bits of these are used
-	static uint16_t y = 0;
+
+/*OLD CODE
+	// Uses buttons to move mouse
+	//if (!port_pin_get_input_level(BUTTON_0_PIN)) {
+	static int16_t x = 0;
+	static int16_t y = 0;
+	x+= 10;
+	y+= 10;
+	if(x >= 0x7FFF)
+	x = 0;
+	if(y >= 0x7FFF)
+	y = 0;
+		udi_hid_mouse_moveX(x);
+		udi_hid_mouse_moveY(y);
+	//}
+*/
+	
+	
+	
+	
+	
+		/* Mouse movement variables */
+	static int16_t x = 0; // only the lower 12 bits of these are used
+	static int16_t y = 0;
 	
 	static uint8_t button_info = 0x00; //order is: ? ? ? ? left_click right_click middle_click laser_on?
-/*	
+
 	// this will receive the mouse location from the camera module
 	if (RFM_receiveDone()) {
+		x += 500;
+		y += 500;
+		
+		udi_hid_mouse_moveX(x);
+		udi_hid_mouse_moveY(y);
+		
 		
 		//info received from camera module (mouse movement)
 		if (RFM_SENDERID == CAMERA_MODULE_NODE_ID) {
@@ -190,7 +286,28 @@ void ui_process(uint16_t framenumber)
 			}
 		}
 	}
-	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 /**

@@ -241,6 +241,9 @@
           <file path="src/ASF/thirdparty/CMSIS/Lib/license.txt" framework="" version="" source="thirdparty/CMSIS/Lib/license.txt" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/thirdparty/CMSIS/README.txt" framework="" version="" source="thirdparty/CMSIS/README.txt" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/thirdparty/CMSIS/license.txt" framework="" version="" source="thirdparty/CMSIS/license.txt" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam0/drivers/rtc/rtc_count.h" framework="" version="3.29.0" source="sam0\drivers\rtc\rtc_count.h" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam0/drivers/rtc/rtc_tamper.h" framework="" version="3.29.0" source="sam0\drivers\rtc\rtc_tamper.h" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.c" framework="" version="3.29.0" source="sam0\drivers\rtc\rtc_sam_d_r\rtc_count.c" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/sam0/drivers/sercom/sercom.c" framework="" version="3.29.0" source="sam0\drivers\sercom\sercom.c" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/sam0/drivers/sercom/sercom_pinout.h" framework="" version="3.29.0" source="sam0\drivers\sercom\sercom_pinout.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/sam0/drivers/sercom/sercom.h" framework="" version="3.29.0" source="sam0\drivers\sercom\sercom.h" changed="False" content-id="Atmel.ASF" />
@@ -250,9 +253,6 @@
           <file path="src/ASF/sam0/drivers/sercom/spi/quick_start_dma/qs_spi_dma_use.h" framework="" version="3.29.0" source="sam0\drivers\sercom\spi\quick_start_dma\qs_spi_dma_use.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/sam0/drivers/sercom/spi/quick_start_master/qs_spi_master_basic.h" framework="" version="3.29.0" source="sam0\drivers\sercom\spi\quick_start_master\qs_spi_master_basic.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/Config/conf_spi.h" framework="" version="3.29.0" source="sam0\drivers\sercom\spi\module_config\conf_spi.h" changed="False" content-id="Atmel.ASF" />
-          <file path="src/ASF/sam0/drivers/rtc/rtc_count.h" framework="" version="3.29.0" source="sam0\drivers\rtc\rtc_count.h" changed="False" content-id="Atmel.ASF" />
-          <file path="src/ASF/sam0/drivers/rtc/rtc_tamper.h" framework="" version="3.29.0" source="sam0\drivers\rtc\rtc_tamper.h" changed="False" content-id="Atmel.ASF" />
-          <file path="src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.c" framework="" version="3.29.0" source="sam0\drivers\rtc\rtc_sam_d_r\rtc_count.c" changed="False" content-id="Atmel.ASF" />
         </files>
         <documentation help="http://asf.atmel.com/docs/3.29.0/common.services.usb.class.hid.device.mouse.example.samd21_xpro/html/index.html" />
         <offline-documentation help="" />
@@ -297,8 +297,8 @@
       <Value>UDD_ENABLE</Value>
       <Value>ARM_MATH_CM0PLUS=true</Value>
       <Value>USB_DEVICE_LPM_SUPPORT</Value>
-      <Value>SPI_CALLBACK_MODE=false</Value>
       <Value>RTC_COUNT_ASYNC=false</Value>
+      <Value>SPI_CALLBACK_MODE=false</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -339,10 +339,10 @@
       <Value>../src/ASF/sam0/drivers/system/clock</Value>
       <Value>../src/ASF/sam0/drivers/extint</Value>
       <Value>../src/ASF/sam0/drivers/system/interrupt</Value>
-      <Value>../src/ASF/sam0/drivers/sercom</Value>
-      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
       <Value>../src/ASF/sam0/drivers/rtc</Value>
       <Value>../src/ASF/sam0/drivers/rtc/rtc_sam_d_r</Value>
+      <Value>../src/ASF/sam0/drivers/sercom</Value>
+      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -402,13 +402,13 @@
       <Value>../src/ASF/sam0/drivers/system/clock</Value>
       <Value>../src/ASF/sam0/drivers/extint</Value>
       <Value>../src/ASF/sam0/drivers/system/interrupt</Value>
-      <Value>../src/ASF/sam0/drivers/sercom</Value>
-      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
       <Value>../src/ASF/sam0/drivers/rtc</Value>
       <Value>../src/ASF/sam0/drivers/rtc/rtc_sam_d_r</Value>
+      <Value>../src/ASF/sam0/drivers/sercom</Value>
+      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
-  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM0PLUS=true -DBOARD=SAMD21_XPLAINED_PRO -DEXTINT_CALLBACK_MODE=true -DUDD_ENABLE -DUSB_DEVICE_LPM_SUPPORT -D__SAMD21J18A__ -DSPI_CALLBACK_MODE=false -DRTC_COUNT_ASYNC=false</armgcc.preprocessingassembler.general.AssemblerFlags>
+  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM0PLUS=true -DBOARD=SAMD21_XPLAINED_PRO -DEXTINT_CALLBACK_MODE=true -DUDD_ENABLE -DUSB_DEVICE_LPM_SUPPORT -D__SAMD21J18A__ -DRTC_COUNT_ASYNC=false -DSPI_CALLBACK_MODE=false</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>../common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro</Value>
@@ -447,10 +447,10 @@
       <Value>../src/ASF/sam0/drivers/system/clock</Value>
       <Value>../src/ASF/sam0/drivers/extint</Value>
       <Value>../src/ASF/sam0/drivers/system/interrupt</Value>
-      <Value>../src/ASF/sam0/drivers/sercom</Value>
-      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
       <Value>../src/ASF/sam0/drivers/rtc</Value>
       <Value>../src/ASF/sam0/drivers/rtc/rtc_sam_d_r</Value>
+      <Value>../src/ASF/sam0/drivers/sercom</Value>
+      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -473,8 +473,8 @@
       <Value>UDD_ENABLE</Value>
       <Value>ARM_MATH_CM0PLUS=true</Value>
       <Value>USB_DEVICE_LPM_SUPPORT</Value>
-      <Value>SPI_CALLBACK_MODE=false</Value>
       <Value>RTC_COUNT_ASYNC=false</Value>
+      <Value>SPI_CALLBACK_MODE=false</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -515,12 +515,13 @@
       <Value>../src/ASF/sam0/drivers/system/clock</Value>
       <Value>../src/ASF/sam0/drivers/extint</Value>
       <Value>../src/ASF/sam0/drivers/system/interrupt</Value>
-      <Value>../src/ASF/sam0/drivers/sercom</Value>
-      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
       <Value>../src/ASF/sam0/drivers/rtc</Value>
       <Value>../src/ASF/sam0/drivers/rtc/rtc_sam_d_r</Value>
+      <Value>../src/ASF/sam0/drivers/sercom</Value>
+      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
+  <armgcc.compiler.optimization.level>Optimize (-O1)</armgcc.compiler.optimization.level>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>
   <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
@@ -539,7 +540,6 @@
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
-  <armgcc.linker.memorysettings.ExternalRAM />
   <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam0/utils/linker_scripts/samd21/gcc/samd21j18a_flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
   <armgcc.assembler.general.IncludePaths>
     <ListValues>
@@ -579,14 +579,14 @@
       <Value>../src/ASF/sam0/drivers/system/clock</Value>
       <Value>../src/ASF/sam0/drivers/extint</Value>
       <Value>../src/ASF/sam0/drivers/system/interrupt</Value>
-      <Value>../src/ASF/sam0/drivers/sercom</Value>
-      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
       <Value>../src/ASF/sam0/drivers/rtc</Value>
       <Value>../src/ASF/sam0/drivers/rtc/rtc_sam_d_r</Value>
+      <Value>../src/ASF/sam0/drivers/sercom</Value>
+      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
-  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM0PLUS=true -DBOARD=SAMD21_XPLAINED_PRO -DEXTINT_CALLBACK_MODE=true -DUDD_ENABLE -DUSB_DEVICE_LPM_SUPPORT -D__SAMD21J18A__ -DSPI_CALLBACK_MODE=false -DRTC_COUNT_ASYNC=false</armgcc.preprocessingassembler.general.AssemblerFlags>
+  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM0PLUS=true -DBOARD=SAMD21_XPLAINED_PRO -DEXTINT_CALLBACK_MODE=true -DUDD_ENABLE -DUSB_DEVICE_LPM_SUPPORT -D__SAMD21J18A__ -DRTC_COUNT_ASYNC=false -DSPI_CALLBACK_MODE=false</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>../common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro</Value>
@@ -625,10 +625,10 @@
       <Value>../src/ASF/sam0/drivers/system/clock</Value>
       <Value>../src/ASF/sam0/drivers/extint</Value>
       <Value>../src/ASF/sam0/drivers/system/interrupt</Value>
-      <Value>../src/ASF/sam0/drivers/sercom</Value>
-      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
       <Value>../src/ASF/sam0/drivers/rtc</Value>
       <Value>../src/ASF/sam0/drivers/rtc/rtc_sam_d_r</Value>
+      <Value>../src/ASF/sam0/drivers/sercom</Value>
+      <Value>../src/ASF/sam0/drivers/sercom/spi</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -716,6 +716,33 @@
     <Compile Include="src\ASF\sam0\drivers\rtc\rtc_sam_d_r\rtc_count.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\ASF\sam0\drivers\sercom\sercom.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam0\drivers\sercom\sercom_pinout.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam0\drivers\sercom\sercom.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam0\drivers\sercom\spi\quick_start_slave\qs_spi_slave_basic.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam0\drivers\sercom\spi\quick_start_dma\qs_spi_dma_use.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam0\drivers\sercom\spi\quick_start_master\qs_spi_master_basic.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\sam0\drivers\sercom\spi\spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam0\drivers\sercom\spi\spi.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\config\conf_spi.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\RFM69.c">
       <SubType>compile</SubType>
     </Compile>
@@ -1262,30 +1289,6 @@
     <None Include="src\ASF\sam0\drivers\port\port.h">
       <SubType>compile</SubType>
     </None>
-    <Compile Include="src\ASF\sam0\drivers\sercom\sercom.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <None Include="src\ASF\sam0\drivers\sercom\sercom_pinout.h">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam0\drivers\sercom\sercom.h">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam0\drivers\sercom\spi\quick_start_slave\qs_spi_slave_basic.h">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam0\drivers\sercom\spi\quick_start_dma\qs_spi_dma_use.h">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam0\drivers\sercom\spi\quick_start_master\qs_spi_master_basic.h">
-      <SubType>compile</SubType>
-    </None>
-    <Compile Include="src\ASF\sam0\drivers\sercom\spi\spi.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <None Include="src\ASF\sam0\drivers\sercom\spi\spi.h">
-      <SubType>compile</SubType>
-    </None>
     <Compile Include="src\ASF\sam0\drivers\system\clock\clock_samd21_r21_da\clock.c">
       <SubType>compile</SubType>
     </Compile>
@@ -1337,9 +1340,6 @@
     <Compile Include="src\ASF\sam0\utils\syscalls\gcc\syscalls.c">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="src\config\conf_spi.h">
-      <SubType>compile</SubType>
-    </None>
     <Compile Include="src\main.c">
       <SubType>compile</SubType>
     </Compile>

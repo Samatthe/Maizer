@@ -147,8 +147,7 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/common/services/usb/udc/udc_desc.h \
  ../src/ASF/common/services/usb/udc/udd.h \
  ../src/ASF/common/services/usb/udc/udd.h \
- ../src/ASF/common/services/usb/class/hid/device/udi_hid.h ../src/ui.h \
- ../src/RFM69.h
+ ../src/ASF/common/services/usb/class/hid/device/udi_hid.h ../src/ui.h
 
 ../src/asf.h:
 
@@ -459,5 +458,3 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/common/services/usb/class/hid/device/udi_hid.h:
 
 ../src/ui.h:
-
-../src/RFM69.h:

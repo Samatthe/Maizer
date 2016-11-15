@@ -165,7 +165,7 @@ UDC_DESC_STORAGE udi_hid_mouse_report_desc_t udi_hid_mouse_report_desc = {
  *
  * \return \c 1 if function was successfully done, otherwise \c 0.
  */
-static bool udi_hid_mouse_move(int8_t pos, uint8_t index_report);
+static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report);
 
 /**
  * \brief Changes a button state
@@ -281,20 +281,16 @@ bool udi_hid_mouse_btnleft(bool b_state)
 //--------------------------------------------
 //------ Internal routines
 
-static bool udi_hid_mouse_move(int8_t pos, uint8_t index_report)
+static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report)
 {
-	int16_t s16_newpos;
+	uint16_t s16_newpos;
 
 	irqflags_t flags = cpu_irq_save();
 
 	// Add position in HID mouse report
-	s16_newpos = (int8_t) udi_hid_mouse_report[index_report];
+	s16_newpos = udi_hid_mouse_report[index_report];
 	s16_newpos = pos;
-	if ((-127 > s16_newpos) || (127 < s16_newpos)) {
-		cpu_irq_restore(flags);
-		return false;	// Overflow of report
-	}
-	udi_hid_mouse_report[index_report] = (uint8_t) s16_newpos;
+	udi_hid_mouse_report[index_report] = s16_newpos;
 
 	// Valid and send report
 	udi_hid_mouse_b_report_valid = true;

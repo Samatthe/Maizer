@@ -202,6 +202,9 @@ uint32_t system_clock_source_get_hz(
 		/* Make sure that the DFLL module is ready */
 		_system_dfll_wait_for_sync();
 
+		if(_system_clock_inst.dfll.control & SYSCTRL_DFLLCTRL_USBCRM)
+			return 48000000UL;
+
 		/* Check if operating in closed loop mode */
 		if (_system_clock_inst.dfll.control & SYSCTRL_DFLLCTRL_MODE) {
 			return system_gclk_chan_get_hz(SYSCTRL_GCLK_ID_DFLL48) *

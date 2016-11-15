@@ -110,7 +110,7 @@ void configure_radio(void) {
 	RFM_setHighPower(true);
 		
 	if (ENCRYPT)
-	RFM_encrypt(ENCRYPTKEY);
+		RFM_encrypt(ENCRYPTKEY);
 }
 
 #define  MOUSE_MOVE_RANGE 5
@@ -131,20 +131,6 @@ static void ui_wakeup_handler(void)
 
 void ui_init(void)
 {
-	struct extint_chan_conf config_extint_chan;
-
-	extint_chan_get_config_defaults(&config_extint_chan);
-
-	config_extint_chan.gpio_pin            = BUTTON_0_EIC_PIN;
-	config_extint_chan.gpio_pin_mux        = BUTTON_0_EIC_MUX;
-	config_extint_chan.gpio_pin_pull       = EXTINT_PULL_UP;
-	config_extint_chan.filter_input_signal = true;
-	config_extint_chan.detection_criteria  = EXTINT_DETECT_FALLING;
-	extint_chan_set_config(BUTTON_0_EIC_LINE, &config_extint_chan);
-	extint_register_callback(ui_wakeup_handler, BUTTON_0_EIC_LINE,
-			EXTINT_CALLBACK_TYPE_DETECT);
-	extint_chan_enable_callback(BUTTON_0_EIC_LINE,EXTINT_CALLBACK_TYPE_DETECT);
-
 	/* Initialize LEDs */
 	LED_Off(LED_0_PIN);
 	
@@ -153,7 +139,7 @@ void ui_init(void)
 	RFM_setHighPower(true); // Always use this for RFM69HCW
 	// Turn on encryption if desired:
 	if (ENCRYPT)
-	RFM_encrypt(ENCRYPTKEY);
+		RFM_encrypt(ENCRYPTKEY);
 	//configure_port_pins();
 }
 
@@ -217,20 +203,22 @@ void ui_process(uint16_t framenumber)
 	
 	
 		/* Mouse movement variables */
-	static int16_t x = 0; // only the lower 12 bits of these are used
-	static int16_t y = 0;
+	static int32_t x = 0; // only the lower 12 bits of these are used
+	static int32_t y = 0;
+	static int32_t temp = 0;
 	
 	static uint8_t button_info = 0x00; //order is: ? ? ? ? left_click right_click middle_click laser_on?
 
+	/*radio_sendbuffer[0] = 'H';
+	radio_sendbuffer[1] = 'E';
+	radio_sendbuffer[2] = 'L';
+	radio_sendbuffer[3] = 'L';
+	radio_sendbuffer[4] = 'O';
+	radio_sendlength = 5;*/
+	//RFM_send(CAMERA_MODULE_NODE_ID,radio_sendbuffer, radio_sendlength, false);
+
 	// this will receive the mouse location from the camera module
 	if (RFM_receiveDone()) {
-		x += 500;
-		y += 500;
-		
-		udi_hid_mouse_moveX(x);
-		udi_hid_mouse_moveY(y);
-		
-		
 		//info received from camera module (mouse movement)
 		if (RFM_SENDERID == CAMERA_MODULE_NODE_ID) {
 			for (int i = 0; i < RFM_DATALEN; i++) {
@@ -238,32 +226,46 @@ void ui_process(uint16_t framenumber)
 				//y LSB 10<data>	y MSB 11<data>
 				switch (RFM_DATA[i] >> 6) {
 					case 0: //x LSB
-						x |= (RFM_DATA[i] & 0x3F);
+						temp = 0;
+						temp = (RFM_DATA[i] & 0x3F);
+						x = x | temp;
 						break;
 				
 					case 1: //x MSB
-						x |= (RFM_DATA[i] & 0x3F) << 6;
+						temp = 0;
+						temp = (RFM_DATA[i] & 0x3F);
+						x = x | (temp << 6);
 						break;
 				
 					case 2: //y LSB
-						y |= (RFM_DATA[i] & 0x3F);
+						temp = 0;
+						temp = (RFM_DATA[i] & 0x3F);
+						y = y | temp;
 						break;
 				
 					case 3: //y MSB
-						y |= (RFM_DATA[i] & 0x3F) << 6;
+						temp = 0;
+						temp = (RFM_DATA[i] & 0x3F);
+						y = y | (temp << 6);
 						break;
 				}
 			}
+
+			x = x*(0x7FFF/640);
+			y = y*(0x7FFF/480);
 			
 			udi_hid_mouse_moveX(x);
 			udi_hid_mouse_moveY(y);
+
+			x = 0;
+			y = 0;
 			
 			//request info from laser module
-			RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
+			//RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
 		}
 		
 		//info received from laser module (clicks)
-		else if (RFM_SENDERID == CAMERA_MODULE_NODE_ID) {
+		else if (RFM_SENDERID == LASER_MODULE_NODE_ID) {
 			for (int i = 0; i < RFM_DATALEN; i++) {
 				switch (i) {
 					case 0: //x axis scroll
@@ -286,28 +288,11 @@ void ui_process(uint16_t framenumber)
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	else
+	{
+		udi_hid_mouse_moveX(x);
+		udi_hid_mouse_moveY(y);
+	}
 }
 
 /**

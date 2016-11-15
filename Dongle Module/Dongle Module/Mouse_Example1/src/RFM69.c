@@ -64,8 +64,8 @@ void configure_RFM69_spi(void)
 	config_spi_master.pinmux_pad3 = PINMUX_PA19C_SERCOM1_PAD3;
 	config_spi_master.data_order = SPI_DATA_ORDER_MSB;
 	config_spi_master.transfer_mode = SPI_TRANSFER_MODE_0;
+	//config_spi_master.generator_source = GCLK_CLKCTRL_GEN_GCLK1;
 	spi_init(&spi_master_instance, SERCOM1, &config_spi_master);
-	//spi_set_baudrate(&spi_master_instance, 9600);
 	spi_enable(&spi_master_instance);
 
 	spi_select_slave(&spi_master_instance, &slave, false);
@@ -465,7 +465,7 @@ void receiveBegin() {
 
 // checks if a packet was received and/or puts transceiver in receive (ie RX or listen) mode
 bool RFM_receiveDone() {
-  system_interrupt_disable_global(); //noInterrupts(); // re-enabled in unselect() via setMode() or via receiveBegin() // CHANGE //
+  //system_interrupt_disable_global(); //noInterrupts(); // re-enabled in unselect() via setMode() or via receiveBegin() // CHANGE //
 
   if (_mode == RF69_MODE_RX && PAYLOADLEN > 0)
   {
@@ -474,7 +474,7 @@ bool RFM_receiveDone() {
   }
   else if (_mode == RF69_MODE_RX) // already in RX no payload yet
   {
-    system_interrupt_enable_global(); //interrupts(); // explicitly re-enable interrupts // CHANGE //
+    //system_interrupt_enable_global(); //interrupts(); // explicitly re-enable interrupts // CHANGE //
     return false;
   }
   receiveBegin();
@@ -525,7 +525,7 @@ void writeReg(uint8_t addr, uint8_t value)
 
 // select the RFM69 transceiver (save SPI settings, set CS low)
 void selectrf(void) {
-  system_interrupt_disable_global(); //noInterrupts(); // CHANGE //
+  //system_interrupt_disable_global(); //noInterrupts(); // CHANGE //
 
   // set RFM69 SPI settings
   //SPI.setDataMode(SPI_MODE0); // CHANGE //
@@ -594,6 +594,6 @@ void rcCalibration()
 void maybeInterrupts()
 {
   // Only reenable interrupts if we're not being called from the ISR
-  if (!_inISR) 
-	  system_interrupt_enable_global(); //interrupts(); // CHANGE //
+  //if (!_inISR) 
+	  //system_interrupt_enable_global(); //interrupts(); // CHANGE //
 }

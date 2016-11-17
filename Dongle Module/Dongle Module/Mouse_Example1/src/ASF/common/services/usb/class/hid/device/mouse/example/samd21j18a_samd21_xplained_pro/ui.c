@@ -290,6 +290,8 @@ void ui_process(uint16_t framenumber)
 	}
 	else
 	{
+		x += 50;
+		y += 50;
 		udi_hid_mouse_moveX(x);
 		udi_hid_mouse_moveY(y);
 	}

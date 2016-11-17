@@ -50,13 +50,14 @@
 #define Capacity 1200
 
 //button to reg value map
-#define 
-#define
-#define 
+//#define 
+//#define
+//#define 
 
 // Initialization functions
 void configure_LED_PWM(void);
 struct tcc_module tcc0;
+struct tcc_module tcc1;
 void configure_button_pins(void);
 
 
@@ -71,12 +72,12 @@ void configure_LED_PWM(void)
 	config_tcc.compare.match[1] = 0;
 	config_tcc.pins.enable_wave_out_pin[0] = true;
 	config_tcc.pins.enable_wave_out_pin[1] = true;
-	// White Trackball LED*
-	config_tcc.pins.wave_out_pin[0]        = PIN_PA14F_TCC0_WO4;
 	// Green Trackball LED*
-	config_tcc.pins.wave_out_pin[1]        = PIN_PA21F_TCC0_WO7;
-	config_tcc.pins.wave_out_pin_mux[0]    = MUX_PA14F_TCC0_WO4;
-	config_tcc.pins.wave_out_pin_mux[1]    = MUX_PA21F_TCC0_WO7;
+	config_tcc.pins.wave_out_pin[0]        = PIN_PA21F_TCC0_WO7;
+	// White Trackball LED*
+	config_tcc.pins.wave_out_pin[1]        = PIN_PA14F_TCC0_WO4;
+	config_tcc.pins.wave_out_pin_mux[0]    = MUX_PA21F_TCC0_WO7;
+	config_tcc.pins.wave_out_pin_mux[1]    = MUX_PA14F_TCC0_WO4;
 	tcc_init(&tcc0, TCC0, &config_tcc);
 	tcc_enable(&tcc0);
 
@@ -87,14 +88,14 @@ void configure_LED_PWM(void)
 	config_tcc.compare.match[1] = 0;
 	config_tcc.pins.enable_wave_out_pin[0] = true;
 	config_tcc.pins.enable_wave_out_pin[1] = true;
-	// Red Trackball LED*
-	config_tcc.pins.wave_out_pin[0]        = PIN_PA07E_TCC1_WO1;
 	// Blue Trackball LED*
-	config_tcc.pins.wave_out_pin[1]        = PIN_PA08F_TCC1_WO2;
-	config_tcc.pins.wave_out_pin_mux[0]    = MUX_PA07E_TCC1_WO1;
-	config_tcc.pins.wave_out_pin_mux[1]    = MUX_PA08F_TCC1_WO2;
-	tcc_init(&tcc0, TCC1, &config_tcc);
-	tcc_enable(&tcc0);
+	config_tcc.pins.wave_out_pin[0]        = PIN_PA08F_TCC1_WO2;
+	// Red Trackball LED*
+	config_tcc.pins.wave_out_pin[1]        = PIN_PA07E_TCC1_WO1;
+	config_tcc.pins.wave_out_pin_mux[0]    = MUX_PA08F_TCC1_WO2;
+	config_tcc.pins.wave_out_pin_mux[1]    = MUX_PA07E_TCC1_WO1;
+	tcc_init(&tcc1, TCC1, &config_tcc);
+	tcc_enable(&tcc1);
 }
 ///////////////////////////////////////////////////////////////////////////
 
@@ -135,10 +136,10 @@ int main (void)
 {
     /* Initialize system */
 	system_init();
-	//configure_LED_PWM();
+	configure_LED_PWM();
 	//configure_button_pins();
 	
-	if(!lipo_begin())
+	/*if(!lipo_begin())
 	{
 		
 	}
@@ -150,7 +151,7 @@ int main (void)
 	uint16_t totalCapacity = lipo_capacity(FULL);
 	uint16_t remainingCapacity = lipo_capacity(REMAIN);
 	int16_t power = lipo_power();
-	uint8_t health = lipo_soh(PERCENT);
+	uint8_t health = lipo_soh(PERCENT);*/
 
 	/*uint16_t timeout = 0;
 
@@ -178,12 +179,12 @@ int main (void)
 	}*/
 
 	// Initialize the RFM69HCW:
-	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
+	/*RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
 	RFM_setHighPower(true); // Always use this for RFM69HCW
 
 	// Turn on encryption if desired:
 	if (ENCRYPT)
-	RFM_encrypt(ENCRYPTKEY);
+	RFM_encrypt(ENCRYPTKEY);*/
 
 
 	int sendlength = 3; //number can be increased 
@@ -194,9 +195,17 @@ int main (void)
 	//sends data after receiving a request message from the dongle
 	//sends X axis byte, Y axis byte, button byte
 	{
-	
+		/* WHITE */
+		//tcc_set_compare_value(&tcc0, (enum tcc_match_capture_channel) (0), 0xFFFF);
+		/* GREEN */
+		//tcc_set_compare_value(&tcc0, (enum tcc_match_capture_channel) (1), 0xFFFF);
+		/* BLUE */
+		tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (0), 0xFFFF);
+		/* RED */
+		//tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (1), 0xFFFF);
+
 	//check if the RFM69 receives a  packet
-	if (RFM_receiveDone()) // Got one!
+	/*if (RFM_receiveDone()) // Got one!
 	{
 		// The actual message is contained in the RFM_DATA array,
 		// and is RFM_DATALEN bytes in size:
@@ -208,14 +217,14 @@ int main (void)
 
 		RFM_RSSI = RFM_RSSI;
 		
-		port_pin_get_input_level();
+		//port_pin_get_input_level();
 		//Send data packets
-		sendbuffer[0] = ; // x axis byte
-		sendbuffer[1] = ; // y axis byte
-		sendbuffer[2] = ; // button byte
+		sendbuffer[0] = 0xFF; // x axis byte
+		sendbuffer[1] = 0xFF; // y axis byte
+		sendbuffer[2] = 0xFF; // button byte
 		
 		
 		RFM_send(TONODEID, sendbuffer, sendlength, false);
-	}
+	}*/
   }
 }

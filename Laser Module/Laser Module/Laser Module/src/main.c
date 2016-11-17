@@ -33,8 +33,8 @@
 
 // Addresses for this node.
 #define NETWORKID     0   // Must be the same for all nodes (0 to 255)
-#define MYNODEID      2   // My node ID (0 to 255)
-#define TONODEID      1   // Destination node ID (0 to 254, 255 = broadcast)
+#define MYNODEID      3   // My node ID (0 to 255)
+#define TONODEID      2   // Destination node ID (0 to 254, 255 = broadcast)
 
 // RFM69 frequency:
 #define FREQUENCY     RF69_915MHZ
@@ -44,7 +44,7 @@
 #define ENCRYPTKEY    "TOPSECRETPASSWRD" // Use the same 16-byte key on all nodes
 
 // Use ACKnowledge when sending messages:
-#define USEACK        true
+#define USEACK        false
 
 // Battery Capacity
 #define Capacity 1200
@@ -179,12 +179,10 @@ int main (void)
 	}*/
 
 	// Initialize the RFM69HCW:
-	/*RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
-	RFM_setHighPower(true); // Always use this for RFM69HCW
-
-	// Turn on encryption if desired:
+	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
+	RFM_setHighPower(true);
 	if (ENCRYPT)
-	RFM_encrypt(ENCRYPTKEY);*/
+		RFM_encrypt(ENCRYPTKEY);
 
 
 	int sendlength = 3; //number can be increased 
@@ -205,7 +203,8 @@ int main (void)
 		//tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (1), 0xFFFF);
 
 	//check if the RFM69 receives a  packet
-	/*if (RFM_receiveDone()) // Got one!
+	//only send info when a packet is received from dongle module
+	if (RFM_receiveDone()) // Got one!
 	{
 		// The actual message is contained in the RFM_DATA array,
 		// and is RFM_DATALEN bytes in size:
@@ -221,10 +220,10 @@ int main (void)
 		//Send data packets
 		sendbuffer[0] = 0xFF; // x axis byte
 		sendbuffer[1] = 0xFF; // y axis byte
-		sendbuffer[2] = 0xFF; // button byte
+		sendbuffer[2] = 0xFF; // button byte -- order is: up down left right left_click right_click middle_click laser_on?
 		
 		
 		RFM_send(TONODEID, sendbuffer, sendlength, false);
-	}*/
+	}
   }
 }

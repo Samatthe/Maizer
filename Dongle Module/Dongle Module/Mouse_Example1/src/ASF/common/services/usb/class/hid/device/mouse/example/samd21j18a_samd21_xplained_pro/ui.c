@@ -135,11 +135,7 @@ void ui_init(void)
 	LED_Off(LED_0_PIN);
 	
 	// Initialize the RFM69HCW:
-	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
-	RFM_setHighPower(true); // Always use this for RFM69HCW
-	// Turn on encryption if desired:
-	if (ENCRYPT)
-		RFM_encrypt(ENCRYPTKEY);
+	configure_radio();
 	//configure_port_pins();
 }
 
@@ -288,13 +284,13 @@ void ui_process(uint16_t framenumber)
 			}
 		}
 	}
-	else
+	/*else
 	{
-		x += 50;
-		y += 50;
+		//x += 50;
+		//y += 50;
 		udi_hid_mouse_moveX(x);
 		udi_hid_mouse_moveY(y);
-	}
+	}*/
 }
 
 /**

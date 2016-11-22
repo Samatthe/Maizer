@@ -60,6 +60,9 @@ struct tcc_module tcc0;
 struct tcc_module tcc1;
 void configure_button_pins(void);
 
+// Helper functions
+void setTrackBallRGBW(uint16_t red, uint16_t green, uint16_t blue, uint16_t white);
+
 
 ////////////// Configure all of the LED ports as PWM outputs //////////////////
 void configure_LED_PWM(void)
@@ -193,15 +196,7 @@ int main (void)
 	//sends data after receiving a request message from the dongle
 	//sends X axis byte, Y axis byte, button byte
 	{
-		/* WHITE */
-		//tcc_set_compare_value(&tcc0, (enum tcc_match_capture_channel) (0), 0xFFFF);
-		/* GREEN */
-		//tcc_set_compare_value(&tcc0, (enum tcc_match_capture_channel) (1), 0xFFFF);
-		/* BLUE */
-		tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (0), 0xFFFF);
-		/* RED */
-		//tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (1), 0xFFFF);
-
+		
 	//check if the RFM69 receives a  packet
 	//only send info when a packet is received from dongle module
 	if (RFM_receiveDone()) // Got one!
@@ -226,4 +221,44 @@ int main (void)
 		RFM_send(TONODEID, sendbuffer, sendlength, false);
 	}
   }
+}
+
+void setTrackBallRGBW(uint16_t red, uint16_t green, uint16_t blue, uint16_t white)
+{	
+	/* WHITE */
+	tcc_set_compare_value(&tcc0, (enum tcc_match_capture_channel) (0), white);
+	/* GREEN */
+	tcc_set_compare_value(&tcc0, (enum tcc_match_capture_channel) (3), green);
+	/* BLUE */
+	tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (0), blue);
+	/* RED */
+	tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (1), red);
+} 
+
+void ColorCycle()
+{
+	static int color = 0;
+	static int speed = 5;
+	static int index = 0;
+	if(index == 0)
+	{
+		setTrackBallRGBW(0xFFFF - color,color,0x0,0x0);
+	}
+	else if(index == 1)
+	{
+		setTrackBallRGBW(0x0,0xFFFF - color,color,0x0);
+	}
+	else if(index == 2)
+	{
+		setTrackBallRGBW(color,0x0,0xFFFF - color,0x0);
+	}
+	
+	color += speed;
+	if(color >= 0xFFFF)
+	{
+		color = 0;
+		index++;
+		if(index > 2)
+		index = 0;
+	}
 }

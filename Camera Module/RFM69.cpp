@@ -3,6 +3,7 @@
 // **********************************************************************************
 // Copyright Felix Rusu (2014), felix@lowpowerlab.com
 // http://lowpowerlab.com/
+// Raspberry Pi port by Alexandre Bouillot (2014) @abouillot on twitter
 // **********************************************************************************
 // License
 // **********************************************************************************
@@ -28,20 +29,26 @@
 // Please maintain this license information along with authorship
 // and copyright notices in any redistribution of this code
 // **********************************************************************************
-#define ISR_PIN 24 //interrupt pin (to output 0 on RFM69)
-#define SELECT_PIN 25 //select pin
-
-#include "RFM69registers.h"
-#include "RFM69.h"
-#include <iostream>
-#include <stdint.h>
-#include <wiringPiSPI.h>
+#include "rfm69.h"
+#include "rfm69registers.h"
+#ifdef RASPBERRY
 #include <wiringPi.h>
-#include <chrono>
+#include <wiringPiSPI.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
 
-using namespace std;
+#include <iostream>
+#include <bitset>
 
+#include <unistd.h>	//usleep
+#define MICROSLEEP_LENGTH 15
+#define INTERRUPT_PIN 5
+#define SELECT_PIN 6
 
+#else
+#include <SPI.h>
+#endif
 
 volatile uint8_t RFM69::DATA[RF69_MAX_DATA_LEN];
 volatile uint8_t RFM69::_mode;        // current transceiver state
@@ -54,7 +61,7 @@ volatile uint8_t RFM69::ACK_RECEIVED; // should be polled immediately after send
 volatile int16_t RFM69::RSSI;          // most accurate RSSI during reception (closest to the reception)
 RFM69* RFM69::selfPointer;
 
-unsigned char SPIbuffer[1] = {0};
+uint16_t intCount = 0;
 
 bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
 {
@@ -100,17 +107,20 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
     {255, 0}
   };
 
-  int fd, result;
-  fd = wiringPiSPISetup(SPI_CHANNEL, 60000); //fd is the filehandle for spi
-
-  wiringPiSetupGpio(); //setup slave select pin
+#ifdef RASPBERRY
+  // Initialize SPI device 0
+  if(wiringPiSPISetup(SPI_DEVICE, SPI_SPEED) < 0) {
+    fprintf(stderr, "Unable to open SPI device\n\r");
+    exit(1);
+  }
+  wiringPiSPISetup(1, SPI_SPEED);
+#else
+  digitalWrite(SELECT_PIN, HIGH);
   pinMode(SELECT_PIN, OUTPUT);
-
-  digitalWrite(SELECT_PIN, HIGH);// set the pin initallity high
-
+  SPI.begin();
+#endif
   unsigned long start = millis();
   uint8_t timeout = 50;
-
   do writeReg(REG_SYNCVALUE1, 0xAA); while (readReg(REG_SYNCVALUE1) != 0xaa && millis()-start < timeout);
   start = millis();
   do writeReg(REG_SYNCVALUE1, 0x55); while (readReg(REG_SYNCVALUE1) != 0x55 && millis()-start < timeout);
@@ -128,7 +138,75 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
   while (((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00) && millis()-start < timeout); // wait for ModeReady
   if (millis()-start >= timeout)
     return false;
-  wiringPiISR (ISR_PIN, INT_EDGE_RISING, &RFM69::isr0); // attachInterrupt(_interruptNum, RFM69::isr0, RISING); //connect to GPIO pin 24
+#ifdef RASPBERRY
+  // Attach the Interupt
+  wiringPiSetup();
+  wiringPiISR(INTERRUPT_PIN, INT_EDGE_RISING, RFM69::isr0);
+  pinMode(SELECT_PIN, INPUT); //do not remove this line!
+#else
+  attachInterrupt(_interruptNum, RFM69::isr0, RISING);
+#endif
+  selfPointer = this;
+  _address = nodeID;
+  return true;
+}
+
+bool RFM69::restart(uint8_t freqBand, uint8_t nodeID, uint8_t networkID) {
+  const uint8_t CONFIG[][2] =
+  {
+    /* 0x01 */ { REG_OPMODE, RF_OPMODE_SEQUENCER_ON | RF_OPMODE_LISTEN_OFF | RF_OPMODE_STANDBY },
+    /* 0x02 */ { REG_DATAMODUL, RF_DATAMODUL_DATAMODE_PACKET | RF_DATAMODUL_MODULATIONTYPE_FSK | RF_DATAMODUL_MODULATIONSHAPING_00 }, // no shaping
+    /* 0x03 */ { REG_BITRATEMSB, RF_BITRATEMSB_55555}, // default: 4.8 KBPS
+    /* 0x04 */ { REG_BITRATELSB, RF_BITRATELSB_55555},
+    /* 0x05 */ { REG_FDEVMSB, RF_FDEVMSB_50000}, // default: 5KHz, (FDEV + BitRate / 2 <= 500KHz)
+    /* 0x06 */ { REG_FDEVLSB, RF_FDEVLSB_50000},
+
+    /* 0x07 */ { REG_FRFMSB, (uint8_t) (freqBand==RF69_315MHZ ? RF_FRFMSB_315 : (freqBand==RF69_433MHZ ? RF_FRFMSB_433 : (freqBand==RF69_868MHZ ? RF_FRFMSB_868 : RF_FRFMSB_915))) },
+    /* 0x08 */ { REG_FRFMID, (uint8_t) (freqBand==RF69_315MHZ ? RF_FRFMID_315 : (freqBand==RF69_433MHZ ? RF_FRFMID_433 : (freqBand==RF69_868MHZ ? RF_FRFMID_868 : RF_FRFMID_915))) },
+    /* 0x09 */ { REG_FRFLSB, (uint8_t) (freqBand==RF69_315MHZ ? RF_FRFLSB_315 : (freqBand==RF69_433MHZ ? RF_FRFLSB_433 : (freqBand==RF69_868MHZ ? RF_FRFLSB_868 : RF_FRFLSB_915))) },
+
+    // looks like PA1 and PA2 are not implemented on RFM69W, hence the max output power is 13dBm
+    // +17dBm and +20dBm are possible on RFM69HW
+    // +13dBm formula: Pout = -18 + OutputPower (with PA0 or PA1**)
+    // +17dBm formula: Pout = -14 + OutputPower (with PA1 and PA2)**
+    // +20dBm formula: Pout = -11 + OutputPower (with PA1 and PA2)** and high power PA settings (section 3.3.7 in datasheet)
+    ///* 0x11 */ { REG_PALEVEL, RF_PALEVEL_PA0_ON | RF_PALEVEL_PA1_OFF | RF_PALEVEL_PA2_OFF | RF_PALEVEL_OUTPUTPOWER_11111},
+    ///* 0x13 */ { REG_OCP, RF_OCP_ON | RF_OCP_TRIM_95 }, // over current protection (default is 95mA)
+
+    // RXBW defaults are { REG_RXBW, RF_RXBW_DCCFREQ_010 | RF_RXBW_MANT_24 | RF_RXBW_EXP_5} (RxBw: 10.4KHz)
+    /* 0x19 */ { REG_RXBW, RF_RXBW_DCCFREQ_010 | RF_RXBW_MANT_16 | RF_RXBW_EXP_2 }, // (BitRate < 2 * RxBw)
+    //for BR-19200: /* 0x19 */ { REG_RXBW, RF_RXBW_DCCFREQ_010 | RF_RXBW_MANT_24 | RF_RXBW_EXP_3 },
+    /* 0x25 */ { REG_DIOMAPPING1, RF_DIOMAPPING1_DIO0_01 }, // DIO0 is the only IRQ we're using
+    /* 0x26 */ { REG_DIOMAPPING2, RF_DIOMAPPING2_CLKOUT_OFF }, // DIO5 ClkOut disable for power saving
+    /* 0x28 */ { REG_IRQFLAGS2, RF_IRQFLAGS2_FIFOOVERRUN }, // writing to this bit ensures that the FIFO & status flags are reset
+    /* 0x29 */ { REG_RSSITHRESH, 220 }, // must be set to dBm = (-Sensitivity / 2), default is 0xE4 = 228 so -114dBm
+    ///* 0x2D */ { REG_PREAMBLELSB, RF_PREAMBLESIZE_LSB_VALUE } // default 3 preamble bytes 0xAAAAAA
+    /* 0x2E */ { REG_SYNCCONFIG, RF_SYNC_ON | RF_SYNC_FIFOFILL_AUTO | RF_SYNC_SIZE_2 | RF_SYNC_TOL_0 },
+    /* 0x2F */ { REG_SYNCVALUE1, 0x2D },      // attempt to make this compatible with sync1 byte of RFM12B lib
+    /* 0x30 */ { REG_SYNCVALUE2, networkID }, // NETWORK ID
+    /* 0x37 */ { REG_PACKETCONFIG1, RF_PACKET1_FORMAT_VARIABLE | RF_PACKET1_DCFREE_OFF | RF_PACKET1_CRC_ON | RF_PACKET1_CRCAUTOCLEAR_ON | RF_PACKET1_ADRSFILTERING_OFF },
+    /* 0x38 */ { REG_PAYLOADLENGTH, 66 }, // in variable length mode: the max frame size, not used in TX
+    ///* 0x39 */ { REG_NODEADRS, nodeID }, // turned off because we're not using address filtering
+    /* 0x3C */ { REG_FIFOTHRESH, RF_FIFOTHRESH_TXSTART_FIFONOTEMPTY | RF_FIFOTHRESH_VALUE }, // TX on FIFO not empty
+    /* 0x3D */ { REG_PACKETCONFIG2, RF_PACKET2_RXRESTARTDELAY_2BITS | RF_PACKET2_AUTORXRESTART_ON | RF_PACKET2_AES_OFF }, // RXRESTARTDELAY must match transmitter PA ramp-down time (bitrate dependent)
+    //for BR-19200: /* 0x3D */ { REG_PACKETCONFIG2, RF_PACKET2_RXRESTARTDELAY_NONE | RF_PACKET2_AUTORXRESTART_ON | RF_PACKET2_AES_OFF }, // RXRESTARTDELAY must match transmitter PA ramp-down time (bitrate dependent)
+    /* 0x6F */ { REG_TESTDAGC, RF_DAGC_IMPROVED_LOWBETA0 }, // run DAGC continuously in RX mode for Fading Margin Improvement, recommended default for AfcLowBetaOn=0
+    {255, 0}
+  };
+
+  do writeReg(REG_SYNCVALUE1, 0xAA); while (readReg(REG_SYNCVALUE1) != 0xAA);
+  do writeReg(REG_SYNCVALUE1, 0x55); while (readReg(REG_SYNCVALUE1) != 0x55);
+
+  for (uint8_t i = 0; CONFIG[i][0] != 255; i++)
+    writeReg(CONFIG[i][0], CONFIG[i][1]);
+
+  // Encryption is persistent between resets and can trip you up during debugging.
+  // Disable it during initialization so we always start from a known state.
+  encrypt(0);
+
+  setHighPower(_isRFM69HW); // called regardless if it's a RFM69W or RFM69HW
+  setMode(RF69_MODE_STANDBY);
+  while ((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00); // wait for ModeReady
 
   selfPointer = this;
   _address = nodeID;
@@ -226,6 +304,7 @@ void RFM69::setPowerLevel(uint8_t powerLevel)
 
 bool RFM69::canSend()
 {
+// printf("mode %d, payload %d, rssi %d %d\n", _mode, PAYLOADLEN, readRSSI(), CSMA_LIMIT);
   if (_mode == RF69_MODE_RX && PAYLOADLEN == 0 && readRSSI() < CSMA_LIMIT) // if signal stronger than -100dBm is detected assume channel activity
   {
     setMode(RF69_MODE_STANDBY);
@@ -286,8 +365,7 @@ void RFM69::sendACK(const void* buffer, uint8_t bufferSize) {
   int16_t _RSSI = RSSI; // save payload received RSSI value
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFB) | RF_PACKET2_RXRESTART); // avoid RX deadlocks
   uint32_t now = millis();
-  while (!canSend() && millis() - now < RF69_CSMA_LIMIT_MS) receiveDone();
-  SENDERID = sender;    // TWS: Restore SenderID after it gets wiped out by receiveDone()
+  while (!canSend() && millis() - now < RF69_CSMA_LIMIT_MS) {    delayMicroseconds(MICROSLEEP_LENGTH); /* printf(".");*/ receiveDone();}
   sendFrame(sender, buffer, bufferSize, false, true);
   RSSI = _RSSI; // restore payload RSSI
 }
@@ -299,43 +377,43 @@ void RFM69::sendFrame(uint8_t toAddress, const void* buffer, uint8_t bufferSize,
   while ((readReg(REG_IRQFLAGS1) & RF_IRQFLAGS1_MODEREADY) == 0x00); // wait for ModeReady
   writeReg(REG_DIOMAPPING1, RF_DIOMAPPING1_DIO0_00); // DIO0 is "Packet Sent"
   if (bufferSize > RF69_MAX_DATA_LEN) bufferSize = RF69_MAX_DATA_LEN;
+
   // control byte
   uint8_t CTLbyte = 0x00;
   if (sendACK)
     CTLbyte = RFM69_CTL_SENDACK;
   else if (requestACK)
     CTLbyte = RFM69_CTL_REQACK;
+
+#ifdef RASPBERRY
+  unsigned char thedata[63];
+  uint8_t i;
+  for(i = 0; i < 63; i++) thedata[i] = 0;
+
+  thedata[0] = REG_FIFO | 0x80;
+  thedata[1] = bufferSize + 3;
+  thedata[2] = toAddress;
+  thedata[3] = _address;
+  thedata[4] = CTLbyte;
+
+  // write to FIFO
+  for(i = 0; i < bufferSize; i++) {
+    thedata[i + 5] = ((char*)buffer)[i];
+  }
+  wiringPiSPIDataRW(SPI_DEVICE, thedata, bufferSize + 5);
+#else
   // write to FIFO
   select();
+  SPI.transfer(REG_FIFO | 0x80);
+  SPI.transfer(bufferSize + 3);
+  SPI.transfer(toAddress);
+  SPI.transfer(_address);
+  SPI.transfer(CTLbyte);
 
-  SPIbuffer[0] = 0;
-  SPIbuffer[0] = REG_FIFO | 0x80;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(REG_FIFO | 0x80);
-
-  SPIbuffer[0] = 0;
-  SPIbuffer[0] = bufferSize + 3;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(bufferSize + 3);
-
-  SPIbuffer[0] = 0;
-  SPIbuffer[0] = toAddress;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(toAddress);
-
-  SPIbuffer[0] = 0;
-  SPIbuffer[0] = _address;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(_address);
-
-  SPIbuffer[0] = 0;
-  SPIbuffer[0] = CTLbyte;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(CTLbyte);
-
-  for (uint8_t i = 0; i < bufferSize; i++) {
-    SPIbuffer[0] = 0;
-    SPIbuffer[0] = ((uint8_t*) buffer)[i];
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(((uint8_t*) buffer)[i]);
-    //wiringPiSPIDataRW(SPI_CHANNEL, &((uint8_t*) buffer)[i], 1);
-
-  }
+  for (uint8_t i = 0; i < bufferSize; i++)
+    SPI.transfer(((uint8_t*) buffer)[i]);
   unselect();
+#endif
   // no need to wait for transmit mode to be ready since its handled by the radio
   setMode(RF69_MODE_TX);
   uint32_t txStart = millis();
@@ -346,28 +424,37 @@ void RFM69::sendFrame(uint8_t toAddress, const void* buffer, uint8_t bufferSize,
 
 // internal function - interrupt gets called when a packet is received
 void RFM69::interruptHandler() {
-  //pinMode(4, OUTPUT);
+
+#ifdef RASPBERRY
+  unsigned char thedata[67];
+  char i;
+  for(i = 0; i < 67; i++) thedata[i] = 0;
+//  printf("interruptHandler %d\n", intCount);
+#endif
+ 
+ //pinMode(4, OUTPUT);
   //digitalWrite(4, 1);
   if (_mode == RF69_MODE_RX && (readReg(REG_IRQFLAGS2) & RF_IRQFLAGS2_PAYLOADREADY))
   {
     //RSSI = readRSSI();
     setMode(RF69_MODE_STANDBY);
-    select();
+#ifdef RASPBERRY
+    thedata[0] = REG_FIFO & 0x7F;
+    thedata[1] = 0; // PAYLOADLEN
+    thedata[2] = 0; //  TargetID
+    wiringPiSPIDataRW(SPI_DEVICE, thedata, 3);
+    delayMicroseconds(MICROSLEEP_LENGTH);
 
-    SPIbuffer[0] = 0;
-    SPIbuffer[0] = REG_FIFO & 0x7F;
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(REG_FIFO & 0x7F);
-
-    SPIbuffer[0] = 0;
-
-    //PAYLOADLEN = wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); // SPI.transfer(0);
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);
-    PAYLOADLEN = SPIbuffer[0];
+    PAYLOADLEN = thedata[1];
     PAYLOADLEN = PAYLOADLEN > 66 ? 66 : PAYLOADLEN; // precaution
-
-    SPIbuffer[0] = 0;
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(0);
-    TARGETID = SPIbuffer[0];
+    TARGETID = thedata[2];
+#else
+    select();
+    SPI.transfer(REG_FIFO & 0x7F);
+    PAYLOADLEN = SPI.transfer(0);
+    PAYLOADLEN = PAYLOADLEN > 66 ? 66 : PAYLOADLEN; // precaution
+    TARGETID = SPI.transfer(0);
+#endif
     if(!(_promiscuousMode || TARGETID == _address || TARGETID == RF69_BROADCAST_ADDR) // match this node's address, or broadcast address or anything in promiscuous mode
        || PAYLOADLEN < 3) // address situation could receive packets that are malformed and don't fit this libraries extra fields
     {
@@ -377,36 +464,60 @@ void RFM69::interruptHandler() {
       //digitalWrite(4, 0);
       return;
     }
-
+#ifdef RASPBERRY
     DATALEN = PAYLOADLEN - 3;
+    thedata[0] = REG_FIFO & 0x77;
+    thedata[1] = 0; //SENDERID
+    thedata[2] = 0; //CTLbyte;
+    for(i = 0; i< DATALEN; i++) {
+      thedata[i+3] = 0;
+    }
 
-    SPIbuffer[0] = 0;
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(0);
-    SENDERID = SPIbuffer[0];
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(0);
-    uint8_t CTLbyte = SPIbuffer[0];
+    wiringPiSPIDataRW(SPI_DEVICE, thedata, DATALEN + 3);
+
+    SENDERID = thedata[1];
+    uint8_t CTLbyte = thedata[2];
+
+    ACK_RECEIVED = CTLbyte & 0x80; //extract ACK-requested flag
+    ACK_REQUESTED = CTLbyte & 0x40; //extract ACK-received flag
+    for (i= 0; i < DATALEN; i++)
+      {
+      DATA[i] = thedata[i+3];
+      }
+#else
+    DATALEN = PAYLOADLEN - 3;
+    SENDERID = SPI.transfer(0);
+    uint8_t CTLbyte = SPI.transfer(0);
 
     ACK_RECEIVED = CTLbyte & RFM69_CTL_SENDACK; // extract ACK-received flag
     ACK_REQUESTED = CTLbyte & RFM69_CTL_REQACK; // extract ACK-requested flag
     
     interruptHook(CTLbyte);     // TWS: hook to derived class interrupt function
-
     for (uint8_t i = 0; i < DATALEN; i++)
     {
-      SPIbuffer[0] = 0;
-      wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);
-      DATA[i] = SPIbuffer[0];
+      DATA[i] = SPI.transfer(0);
     }
+#endif
     if (DATALEN < RF69_MAX_DATA_LEN) DATA[DATALEN] = 0; // add null at end of string
     unselect();
     setMode(RF69_MODE_RX);
   }
   RSSI = readRSSI();
   //digitalWrite(4, 0);
+
 }
 
 // internal function
-void RFM69::isr0() { selfPointer->interruptHandler(); }
+void RFM69::isr0() {
+//	printf (" Isr0 %d ", intCount);
+	if (intCount++ > 0) {
+//		printf("+++***==== Dual Interupt handling ====*** %d+++\n", intCount);
+		}
+	else
+		selfPointer->interruptHandler(); 
+	intCount--;
+//	printf(" Isr0 exit ");
+	}
 
 // internal function
 void RFM69::receiveBegin() {
@@ -427,7 +538,9 @@ void RFM69::receiveBegin() {
 bool RFM69::receiveDone() {
 //ATOMIC_BLOCK(ATOMIC_FORCEON)
 //{
-  //noInterrupts(); // re-enabled in unselect() via setMode() or via receiveBegin() // CHANGE //
+#ifndef RASPBERRY
+  noInterrupts(); // re-enabled in unselect() via setMode() or via receiveBegin()
+#endif
   if (_mode == RF69_MODE_RX && PAYLOADLEN > 0)
   {
     setMode(RF69_MODE_STANDBY); // enables interrupts
@@ -435,7 +548,9 @@ bool RFM69::receiveDone() {
   }
   else if (_mode == RF69_MODE_RX) // already in RX no payload yet
   {
-    //interrupts(); // explicitly re-enable interrupts
+#ifndef RASPBERRY
+    interrupts(); // explicitly re-enable interrupts
+#endif
     return false;
   }
   receiveBegin();
@@ -447,23 +562,34 @@ bool RFM69::receiveDone() {
 // To disable encryption: radio.encrypt(null) or radio.encrypt(0)
 // KEY HAS TO BE 16 bytes !!!
 void RFM69::encrypt(const char* key) {
+#ifdef RASPBERRY
+  unsigned char thedata[17];
+  char i;
+
+  setMode(RF69_MODE_STANDBY);
+  if (key!=0) {
+    thedata[0] = REG_AESKEY1 | 0x80;
+    for(i = 1; i < 17; i++) {
+      thedata[i] = key[i-1];
+    }
+
+    wiringPiSPIDataRW(SPI_DEVICE, thedata, 17);
+    delayMicroseconds(MICROSLEEP_LENGTH);
+  }
+
+  writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFE) | (key ? 1 : 0));
+#else
   setMode(RF69_MODE_STANDBY);
   if (key != 0)
   {
     select();
-
-    SPIbuffer[0] = 0;
-    SPIbuffer[0] = REG_AESKEY1 | 0x80;
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(REG_AESKEY1 | 0x80);
-
-    for (uint8_t i = 0; i < 16; i++) {
-      SPIbuffer[0] = 0;
-      SPIbuffer[0] = key[i];
-      wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(key[i]);
-    }
+    SPI.transfer(REG_AESKEY1 | 0x80);
+    for (uint8_t i = 0; i < 16; i++)
+      SPI.transfer(key[i]);
     unselect();
   }
   writeReg(REG_PACKETCONFIG2, (readReg(REG_PACKETCONFIG2) & 0xFE) | (key ? 1 : 0));
+#endif
 }
 
 // get the received signal strength indicator (RSSI)
@@ -482,58 +608,69 @@ int16_t RFM69::readRSSI(bool forceTrigger) {
 
 uint8_t RFM69::readReg(uint8_t addr)
 {
+#ifdef RASPBERRY
+  unsigned char thedata[2];
+  thedata[0] = addr & 0x7F;
+  thedata[1] = 0;
+
+  wiringPiSPIDataRW(SPI_DEVICE, thedata, 2);
+  delayMicroseconds(MICROSLEEP_LENGTH);
+
+//printf("%x %x\n", addr, thedata[1]);
+  return thedata[1];
+#else
   select();
-
-  SPIbuffer[0] = 0;
-  SPIbuffer[0] = addr & 0x7F;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);//SPI.transfer(addr & 0x7F);
-
-  SPIbuffer[0] = 0;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); //SPI.transfer(0);
+  SPI.transfer(addr & 0x7F);
+  uint8_t regval = SPI.transfer(0);
   unselect();
-  return SPIbuffer[0];
+  return regval;
+#endif  
 }
 
 void RFM69::writeReg(uint8_t addr, uint8_t value)
 {
+#if RASPBERRY
+//printf("%x %x\n", addr, value);
+  unsigned char thedata[2];
+  thedata[0] = addr | 0x80;
+  thedata[1] = value;
+
+  wiringPiSPIDataRW(SPI_DEVICE, thedata, 2);
+  delayMicroseconds(MICROSLEEP_LENGTH);
+#else
   select();
-
-  SPIbuffer[0] = 0;
-  SPIbuffer[0] = addr | 0x80;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); //SPI.transfer(addr | 0x80);
-
-  SPIbuffer[0] = 0;
-  SPIbuffer[0] = value;
-  wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); //SPI.transfer(value);
-
+  SPI.transfer(addr | 0x80);
+  SPI.transfer(value);
   unselect();
+#endif
 }
 
 // select the RFM69 transceiver (save SPI settings, set CS low)
 void RFM69::select() {
-  //noInterrupts();
-#if defined (SPCR) && defined (SPSR)
+//  printf(" diable Int ");
+#ifndef RASPBERRY
+  noInterrupts();
   // save current SPI settings
   _SPCR = SPCR;
   _SPSR = SPSR;
-#endif
   // set RFM69 SPI settings
-  //SPI.setDataMode(SPI_MODE0);
-  //SPI.setBitOrder(MSBFIRST);
-  delay(.1);
+  SPI.setDataMode(SPI_MODE0);
+  SPI.setBitOrder(MSBFIRST);
+  SPI.setClockDivider(SPI_CLOCK_DIV4); // decided to slow down from DIV2 after SPI stalling in some instances, especially visible on mega1284p when RFM69 and FLASH chip both present
   digitalWrite(SELECT_PIN, LOW);
+#endif
 }
 
 // unselect the RFM69 transceiver (set CS high, restore SPI settings)
 void RFM69::unselect() {
+#ifndef RASPBERRY
   digitalWrite(SELECT_PIN, HIGH);
   // restore SPI settings to what they were before talking to RFM69
-#if defined (SPCR) && defined (SPSR)
   SPCR = _SPCR;
   SPSR = _SPSR;
+  interrupts();
 #endif
-  delay(.1);
-  //interrupts(); // CHANGE //
+//  printf(" EI ");
 }
 
 // true  = disable filtering to capture all frames on network
@@ -559,62 +696,35 @@ void RFM69::setHighPowerRegs(bool onOff) {
   writeReg(REG_TESTPA2, onOff ? 0x7C : 0x70);
 }
 
-// set the slave select (CS) pin 
-void RFM69::setCS(uint8_t newSPISlaveSelect) {
-  //_slaveSelectPin = newSPISlaveSelect;
-  //digitalWrite(_slaveSelectPin, HIGH);
-  //pinMode(_slaveSelectPin, OUTPUT);
-}
-
-//for debugging
-#define REGISTER_DETAIL 0
-#if REGISTER_DETAIL
-// SERIAL PRINT
-// replace Serial.print("string") with SerialPrint("string")
-#define SerialPrint(x) SerialPrint_P(PSTR(x))
-void SerialWrite ( uint8_t c ) {
-    Serial.write ( c );
-}
-
-void SerialPrint_P(PGM_P str, void (*f)(uint8_t) = SerialWrite ) {
-  for (uint8_t c; (c = pgm_read_byte(str)); str++) (*f)(c);
-}
-#endif
-
+// Serial.print all the RFM69 register values
 void RFM69::readAllRegs()
 {
+#ifdef RASPBERRY
+  char thedata[2];
+  int i;
+  thedata[1] = 0;
+
+  for(i = 1; i <= 0x4F; i++) {
+   printf("%i - %i\n\r", i, readReg(i));
+  }  
+#else
   uint8_t regVal;
 
-#if REGISTER_DETAIL 
-  int capVal;
-
-  //... State Variables for intelligent decoding
-  uint8_t modeFSK = 0;
-  int bitRate = 0;
-  int freqDev = 0;
-  long freqCenter = 0;
-#endif
-  
-  cout << "Address - HEX" << endl;
   for (uint8_t regAddr = 1; regAddr <= 0x4F; regAddr++)
   {
     select();
-
-    SPIbuffer[0] = 0;
-    SPIbuffer[0] = regAddr & 0x7F;
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1); //SPI.transfer(regAddr & 0x7F); // send address + r/w bit
-
-    SPIbuffer[0] = 0;
-    wiringPiSPIDataRW(SPI_CHANNEL, SPIbuffer, 1);// SPI.transfer(0);
-    regVal = SPIbuffer[0];
+    SPI.transfer(regAddr & 0x7F); // send address + r/w bit
+    regVal = SPI.transfer(0);
     unselect();
 
-    cout << hex << regAddr;
-    cout << " - ";
-    cout << hex << regVal << endl;
-    cout << dec;
+    Serial.print(regAddr, HEX);
+    Serial.print(" - ");
+    Serial.print(regVal,HEX);
+    Serial.print(" - ");
+    Serial.println(regVal,BIN);
   }
   unselect();
+#endif
 }
 
 uint8_t RFM69::readTemperature(uint8_t calFactor) // returns centigrade
@@ -631,3 +741,31 @@ void RFM69::rcCalibration()
   while ((readReg(REG_OSC1) & RF_OSC1_RCCAL_DONE) == 0x00);
 }
 
+unsigned char LEDSPIbuffer[8] = {0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x0};
+void RFM69::setLED(uint32_t val) {
+	LEDSPIbuffer[0] = 0x00; //starting frame
+ 	LEDSPIbuffer[1] = 0x00;
+ 	LEDSPIbuffer[2] = 0x00;
+ 	LEDSPIbuffer[3] = 0x00;
+
+ 	LEDSPIbuffer[4] = 0xFF;
+	LEDSPIbuffer[5] = (val >> 16) & 0xFF;
+	LEDSPIbuffer[6] = (val >> 8) & 0xFF ;
+	LEDSPIbuffer[7] = (val & 0xFF);
+
+ 	wiringPiSPIDataRW(1, LEDSPIbuffer, 8);
+}
+
+void RFM69::setLED(uint8_t red, uint8_t green, uint8_t blue) {
+	LEDSPIbuffer[0] = 0x00; //starting frame
+ 	LEDSPIbuffer[1] = 0x00;
+ 	LEDSPIbuffer[2] = 0x00;
+ 	LEDSPIbuffer[3] = 0x00;
+
+ 	LEDSPIbuffer[4] = 0xFF;
+	LEDSPIbuffer[5] = red;
+	LEDSPIbuffer[6] = green;
+	LEDSPIbuffer[7] = blue;
+
+ 	wiringPiSPIDataRW(1, LEDSPIbuffer, 8);
+}

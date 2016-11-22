@@ -3,6 +3,7 @@
 // **********************************************************************************
 // Copyright Felix Rusu (2014), felix@lowpowerlab.com
 // http://lowpowerlab.com/
+// Raspberry Pi port by Alexandre Bouillot (2014-2015) @abouillot on twitter
 // **********************************************************************************
 // License
 // **********************************************************************************
@@ -30,8 +31,38 @@
 // **********************************************************************************
 #ifndef RFM69_h
 #define RFM69_h
+#ifdef RASPBERRY
 #include <stdint.h>
+
+#define RF69_MAX_DATA_LEN     61 // to take advantage of the built in AES/CRC we want to limit the frame size to the internal FIFO size (66 bytes - 3 bytes overhead - 2 bytes crc)
+
+#define RF69_SPI_CS           0 // SS is the SPI slave select pin, for instance D10 on atmega328
+#define RF69_IRQ_PIN          24
+#define RF69_IRQ_NUM          0
+ 
+#define SPI_SPEED 160000
+#define SPI_DEVICE 0
+#else
+#include <Arduino.h>            //assumes Arduino IDE v1.0 or greater
+
 #define RF69_MAX_DATA_LEN       61 // to take advantage of the built in AES/CRC we want to limit the frame size to the internal FIFO size (66 bytes - 3 bytes overhead - 2 bytes crc)
+#define RF69_SPI_CS             SS // SS is the SPI slave select pin, for instance D10 on ATmega328
+
+// INT0 on AVRs should be connected to RFM69's DIO0 (ex on ATmega328 it's D2, on ATmega644/1284 it's D2)
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)
+  #define RF69_IRQ_PIN          2
+  #define RF69_IRQ_NUM          0
+#elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
+  #define RF69_IRQ_PIN          2
+  #define RF69_IRQ_NUM          2
+#elif defined(__AVR_ATmega32U4__)
+  #define RF69_IRQ_PIN          3
+  #define RF69_IRQ_NUM          0
+#else 
+  #define RF69_IRQ_PIN          2
+  #define RF69_IRQ_NUM          0  
+#endif
+#endif
 
 #define CSMA_LIMIT              -90 // upper RX signal sensitivity threshold in dBm for carrier sense access
 #define RF69_MODE_SLEEP         0 // XTAL OFF
@@ -49,18 +80,13 @@
 #define null                  0
 #define COURSE_TEMP_COEF    -90 // puts the temperature reading in the ballpark, user can fine tune the returned value
 #define RF69_BROADCAST_ADDR 255
-#define RF69_CSMA_LIMIT_MS 1000
-#define RF69_TX_LIMIT_MS   1000
+#define RF69_CSMA_LIMIT_MS 10
+#define RF69_TX_LIMIT_MS   10
 #define RF69_FSTEP  61.03515625 // == FXOSC / 2^19 = 32MHz / 2^19 (p13 in datasheet)
 
 // TWS: define CTLbyte bits
 #define RFM69_CTL_SENDACK   0x80
 #define RFM69_CTL_REQACK    0x40
-
-#define SPI_CHANNEL 0 // we will be using channel 0
-
-#define RF69_IRQ_PIN 24 // we will be using GPIO 24
-#define RF69_IRQ_NUM 0 // idk what this should be right now...............................................................
 
 class RFM69 {
   public:
@@ -74,7 +100,8 @@ class RFM69 {
     static volatile int16_t RSSI; // most accurate RSSI during reception (closest to the reception)
     static volatile uint8_t _mode; // should be protected?
 
-    RFM69(uint8_t interruptPin=RF69_IRQ_PIN, bool isRFM69HW=false, uint8_t interruptNum=RF69_IRQ_NUM) {
+    RFM69(uint8_t slaveSelectPin=RF69_SPI_CS, uint8_t interruptPin=RF69_IRQ_PIN, bool isRFM69HW=false, uint8_t interruptNum=RF69_IRQ_NUM) {
+      _slaveSelectPin = slaveSelectPin;
       _interruptPin = interruptPin;
       _interruptNum = interruptNum;
       _mode = RF69_MODE_STANDBY;
@@ -84,6 +111,7 @@ class RFM69 {
     }
 
     bool initialize(uint8_t freqBand, uint8_t ID, uint8_t networkID=1);
+    bool restart(uint8_t freqBand, uint8_t ID, uint8_t networkID=1);
     void setAddress(uint8_t addr);
     void setNetwork(uint8_t networkID);
     bool canSend();
@@ -110,6 +138,9 @@ class RFM69 {
     void writeReg(uint8_t addr, uint8_t val);
     void readAllRegs();
 
+    void setLED(uint32_t);
+    void setLED(uint8_t, uint8_t, uint8_t);
+
   protected:
     static void isr0();
     void virtual interruptHandler();
@@ -124,10 +155,8 @@ class RFM69 {
     bool _promiscuousMode;
     uint8_t _powerLevel;
     bool _isRFM69HW;
-#if defined (SPCR) && defined (SPSR)
     uint8_t _SPCR;
     uint8_t _SPSR;
-#endif
 
     virtual void receiveBegin();
     virtual void setMode(uint8_t mode);

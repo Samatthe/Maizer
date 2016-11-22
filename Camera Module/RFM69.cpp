@@ -38,13 +38,10 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include <iostream>
-#include <bitset>
-
 #include <unistd.h>	//usleep
 #define MICROSLEEP_LENGTH 15
 #define INTERRUPT_PIN 5
-#define SELECT_PIN 6
+static int SELECT_PIN = 25;
 
 #else
 #include <SPI.h>
@@ -113,7 +110,6 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
     fprintf(stderr, "Unable to open SPI device\n\r");
     exit(1);
   }
-  wiringPiSPISetup(1, SPI_SPEED);
 #else
   digitalWrite(SELECT_PIN, HIGH);
   pinMode(SELECT_PIN, OUTPUT);
@@ -142,7 +138,6 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
   // Attach the Interupt
   wiringPiSetup();
   wiringPiISR(INTERRUPT_PIN, INT_EDGE_RISING, RFM69::isr0);
-  pinMode(SELECT_PIN, INPUT); //do not remove this line!
 #else
   attachInterrupt(_interruptNum, RFM69::isr0, RISING);
 #endif
@@ -696,6 +691,13 @@ void RFM69::setHighPowerRegs(bool onOff) {
   writeReg(REG_TESTPA2, onOff ? 0x7C : 0x70);
 }
 
+// set the slave select (CS) pin 
+void RFM69::setCS(uint8_t newSPISlaveSelect) {
+  SELECT_PIN = newSPISlaveSelect;
+  digitalWrite(SELECT_PIN, HIGH);
+  pinMode(SELECT_PIN, OUTPUT);
+}
+
 // Serial.print all the RFM69 register values
 void RFM69::readAllRegs()
 {
@@ -739,33 +741,4 @@ void RFM69::rcCalibration()
 {
   writeReg(REG_OSC1, RF_OSC1_RCCAL_START);
   while ((readReg(REG_OSC1) & RF_OSC1_RCCAL_DONE) == 0x00);
-}
-
-unsigned char LEDSPIbuffer[8] = {0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x0};
-void RFM69::setLED(uint32_t val) {
-	LEDSPIbuffer[0] = 0x00; //starting frame
- 	LEDSPIbuffer[1] = 0x00;
- 	LEDSPIbuffer[2] = 0x00;
- 	LEDSPIbuffer[3] = 0x00;
-
- 	LEDSPIbuffer[4] = 0xFF;
-	LEDSPIbuffer[5] = (val >> 16) & 0xFF;
-	LEDSPIbuffer[6] = (val >> 8) & 0xFF ;
-	LEDSPIbuffer[7] = (val & 0xFF);
-
- 	wiringPiSPIDataRW(1, LEDSPIbuffer, 8);
-}
-
-void RFM69::setLED(uint8_t red, uint8_t green, uint8_t blue) {
-	LEDSPIbuffer[0] = 0x00; //starting frame
- 	LEDSPIbuffer[1] = 0x00;
- 	LEDSPIbuffer[2] = 0x00;
- 	LEDSPIbuffer[3] = 0x00;
-
- 	LEDSPIbuffer[4] = 0xFF;
-	LEDSPIbuffer[5] = red;
-	LEDSPIbuffer[6] = green;
-	LEDSPIbuffer[7] = blue;
-
- 	wiringPiSPIDataRW(1, LEDSPIbuffer, 8);
 }

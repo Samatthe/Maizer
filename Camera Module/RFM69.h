@@ -138,9 +138,6 @@ class RFM69 {
     void writeReg(uint8_t addr, uint8_t val);
     void readAllRegs();
 
-    void setLED(uint32_t);
-    void setLED(uint8_t, uint8_t, uint8_t);
-
   protected:
     static void isr0();
     void virtual interruptHandler();

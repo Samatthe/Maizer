@@ -50,6 +50,8 @@
 
 static volatile bool main_b_mouse_enable = false;
 
+
+
 /*! \brief Main function. Execution starts here.
  */
 int main(void)

@@ -176,24 +176,6 @@ void ui_process(uint16_t framenumber)
 		return;
 	}
 	cpt_sof = 0;
-
-
-/*OLD CODE
-	// Uses buttons to move mouse
-	//if (!port_pin_get_input_level(BUTTON_0_PIN)) {
-	static int16_t x = 0;
-	static int16_t y = 0;
-	x+= 10;
-	y+= 10;
-	if(x >= 0x7FFF)
-	x = 0;
-	if(y >= 0x7FFF)
-	y = 0;
-		udi_hid_mouse_moveX(x);
-		udi_hid_mouse_moveY(y);
-	//}
-*/
-	
 	
 	
 	
@@ -204,14 +186,6 @@ void ui_process(uint16_t framenumber)
 	static int32_t temp = 0;
 	
 	static uint8_t button_info = 0x00; //order is: ? ? ? ? left_click right_click middle_click laser_on?
-
-	/*radio_sendbuffer[0] = 'H';
-	radio_sendbuffer[1] = 'E';
-	radio_sendbuffer[2] = 'L';
-	radio_sendbuffer[3] = 'L';
-	radio_sendbuffer[4] = 'O';
-	radio_sendlength = 5;*/
-	//RFM_send(CAMERA_MODULE_NODE_ID,radio_sendbuffer, radio_sendlength, false);
 
 	// this will receive the mouse location from the camera module
 	if (RFM_receiveDone()) {
@@ -265,19 +239,18 @@ void ui_process(uint16_t framenumber)
 			for (int i = 0; i < RFM_DATALEN; i++) {
 				switch (i) {
 					case 0: //x axis scroll
-						udi_hid_mouse_moveScroll(RFM_DATA[i]);
 						break;
 					
 					case 1: //y axis scroll
-						
+					//udi_hid_mouse_moveScroll(RFM_DATA[i]);
 						break;
 					
 					case 2: //button info byte
 						button_info = RFM_DATA[i];
 						
-						udi_hid_mouse_btnleft(button_info & 0x08);
-						udi_hid_mouse_btnright(button_info & 0x04);
-						udi_hid_mouse_btnmiddle(button_info & 0x02);
+						udi_hid_mouse_btnleft((button_info & 0x08) >> 3);
+						udi_hid_mouse_btnright((button_info & 0x04) >> 2);
+						udi_hid_mouse_btnmiddle((button_info & 0x02) >> 1);
 						
 						break;
 				}
@@ -286,11 +259,16 @@ void ui_process(uint16_t framenumber)
 	}
 	/*else
 	{
-		//x += 50;
-		//y += 50;
+		x += 50;
+		y += 50;
 		udi_hid_mouse_moveX(x);
 		udi_hid_mouse_moveY(y);
 	}*/
+
+		x += 50;
+		y += 50;
+		udi_hid_mouse_moveX(x);
+		udi_hid_mouse_moveY(y);
 }
 
 /**

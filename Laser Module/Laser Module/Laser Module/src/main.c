@@ -58,7 +58,10 @@
 void configure_LED_PWM(void);
 struct tcc_module tcc0;
 struct tcc_module tcc1;
-void configure_button_pins(void);
+void configure_IO_pins(void);
+
+// Helper Functions
+void ColorCycle(void);
 
 // Helper functions
 void setTrackBallRGBW(uint16_t red, uint16_t green, uint16_t blue, uint16_t white);
@@ -103,35 +106,38 @@ void configure_LED_PWM(void)
 ///////////////////////////////////////////////////////////////////////////
 
 // Configure the LED selection port as output
-void configure_button_pins(void)
+void configure_IO_pins(void)
 {
 	struct port_config config_port_pin;
 	port_get_config_defaults(&config_port_pin);
 	config_port_pin.direction = PORT_PIN_DIR_INPUT;
-	//Right Arrow Button
+	// Right Arrow Button
 	port_pin_set_config(PIN_PA04, &config_port_pin);
-	//Hall Up*
+	// Hall Up*
 	port_pin_set_config(PIN_PA06, &config_port_pin);
-	//Hall Down*
+	// Hall Down*
 	port_pin_set_config(PIN_PA09, &config_port_pin);
-	//Hall Left*
+	// Hall Left*
 	port_pin_set_config(PIN_PA10, &config_port_pin);
-	//Hall Right*
+	// Hall Right*
 	port_pin_set_config(PIN_PA11, &config_port_pin);
-	//Down Arrow Button
+	// Down Arrow Button
 	port_pin_set_config(PIN_PA12, &config_port_pin);
-	//Scroll Button
+	// Scroll Button
 	port_pin_set_config(PIN_PA13, &config_port_pin);
-	//Right Mouse Button
+	// Right Mouse Button
 	port_pin_set_config(PIN_PA15, &config_port_pin);
-	//Up Arrow Button
+	// Up Arrow Button
 	port_pin_set_config(PIN_PA20, &config_port_pin);
-	//Left Mouse Button
+	// Left Mouse Button
 	port_pin_set_config(PIN_PB02, &config_port_pin);
-	//Laser Button
+	// Laser Button
 	port_pin_set_config(PIN_PB03, &config_port_pin);
-	//Left Arrow Button
+	// Left Arrow Button
 	port_pin_set_config(PIN_PB09, &config_port_pin);
+	// Laser Output
+	config_port_pin.direction = PORT_PIN_DIR_OUTPUT;
+	port_pin_set_config(PIN_PB08, &config_port_pin);
 }
 
 
@@ -140,15 +146,23 @@ int main (void)
     /* Initialize system */
 	system_init();
 	configure_LED_PWM();
-	//configure_button_pins();
+	configure_IO_pins();
 	
+
 	/*if(!lipo_begin())
 	{
+		setTrackBallRGBW(0, 0xFFFF, 0, 0);
 		
+		for(int i = 0; i < 100000; i++)
+		{ }
 	}
-	lipo_setCapacity(Capacity);
+	else
+	{
+		setTrackBallRGBW(0xFFFF, 0, 0, 0);
+	}
+	//lipo_setCapacity(Capacity);
 
-	uint16_t soc = lipo_soc(FILTERED);
+	/*uint16_t soc = lipo_soc(FILTERED);
 	uint16_t volts = lipo_voltage();
 	int16_t current = lipo_current(AVG);
 	uint16_t totalCapacity = lipo_capacity(FULL);
@@ -196,30 +210,54 @@ int main (void)
 	//sends data after receiving a request message from the dongle
 	//sends X axis byte, Y axis byte, button byte
 	{
-		
-	//check if the RFM69 receives a  packet
-	//only send info when a packet is received from dongle module
-	if (RFM_receiveDone()) // Got one!
-	{
-		// The actual message is contained in the RFM_DATA array,
-		// and is RFM_DATALEN bytes in size:
-		  
-		//for (byte i = 0; i < RFM_DATALEN; i++)
-		RFM_DATALEN = RFM_DATALEN;
-		// RFM_RSSI is the "Receive Signal Strength Indicator",
-		// smaller numbers mean higher power.
+		ColorCycle();
+		static bool button = 0;
+		static bool lbutton = 0;
+		static bool laserState = 0;
 
-		RFM_RSSI = RFM_RSSI;
+		button = port_pin_get_input_level(PIN_PB03);
+		if(button && !lbutton)
+		{
+			laserState = !laserState;
+			port_pin_set_output_level(PIN_PB08, laserState);
+		} 
+		lbutton = button;
+		//check if the RFM69 receives a  packet
+		//only send info when a packet is received from dongle module
+		if (RFM_receiveDone()) // Got one!
+		{
+			// The actual message is contained in the RFM_DATA array,
+			// and is RFM_DATALEN bytes in size:
+		  
+			//for (byte i = 0; i < RFM_DATALEN; i++)
+			RFM_DATALEN = RFM_DATALEN;
+			// RFM_RSSI is the "Receive Signal Strength Indicator",
+			// smaller numbers mean higher power.
+
+			RFM_RSSI = RFM_RSSI;
 		
-		//port_pin_get_input_level();
-		//Send data packets
-		sendbuffer[0] = 0xFF; // x axis byte
-		sendbuffer[1] = 0xFF; // y axis byte
-		sendbuffer[2] = 0xFF; // button byte -- order is: up down left right left_click right_click middle_click laser_on?
+			//port_pin_get_input_level();
+			//Send data packets
+			sendbuffer[0] = 0xFF; // x axis byte
+			sendbuffer[1] = 0xFF; // y axis byte
+			sendbuffer[2] = 0xFF; // button byte -- order is: up | down | left | right | left_click | right_click | middle_click | laser_on?
 		
 		
+			RFM_send(TONODEID, sendbuffer, sendlength, false);
+		}
+
+		sendbuffer[0] = 0; // x axis byte
+		sendbuffer[1] = 0; // y axis byte
+		sendbuffer[2] = 0;
+		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA20) << 7); // Up
+		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA12) << 6); // Down
+		sendbuffer[2] |= (port_pin_get_input_level(PIN_PB09) << 5); // Left
+		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 4); // Right
+		sendbuffer[2] |= (port_pin_get_input_level(PIN_PB02) << 3); // Left Click
+		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 2); // Right Click
+		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
+		sendbuffer[2] |= laserState;								// Laser State
 		RFM_send(TONODEID, sendbuffer, sendlength, false);
-	}
   }
 }
 
@@ -235,10 +273,10 @@ void setTrackBallRGBW(uint16_t red, uint16_t green, uint16_t blue, uint16_t whit
 	tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (1), red);
 } 
 
-void ColorCycle()
+void ColorCycle(void)
 {
 	static int color = 0;
-	static int speed = 5;
+	static int speed = 100;
 	static int index = 0;
 	if(index == 0)
 	{

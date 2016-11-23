@@ -287,10 +287,10 @@ static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report)
 
 	irqflags_t flags = cpu_irq_save();
 
-	// Add position in HID mouse report
-	s16_newpos = udi_hid_mouse_report[index_report];
-	s16_newpos = pos;
-	udi_hid_mouse_report[index_report] = s16_newpos;
+	if(index_report < 5)
+	{
+		udi_hid_mouse_report[index_report] = pos;
+	}
 
 	// Valid and send report
 	udi_hid_mouse_b_report_valid = true;
@@ -309,7 +309,7 @@ static bool udi_hid_mouse_btn(bool b_state, uint8_t btn)
 	else
 		udi_hid_mouse_report[0] &= ~(unsigned)btn;
 	// Use mouse move routine
-	return udi_hid_mouse_move(0, 1);
+	return udi_hid_mouse_move(0, 10);
 }
 
 

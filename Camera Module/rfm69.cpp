@@ -43,6 +43,8 @@
 #define INTERRUPT_PIN 5
 static int SELECT_PIN = 25;
 
+#include <iostream>
+
 #else
 #include <SPI.h>
 #endif
@@ -110,6 +112,7 @@ bool RFM69::initialize(uint8_t freqBand, uint8_t nodeID, uint8_t networkID)
     fprintf(stderr, "Unable to open SPI device\n\r");
     exit(1);
   }
+  wiringPiSPISetup(1, SPI_SPEED);
 #else
   digitalWrite(SELECT_PIN, HIGH);
   pinMode(SELECT_PIN, OUTPUT);
@@ -233,6 +236,7 @@ void RFM69::setFrequency(uint32_t freqHz)
 
 void RFM69::setMode(uint8_t newMode)
 {
+  //std::cout << "set mode to " << unsigned(newMode) << std::endl;
   if (newMode == _mode)
     return;
 
@@ -299,7 +303,8 @@ void RFM69::setPowerLevel(uint8_t powerLevel)
 
 bool RFM69::canSend()
 {
-// printf("mode %d, payload %d, rssi %d %d\n", _mode, PAYLOADLEN, readRSSI(), CSMA_LIMIT);
+  //just don't use canSend()... it's a bad idea
+  //std::cout << "mode " << unsigned(_mode) << ", payload " << unsigned(PAYLOADLEN) << ", rssi " << readRSSI() << " " << CSMA_LIMIT << std::endl;
   if (_mode == RF69_MODE_RX && PAYLOADLEN == 0 && readRSSI() < CSMA_LIMIT) // if signal stronger than -100dBm is detected assume channel activity
   {
     setMode(RF69_MODE_STANDBY);
@@ -741,4 +746,33 @@ void RFM69::rcCalibration()
 {
   writeReg(REG_OSC1, RF_OSC1_RCCAL_START);
   while ((readReg(REG_OSC1) & RF_OSC1_RCCAL_DONE) == 0x00);
+}
+
+unsigned char LEDSPIbuffer[8] = {0x00, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x0};
+void RFM69::setLED(uint32_t val) {
+  LEDSPIbuffer[0] = 0x00; //starting frame
+  LEDSPIbuffer[1] = 0x00;
+  LEDSPIbuffer[2] = 0x00;
+  LEDSPIbuffer[3] = 0x00;
+
+  LEDSPIbuffer[4] = 0xFF;
+  LEDSPIbuffer[5] = (val >> 16) & 0xFF;
+  LEDSPIbuffer[6] = (val >> 8) & 0xFF ;
+  LEDSPIbuffer[7] = (val & 0xFF);
+
+  wiringPiSPIDataRW(1, LEDSPIbuffer, 8);
+}
+
+void RFM69::setLED(uint8_t red, uint8_t green, uint8_t blue) {
+  LEDSPIbuffer[0] = 0x00; //starting frame
+  LEDSPIbuffer[1] = 0x00;
+  LEDSPIbuffer[2] = 0x00;
+  LEDSPIbuffer[3] = 0x00;
+
+  LEDSPIbuffer[4] = 0xFF;
+  LEDSPIbuffer[5] = red;
+  LEDSPIbuffer[6] = green;
+  LEDSPIbuffer[7] = blue;
+
+  wiringPiSPIDataRW(1, LEDSPIbuffer, 8);
 }

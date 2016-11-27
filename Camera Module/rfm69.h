@@ -64,7 +64,7 @@
 #endif
 #endif
 
-#define CSMA_LIMIT              -90 // upper RX signal sensitivity threshold in dBm for carrier sense access
+#define CSMA_LIMIT              -150 // upper RX signal sensitivity threshold in dBm for carrier sense access
 #define RF69_MODE_SLEEP         0 // XTAL OFF
 #define RF69_MODE_STANDBY       1 // XTAL ON
 #define RF69_MODE_SYNTH         2 // PLL ON
@@ -80,8 +80,8 @@
 #define null                  0
 #define COURSE_TEMP_COEF    -90 // puts the temperature reading in the ballpark, user can fine tune the returned value
 #define RF69_BROADCAST_ADDR 255
-#define RF69_CSMA_LIMIT_MS 10
-#define RF69_TX_LIMIT_MS   10
+#define RF69_CSMA_LIMIT_MS 5
+#define RF69_TX_LIMIT_MS   5
 #define RF69_FSTEP  61.03515625 // == FXOSC / 2^19 = 32MHz / 2^19 (p13 in datasheet)
 
 // TWS: define CTLbyte bits
@@ -137,6 +137,9 @@ class RFM69 {
     uint8_t readReg(uint8_t addr);
     void writeReg(uint8_t addr, uint8_t val);
     void readAllRegs();
+
+    void setLED(uint32_t);
+    void setLED(uint8_t, uint8_t, uint8_t);
 
   protected:
     static void isr0();

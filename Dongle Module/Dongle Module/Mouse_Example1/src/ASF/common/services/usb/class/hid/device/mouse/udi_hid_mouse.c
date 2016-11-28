@@ -165,7 +165,9 @@ UDC_DESC_STORAGE udi_hid_mouse_report_desc_t udi_hid_mouse_report_desc = {
  *
  * \return \c 1 if function was successfully done, otherwise \c 0.
  */
-static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report);
+static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report, bool send);
+
+//bool mouse_move(uint16_t x, uint16_t y);
 
 /**
  * \brief Changes a button state
@@ -246,20 +248,20 @@ static bool udi_hid_mouse_setreport(void)
 
 bool udi_hid_mouse_moveScroll(int16_t pos)
 {
-	return (udi_hid_mouse_move(pos & 0x00FF, 5) &
-			udi_hid_mouse_move((pos & 0x7F00) >> 8, 6));
+	return (udi_hid_mouse_move(pos & 0x00FF, 5, false) &
+			udi_hid_mouse_move((pos & 0x7F00) >> 8, 6, true));
 }
 
 bool udi_hid_mouse_moveY(int16_t pos_y)
 {
-	return (udi_hid_mouse_move(pos_y & 0x00FF, 3) &
-			udi_hid_mouse_move((pos_y & 0x7F00) >> 8, 4));
+	return (udi_hid_mouse_move(pos_y & 0x00FF, 3, false) &
+			udi_hid_mouse_move((pos_y & 0x7F00) >> 8, 4, true));
 }
 
 bool udi_hid_mouse_moveX(int16_t pos_x)
 {
-	return (udi_hid_mouse_move(pos_x & 0x00FF, 1) &
-			udi_hid_mouse_move((pos_x & 0x7F00) >> 8, 2));
+	//return (udi_hid_mouse_move(pos_x & 0x00FF, 1, false) &
+		return (	udi_hid_mouse_move((pos_x & 0x7F00) >> 8, 2, true));
 }
 
 bool udi_hid_mouse_btnmiddle(bool b_state)
@@ -281,10 +283,40 @@ bool udi_hid_mouse_btnleft(bool b_state)
 //--------------------------------------------
 //------ Internal routines
 
-static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report)
+bool mouse_buttons(bool left, bool middle, bool right)
 {
-	uint16_t s16_newpos;
+	
+		irqflags_t flags = cpu_irq_save();
 
+		// Modify buttons report
+		if (HID_MOUSE_BTN_DOWN == left)
+			udi_hid_mouse_report[0] |= 0x01;
+		else
+			udi_hid_mouse_report[0] &= ~(unsigned)0x01;
+		
+		if (HID_MOUSE_BTN_DOWN == right)
+			udi_hid_mouse_report[0] |= 0x02;
+		else
+			udi_hid_mouse_report[0] &= ~(unsigned)0x02;
+		
+		if (HID_MOUSE_BTN_DOWN == middle)
+			udi_hid_mouse_report[0] |= 0x04;
+		else
+			udi_hid_mouse_report[0] &= ~(unsigned)0x04;
+
+		// Use mouse move routine
+
+		// Valid and send report
+		udi_hid_mouse_b_report_valid = true;
+		udi_hid_mouse_send_report();
+
+		cpu_irq_restore(flags);
+
+		return true;
+}
+
+static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report, bool send)
+{
 	irqflags_t flags = cpu_irq_save();
 
 	if(index_report < 5)
@@ -293,13 +325,30 @@ static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report)
 	}
 
 	// Valid and send report
+		udi_hid_mouse_b_report_valid = true;
+		udi_hid_mouse_send_report();
+
+	cpu_irq_restore(flags);
+	return true;
+}
+
+bool mouse_move(uint16_t x, uint16_t y)
+{
+	irqflags_t flags = cpu_irq_save();
+
+	udi_hid_mouse_report[1] = x & 0x00FF;
+	udi_hid_mouse_report[2] = (x & 0x7F00) >> 8;
+	udi_hid_mouse_report[3] = y & 0x00FF;
+	udi_hid_mouse_report[4] = (y & 0x7F00) >> 8;
+
+	// Valid and send report
+
 	udi_hid_mouse_b_report_valid = true;
 	udi_hid_mouse_send_report();
 
 	cpu_irq_restore(flags);
 	return true;
 }
-
 
 static bool udi_hid_mouse_btn(bool b_state, uint8_t btn)
 {
@@ -309,7 +358,7 @@ static bool udi_hid_mouse_btn(bool b_state, uint8_t btn)
 	else
 		udi_hid_mouse_report[0] &= ~(unsigned)btn;
 	// Use mouse move routine
-	return udi_hid_mouse_move(0, 10);
+	return udi_hid_mouse_move(0, 10, false);
 }
 
 

@@ -842,10 +842,6 @@ Discarded input sections
                 0x00000000        0x4 src/RFM69.o
  .bss.cpu_irq_prev_interrupt_state
                 0x00000000        0x1 src/RFM69.o
- .text.port_pin_get_input_level
-                0x00000000       0x44 src/RFM69.o
- .text.sendFrame
-                0x00000000      0x198 src/RFM69.o
  .text.getFrequency
                 0x00000000       0x68 src/RFM69.o
  .text.setFrequency
@@ -857,9 +853,6 @@ Discarded input sections
                 0x00000000       0x24 src/RFM69.o
  .text.setPowerLevel
                 0x00000000       0x74 src/RFM69.o
- .text.canSend  0x00000000       0x44 src/RFM69.o
- .text.RFM_send
-                0x00000000       0xa0 src/RFM69.o
  .text.RFM_sendWithRetry
                 0x00000000       0xa0 src/RFM69.o
  .text.ACKReceived
@@ -1114,10 +1107,6 @@ Discarded input sections
                 0x00000000       0x20 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
  .text.udc_remotewakeup
                 0x00000000       0x10 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .bss.radio_sendbuffer
-                0x00000000       0x3e src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .data.radio_sendlength
-                0x00000000        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
  .rodata.red    0x00000000        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
  .rodata.green  0x00000000        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
  .rodata.blue   0x00000000        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
@@ -1575,7 +1564,21 @@ Discarded input sections
  .bss.cpu_irq_prev_interrupt_state
                 0x00000000        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
  .text.udi_hid_mouse_moveScroll
-                0x00000000       0x4c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x00000000       0x50 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_moveY
+                0x00000000       0x50 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_moveX
+                0x00000000       0x34 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_btnmiddle
+                0x00000000       0x28 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_btnright
+                0x00000000       0x28 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_btnleft
+                0x00000000       0x28 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_move
+                0x00000000       0x6c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_btn
+                0x00000000       0x5c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
  .debug_macro   0x00000000      0x862 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
  .debug_macro   0x00000000      0x166 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
  .debug_macro   0x00000000      0x644 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
@@ -6303,7 +6306,7 @@ LOAD c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/ar
 LOAD c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
                 0x00002000                STACK_SIZE = DEFINED (STACK_SIZE)?STACK_SIZE:DEFINED (__stack_size__)?__stack_size__:0x2000
 
-.text           0x00000000     0x8ce8
+.text           0x00000000     0x8f64
                 0x00000000                . = ALIGN (0x4)
                 0x00000000                _sfixed = .
  *(.vectors .vectors.*)
@@ -6400,937 +6403,944 @@ LOAD c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/ar
                 0x00001434       0x24 src/RFM69.o
  .text.port_get_config_defaults
                 0x00001458       0x20 src/RFM69.o
- .text.port_pin_set_output_level
-                0x00001478       0x50 src/RFM69.o
- .text.rtc_count_get_config_defaults
-                0x000014c8       0x5c src/RFM69.o
- .text.spi_is_syncing
-                0x00001524       0x20 src/RFM69.o
- .text.spi_get_config_defaults
-                0x00001544       0x84 src/RFM69.o
- .text.spi_slave_inst_get_config_defaults
-                0x000015c8       0x20 src/RFM69.o
- .text.spi_attach_slave
-                0x000015e8       0x64 src/RFM69.o
- .text.spi_enable
-                0x0000164c       0x34 src/RFM69.o
- .text.configure_port_pins
-                0x00001680       0x2c src/RFM69.o
-                0x00001680                configure_port_pins
- .text.configure_extint_channel
-                0x000016ac       0x40 src/RFM69.o
-                0x000016ac                configure_extint_channel
- .text.configure_extint_callbacks
-                0x000016ec       0x28 src/RFM69.o
-                0x000016ec                configure_extint_callbacks
- .text.configure_RFM69_spi
-                0x00001714       0xc4 src/RFM69.o
-                0x00001714                configure_RFM69_spi
- .text.configure_rtc_count
-                0x000017d8       0x64 src/RFM69.o
-                0x000017d8                configure_rtc_count
- .text.reset_millis
-                0x0000183c       0x28 src/RFM69.o
-                0x0000183c                reset_millis
- .text.millis   0x00001864       0x28 src/RFM69.o
-                0x00001864                millis
- .text.RFM_setHighPower
-                0x0000188c       0x88 src/RFM69.o
-                0x0000188c                RFM_setHighPower
- .text.RFM69    0x00001914       0x30 src/RFM69.o
-                0x00001914                RFM69
- .text.RFM_initialize
-                0x00001944      0x368 src/RFM69.o
-                0x00001944                RFM_initialize
- .text.setMode  0x00001cac      0x15c src/RFM69.o
-                0x00001cac                setMode
- .text.interruptHandler
-                0x00001e08      0x1c4 src/RFM69.o
-                0x00001e08                interruptHandler
- .text.isr0     0x00001fcc       0x20 src/RFM69.o
-                0x00001fcc                isr0
- .text.receiveBegin
-                0x00001fec       0x90 src/RFM69.o
-                0x00001fec                receiveBegin
- .text.RFM_receiveDone
-                0x0000207c       0x4c src/RFM69.o
-                0x0000207c                RFM_receiveDone
- .text.RFM_encrypt
-                0x000020c8       0xbc src/RFM69.o
-                0x000020c8                RFM_encrypt
- .text.readRSSI
-                0x00002184       0x44 src/RFM69.o
-                0x00002184                readRSSI
- .text.readReg  0x000021c8       0x6c src/RFM69.o
-                0x000021c8                readReg
- .text.writeReg
-                0x00002234       0x64 src/RFM69.o
-                0x00002234                writeReg
- .text.selectrf
-                0x00002298       0x24 src/RFM69.o
-                0x00002298                selectrf
- .text.unselect
-                0x000022bc       0x2c src/RFM69.o
-                0x000022bc                unselect
- .text.setHighPowerRegs
-                0x000022e8       0x44 src/RFM69.o
-                0x000022e8                setHighPowerRegs
- .text.maybeInterrupts
-                0x0000232c        0x8 src/RFM69.o
-                0x0000232c                maybeInterrupts
- .text.system_pinmux_get_group_from_gpio_pin
-                0x00002334       0x60 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .text.port_get_group_from_gpio_pin
-                0x00002394       0x24 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .text.port_pin_set_output_level
-                0x000023b8       0x50 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .text.configure_radio
-                0x00002408       0x30 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
-                0x00002408                configure_radio
- .text.ui_init  0x00002438       0x1c src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
-                0x00002438                ui_init
- .text.ui_powerdown
-                0x00002454       0x14 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
-                0x00002454                ui_powerdown
- .text.ui_wakeup_enable
-                0x00002468       0x14 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
-                0x00002468                ui_wakeup_enable
- .text.ui_wakeup_disable
-                0x0000247c       0x14 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
-                0x0000247c                ui_wakeup_disable
- .text.ui_wakeup
-                0x00002490       0x14 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
-                0x00002490                ui_wakeup
- .text.ui_process
-                0x000024a4      0x2c0 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
-                0x000024a4                ui_process
- .text.cpu_irq_save
-                0x00002764       0x30 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .text.cpu_irq_is_enabled_flags
-                0x00002794       0x18 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .text.cpu_irq_restore
-                0x000027ac       0x30 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .text.udi_hid_mouse_enable
-                0x000027dc       0x50 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x000027dc                udi_hid_mouse_enable
- .text.udi_hid_mouse_disable
-                0x0000282c       0x10 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x0000282c                udi_hid_mouse_disable
- .text.udi_hid_mouse_setup
-                0x0000283c       0x2c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x0000283c                udi_hid_mouse_setup
- .text.udi_hid_mouse_getsetting
-                0x00002868        0xc src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x00002868                udi_hid_mouse_getsetting
- .text.udi_hid_mouse_setreport
-                0x00002874        0xc src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .text.udi_hid_mouse_moveY
-                0x00002880       0x4c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x00002880                udi_hid_mouse_moveY
- .text.udi_hid_mouse_moveX
-                0x000028cc       0x4c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x000028cc                udi_hid_mouse_moveX
- .text.udi_hid_mouse_btnmiddle
-                0x00002918       0x28 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x00002918                udi_hid_mouse_btnmiddle
- .text.udi_hid_mouse_btnright
-                0x00002940       0x28 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x00002940                udi_hid_mouse_btnright
- .text.udi_hid_mouse_btnleft
-                0x00002968       0x28 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x00002968                udi_hid_mouse_btnleft
- .text.udi_hid_mouse_move
-                0x00002990       0x60 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .text.udi_hid_mouse_btn
-                0x000029f0       0x5c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .text.udi_hid_mouse_send_report
-                0x00002a4c       0x78 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .text.udi_hid_mouse_report_sent
-                0x00002ac4       0x3c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .text.udi_hid_setup
-                0x00002b00       0xf0 src/ASF/common/services/usb/class/hid/device/udi_hid.o
-                0x00002b00                udi_hid_setup
- .text.udi_hid_reqstdifaceget_descriptor
-                0x00002bf0       0xa8 src/ASF/common/services/usb/class/hid/device/udi_hid.o
- .text.udc_get_interface_desc
-                0x00002c98       0x14 src/ASF/common/services/usb/udc/udc.o
-                0x00002c98                udc_get_interface_desc
- .text.udc_get_eof_conf
-                0x00002cac       0x28 src/ASF/common/services/usb/udc/udc.o
- .text.udc_next_desc_in_iface
-                0x00002cd4       0x60 src/ASF/common/services/usb/udc/udc.o
- .text.udc_update_iface_desc
-                0x00002d34       0xa4 src/ASF/common/services/usb/udc/udc.o
- .text.udc_iface_disable
-                0x00002dd8       0xb4 src/ASF/common/services/usb/udc/udc.o
- .text.udc_iface_enable
-                0x00002e8c       0xb4 src/ASF/common/services/usb/udc/udc.o
- .text.udc_start
-                0x00002f40       0x10 src/ASF/common/services/usb/udc/udc.o
-                0x00002f40                udc_start
- .text.udc_reset
-                0x00002f50       0x74 src/ASF/common/services/usb/udc/udc.o
-                0x00002f50                udc_reset
- .text.udc_sof_notify
-                0x00002fc4       0x68 src/ASF/common/services/usb/udc/udc.o
-                0x00002fc4                udc_sof_notify
- .text.udc_req_std_dev_get_status
-                0x0000302c       0x30 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_ep_get_status
-                0x0000305c       0x48 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_dev_clear_feature
-                0x000030a4       0x44 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_ep_clear_feature
-                0x000030e8       0x38 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_dev_set_feature
-                0x00003120       0x44 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_ep_set_feature
-                0x00003164       0x48 src/ASF/common/services/usb/udc/udc.o
- .text.udc_valid_address
-                0x000031ac       0x24 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_dev_set_address
-                0x000031d0       0x28 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_dev_get_str_desc
-                0x000031f8       0xd8 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_dev_get_descriptor
-                0x000032d0      0x100 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_dev_get_configuration
-                0x000033d0       0x30 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_dev_set_configuration
-                0x00003400       0xd0 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_iface_get_setting
-                0x000034d0       0xa4 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_std_iface_set_setting
-                0x00003574       0x74 src/ASF/common/services/usb/udc/udc.o
- .text.udc_reqstd
-                0x000035e8      0x160 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_iface
-                0x00003748       0xa8 src/ASF/common/services/usb/udc/udc.o
- .text.udc_req_ep
-                0x000037f0       0xa0 src/ASF/common/services/usb/udc/udc.o
- .text.udc_process_setup
-                0x00003890       0x94 src/ASF/common/services/usb/udc/udc.o
-                0x00003890                udc_process_setup
- .text.cpu_irq_enter_critical
-                0x00003924       0x50 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
-                0x00003924                cpu_irq_enter_critical
- .text.cpu_irq_leave_critical
-                0x00003974       0x3c src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
-                0x00003974                cpu_irq_leave_critical
- .text.system_pinmux_get_group_from_gpio_pin
-                0x000039b0       0x60 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .text.port_get_group_from_gpio_pin
-                0x00003a10       0x24 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .text.port_get_config_defaults
-                0x00003a34       0x20 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .text.port_pin_set_output_level
-                0x00003a54       0x50 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .text.system_board_init
-                0x00003aa4       0x50 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
-                0x00003aa4                board_init
-                0x00003aa4                system_board_init
- .text._extint_get_eic_from_channel
-                0x00003af4       0x4c src/ASF/sam0/drivers/extint/extint_callback.o
- .text.extint_chan_is_detected
-                0x00003b40       0x44 src/ASF/sam0/drivers/extint/extint_callback.o
- .text.extint_chan_clear_detected
-                0x00003b84       0x3c src/ASF/sam0/drivers/extint/extint_callback.o
- .text.extint_register_callback
-                0x00003bc0       0x64 src/ASF/sam0/drivers/extint/extint_callback.o
-                0x00003bc0                extint_register_callback
- .text.extint_chan_enable_callback
-                0x00003c24       0x48 src/ASF/sam0/drivers/extint/extint_callback.o
-                0x00003c24                extint_chan_enable_callback
- .text.extint_chan_disable_callback
-                0x00003c6c       0x48 src/ASF/sam0/drivers/extint/extint_callback.o
-                0x00003c6c                extint_chan_disable_callback
- .text.EIC_Handler
-                0x00003cb4       0x6c src/ASF/sam0/drivers/extint/extint_callback.o
-                0x00003cb4                EIC_Handler
- .text.system_gclk_chan_get_config_defaults
-                0x00003d20       0x14 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .text.system_apb_clock_set_mask
-                0x00003d34       0x5c src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .text.system_pinmux_get_config_defaults
-                0x00003d90       0x28 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .text.system_interrupt_enable
-                0x00003db8       0x2c src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .text._extint_get_eic_from_channel
-                0x00003de4       0x4c src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .text.extint_is_syncing
-                0x00003e30       0x4c src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .text._system_extint_init
-                0x00003e7c       0xdc src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
-                0x00003e7c                _system_extint_init
- .text._extint_enable
-                0x00003f58       0x60 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .text.extint_chan_get_config_defaults
-                0x00003fb8       0x34 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
-                0x00003fb8                extint_chan_get_config_defaults
- .text.extint_chan_set_config
-                0x00003fec       0xfc src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
-                0x00003fec                extint_chan_set_config
- .text.system_pinmux_get_config_defaults
-                0x000040e8       0x28 src/ASF/sam0/drivers/port/port.o
- .text.port_pin_set_config
-                0x00004110       0x5c src/ASF/sam0/drivers/port/port.o
-                0x00004110                port_pin_set_config
- .text.system_gclk_gen_get_config_defaults
-                0x0000416c       0x2c src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text.system_clock_source_osc8m_get_config_defaults
-                0x00004198       0x20 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text.system_clock_source_dfll_get_config_defaults
-                0x000041b8       0x50 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text.system_cpu_clock_set_divider
-                0x00004208       0x20 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text.system_apb_clock_set_divider
-                0x00004228       0x54 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text.system_flash_set_waitstates
-                0x0000427c       0x34 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text._system_dfll_wait_for_sync
-                0x000042b0       0x18 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text._system_clock_source_dfll_set_config_errata_9905
-                0x000042c8       0x44 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text.system_clock_source_get_hz
-                0x0000430c       0xd0 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
-                0x0000430c                system_clock_source_get_hz
- .text.system_clock_source_osc8m_set_config
-                0x000043dc       0x78 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
-                0x000043dc                system_clock_source_osc8m_set_config
- .text.system_clock_source_dfll_set_config
-                0x00004454       0xcc src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
-                0x00004454                system_clock_source_dfll_set_config
- .text.system_clock_source_enable
-                0x00004520       0xac src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
-                0x00004520                system_clock_source_enable
- .text.system_clock_source_is_ready
-                0x000045cc       0x84 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
-                0x000045cc                system_clock_source_is_ready
- .text._switch_peripheral_gclk
-                0x00004650       0x38 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .text.system_clock_init
-                0x00004688      0x208 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
-                0x00004688                system_clock_init
- .text.system_apb_clock_set_mask
-                0x00004890       0x5c src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .text.system_interrupt_enter_critical_section
-                0x000048ec       0x10 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .text.system_interrupt_leave_critical_section
-                0x000048fc       0x10 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .text.system_gclk_is_syncing
-                0x0000490c       0x24 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .text.system_gclk_init
-                0x00004930       0x30 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
-                0x00004930                system_gclk_init
- .text.system_gclk_gen_set_config
-                0x00004960      0x120 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
-                0x00004960                system_gclk_gen_set_config
- .text.system_gclk_gen_enable
-                0x00004a80       0x58 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
-                0x00004a80                system_gclk_gen_enable
- .text.system_gclk_gen_get_hz
-                0x00004ad8       0xe8 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
-                0x00004ad8                system_gclk_gen_get_hz
- .text.system_gclk_chan_set_config
-                0x00004bc0       0x44 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
-                0x00004bc0                system_gclk_chan_set_config
- .text.system_gclk_chan_enable
-                0x00004c04       0x44 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
-                0x00004c04                system_gclk_chan_enable
- .text.system_gclk_chan_disable
-                0x00004c48       0x9c src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
-                0x00004c48                system_gclk_chan_disable
- .text.system_gclk_chan_get_hz
-                0x00004ce4       0x5c src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
-                0x00004ce4                system_gclk_chan_get_hz
- .text.system_pinmux_get_group_from_gpio_pin
-                0x00004d40       0x60 src/ASF/sam0/drivers/system/pinmux/pinmux.o
- .text._system_pinmux_config
-                0x00004da0      0x10c src/ASF/sam0/drivers/system/pinmux/pinmux.o
- .text.system_pinmux_pin_set_config
-                0x00004eac       0x4c src/ASF/sam0/drivers/system/pinmux/pinmux.o
-                0x00004eac                system_pinmux_pin_set_config
- .text._system_dummy_init
-                0x00004ef8        0xc src/ASF/sam0/drivers/system/system.o
-                0x00004ef8                _system_events_init
-                0x00004ef8                _system_dummy_init
-                0x00004ef8                _system_divas_init
- .text.system_init
-                0x00004f04       0x30 src/ASF/sam0/drivers/system/system.o
-                0x00004f04                system_init
- .text.cpu_irq_save
-                0x00004f34       0x30 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.cpu_irq_is_enabled_flags
-                0x00004f64       0x18 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.cpu_irq_restore
-                0x00004f7c       0x30 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.system_pinmux_get_group_from_gpio_pin
-                0x00004fac       0x60 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.usb_device_attach
-                0x0000500c       0x24 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.usb_device_detach
-                0x00005030       0x24 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.usb_device_get_address
-                0x00005054       0x1c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.usb_device_set_address
-                0x00005070       0x28 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.usb_device_get_frame_number
-                0x00005098       0x20 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.usb_device_set_lpm_mode
-                0x000050b8       0x3c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.port_get_group_from_gpio_pin
-                0x000050f4       0x24 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
  .text.port_pin_get_input_level
-                0x00005118       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.sleepmgr_lock_mode
-                0x0000515c       0x4c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.sleepmgr_unlock_mode
-                0x000051a8       0x4c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_wait_clock_ready
-                0x000051f4       0x38 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_sleep_mode
-                0x0000522c       0x84 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ep_get_job
-                0x000052b0       0x3c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ep_trans_in_next
-                0x000052ec      0x194 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ep_trans_out_next
-                0x00005480      0x1e8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ep_transfer_process
-                0x00005668       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ep_abort
-                0x000056ac       0x70 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x000056ac                udd_ep_abort
- .text.udd_get_frame_number
-                0x0000571c       0x1c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x0000571c                udd_get_frame_number
- .text.udd_ep_free
-                0x00005738       0x90 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x00005738                udd_ep_free
- .text.udd_ep_alloc
-                0x000057c8      0x1b0 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x000057c8                udd_ep_alloc
- .text.udd_ep_is_halted
-                0x00005978       0x2c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x00005978                udd_ep_is_halted
- .text.udd_ep_set_halt
-                0x000059a4       0x58 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x000059a4                udd_ep_set_halt
- .text.udd_ep_clear_halt
-                0x000059fc       0x78 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x000059fc                udd_ep_clear_halt
- .text.udd_ctrl_stall_data
-                0x00005a74       0x34 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ep_run
-                0x00005aa8      0x2f8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x00005aa8                udd_ep_run
- .text.udd_set_address
-                0x00005da0       0x28 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x00005da0                udd_set_address
- .text.udd_getaddress
-                0x00005dc8       0x1c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x00005dc8                udd_getaddress
- .text.udd_set_setup_payload
-                0x00005de4       0x28 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x00005de4                udd_set_setup_payload
- .text.udd_ctrl_fetch_ram
-                0x00005e0c       0x68 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ctrl_send_zlp_in
-                0x00005e74       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ctrl_in_sent
-                0x00005eb8       0xec src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ctrl_out_received
-                0x00005fa4      0x15c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_ep0_on_setup
-                0x00006100       0xf0 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ctrl_underflow
-                0x000061f0       0x48 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ctrl_overflow
-                0x00006238       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_ep0_on_tansfer_fail
-                0x0000627c       0x3c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_ep0_on_tansfer_ok
-                0x000062b8       0x54 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_ctrl_ep_enable
-                0x0000630c       0xc4 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_on_suspend
-                0x000063d0       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_device_lpm_suspend
-                0x00006414       0x70 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_on_sof_notify
-                0x00006484       0x20 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_on_bus_reset
-                0x000064a4       0x34 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_on_wakeup
-                0x000064d8       0x6c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_detach
-                0x00006544       0x24 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x00006544                udd_detach
- .text.udd_attach
-                0x00006568       0xb8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x00006568                udd_attach
- .text._uhd_vbus_handler
-                0x00006620       0x40 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text._usb_vbus_config
-                0x00006660       0x70 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .text.udd_enable
-                0x000066d0       0x8c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x000066d0                udd_enable
+                0x00001478       0x44 src/RFM69.o
+ .text.port_pin_set_output_level
+                0x000014bc       0x50 src/RFM69.o
+ .text.rtc_count_get_config_defaults
+                0x0000150c       0x5c src/RFM69.o
+ .text.spi_is_syncing
+                0x00001568       0x20 src/RFM69.o
+ .text.spi_get_config_defaults
+                0x00001588       0x84 src/RFM69.o
+ .text.spi_slave_inst_get_config_defaults
+                0x0000160c       0x20 src/RFM69.o
+ .text.spi_attach_slave
+                0x0000162c       0x64 src/RFM69.o
+ .text.spi_enable
+                0x00001690       0x34 src/RFM69.o
+ .text.configure_port_pins
+                0x000016c4       0x2c src/RFM69.o
+                0x000016c4                configure_port_pins
+ .text.configure_extint_channel
+                0x000016f0       0x40 src/RFM69.o
+                0x000016f0                configure_extint_channel
+ .text.configure_extint_callbacks
+                0x00001730       0x28 src/RFM69.o
+                0x00001730                configure_extint_callbacks
+ .text.configure_RFM69_spi
+                0x00001758       0xc4 src/RFM69.o
+                0x00001758                configure_RFM69_spi
+ .text.configure_rtc_count
+                0x0000181c       0x64 src/RFM69.o
+                0x0000181c                configure_rtc_count
+ .text.reset_millis
+                0x00001880       0x28 src/RFM69.o
+                0x00001880                reset_millis
+ .text.millis   0x000018a8       0x28 src/RFM69.o
+                0x000018a8                millis
+ .text.sendFrame
+                0x000018d0      0x198 src/RFM69.o
+                0x000018d0                sendFrame
+ .text.RFM_setHighPower
+                0x00001a68       0x88 src/RFM69.o
+                0x00001a68                RFM_setHighPower
+ .text.RFM69    0x00001af0       0x30 src/RFM69.o
+                0x00001af0                RFM69
+ .text.RFM_initialize
+                0x00001b20      0x368 src/RFM69.o
+                0x00001b20                RFM_initialize
+ .text.setMode  0x00001e88      0x15c src/RFM69.o
+                0x00001e88                setMode
+ .text.canSend  0x00001fe4       0x44 src/RFM69.o
+                0x00001fe4                canSend
+ .text.RFM_send
+                0x00002028       0xa0 src/RFM69.o
+                0x00002028                RFM_send
+ .text.interruptHandler
+                0x000020c8      0x1c4 src/RFM69.o
+                0x000020c8                interruptHandler
+ .text.isr0     0x0000228c       0x20 src/RFM69.o
+                0x0000228c                isr0
+ .text.receiveBegin
+                0x000022ac       0x90 src/RFM69.o
+                0x000022ac                receiveBegin
+ .text.RFM_receiveDone
+                0x0000233c       0x4c src/RFM69.o
+                0x0000233c                RFM_receiveDone
+ .text.RFM_encrypt
+                0x00002388       0xbc src/RFM69.o
+                0x00002388                RFM_encrypt
+ .text.readRSSI
+                0x00002444       0x44 src/RFM69.o
+                0x00002444                readRSSI
+ .text.readReg  0x00002488       0x6c src/RFM69.o
+                0x00002488                readReg
+ .text.writeReg
+                0x000024f4       0x64 src/RFM69.o
+                0x000024f4                writeReg
+ .text.selectrf
+                0x00002558       0x24 src/RFM69.o
+                0x00002558                selectrf
+ .text.unselect
+                0x0000257c       0x2c src/RFM69.o
+                0x0000257c                unselect
+ .text.setHighPowerRegs
+                0x000025a8       0x44 src/RFM69.o
+                0x000025a8                setHighPowerRegs
+ .text.maybeInterrupts
+                0x000025ec        0x8 src/RFM69.o
+                0x000025ec                maybeInterrupts
+ .text.system_pinmux_get_group_from_gpio_pin
+                0x000025f4       0x60 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .text.port_get_group_from_gpio_pin
+                0x00002654       0x24 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .text.port_pin_set_output_level
+                0x00002678       0x50 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .text.configure_radio
+                0x000026c8       0x30 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+                0x000026c8                configure_radio
+ .text.ui_init  0x000026f8       0x1c src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+                0x000026f8                ui_init
+ .text.ui_powerdown
+                0x00002714       0x14 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+                0x00002714                ui_powerdown
+ .text.ui_wakeup_enable
+                0x00002728       0x14 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+                0x00002728                ui_wakeup_enable
+ .text.ui_wakeup_disable
+                0x0000273c       0x14 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+                0x0000273c                ui_wakeup_disable
+ .text.ui_wakeup
+                0x00002750       0x14 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+                0x00002750                ui_wakeup
+ .text.ui_process
+                0x00002764      0x2fc src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+                0x00002764                ui_process
+ .text.cpu_irq_save
+                0x00002a60       0x30 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.cpu_irq_is_enabled_flags
+                0x00002a90       0x18 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.cpu_irq_restore
+                0x00002aa8       0x30 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_enable
+                0x00002ad8       0x50 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x00002ad8                udi_hid_mouse_enable
+ .text.udi_hid_mouse_disable
+                0x00002b28       0x10 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x00002b28                udi_hid_mouse_disable
+ .text.udi_hid_mouse_setup
+                0x00002b38       0x2c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x00002b38                udi_hid_mouse_setup
+ .text.udi_hid_mouse_getsetting
+                0x00002b64        0xc src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x00002b64                udi_hid_mouse_getsetting
+ .text.udi_hid_mouse_setreport
+                0x00002b70        0xc src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.mouse_buttons
+                0x00002b7c       0xc8 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x00002b7c                mouse_buttons
+ .text.mouse_move
+                0x00002c44       0x84 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x00002c44                mouse_move
+ .text.udi_hid_mouse_send_report
+                0x00002cc8       0x78 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_mouse_report_sent
+                0x00002d40       0x3c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .text.udi_hid_setup
+                0x00002d7c       0xf0 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+                0x00002d7c                udi_hid_setup
+ .text.udi_hid_reqstdifaceget_descriptor
+                0x00002e6c       0xa8 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+ .text.udc_get_interface_desc
+                0x00002f14       0x14 src/ASF/common/services/usb/udc/udc.o
+                0x00002f14                udc_get_interface_desc
+ .text.udc_get_eof_conf
+                0x00002f28       0x28 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_next_desc_in_iface
+                0x00002f50       0x60 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_update_iface_desc
+                0x00002fb0       0xa4 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_iface_disable
+                0x00003054       0xb4 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_iface_enable
+                0x00003108       0xb4 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_start
+                0x000031bc       0x10 src/ASF/common/services/usb/udc/udc.o
+                0x000031bc                udc_start
+ .text.udc_reset
+                0x000031cc       0x74 src/ASF/common/services/usb/udc/udc.o
+                0x000031cc                udc_reset
+ .text.udc_sof_notify
+                0x00003240       0x68 src/ASF/common/services/usb/udc/udc.o
+                0x00003240                udc_sof_notify
+ .text.udc_req_std_dev_get_status
+                0x000032a8       0x30 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_ep_get_status
+                0x000032d8       0x48 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_dev_clear_feature
+                0x00003320       0x44 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_ep_clear_feature
+                0x00003364       0x38 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_dev_set_feature
+                0x0000339c       0x44 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_ep_set_feature
+                0x000033e0       0x48 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_valid_address
+                0x00003428       0x24 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_dev_set_address
+                0x0000344c       0x28 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_dev_get_str_desc
+                0x00003474       0xd8 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_dev_get_descriptor
+                0x0000354c      0x100 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_dev_get_configuration
+                0x0000364c       0x30 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_dev_set_configuration
+                0x0000367c       0xd0 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_iface_get_setting
+                0x0000374c       0xa4 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_std_iface_set_setting
+                0x000037f0       0x74 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_reqstd
+                0x00003864      0x160 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_iface
+                0x000039c4       0xa8 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_req_ep
+                0x00003a6c       0xa0 src/ASF/common/services/usb/udc/udc.o
+ .text.udc_process_setup
+                0x00003b0c       0x94 src/ASF/common/services/usb/udc/udc.o
+                0x00003b0c                udc_process_setup
+ .text.cpu_irq_enter_critical
+                0x00003ba0       0x50 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+                0x00003ba0                cpu_irq_enter_critical
+ .text.cpu_irq_leave_critical
+                0x00003bf0       0x3c src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+                0x00003bf0                cpu_irq_leave_critical
+ .text.system_pinmux_get_group_from_gpio_pin
+                0x00003c2c       0x60 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .text.port_get_group_from_gpio_pin
+                0x00003c8c       0x24 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .text.port_get_config_defaults
+                0x00003cb0       0x20 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .text.port_pin_set_output_level
+                0x00003cd0       0x50 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .text.system_board_init
+                0x00003d20       0x50 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+                0x00003d20                board_init
+                0x00003d20                system_board_init
+ .text._extint_get_eic_from_channel
+                0x00003d70       0x4c src/ASF/sam0/drivers/extint/extint_callback.o
+ .text.extint_chan_is_detected
+                0x00003dbc       0x44 src/ASF/sam0/drivers/extint/extint_callback.o
+ .text.extint_chan_clear_detected
+                0x00003e00       0x3c src/ASF/sam0/drivers/extint/extint_callback.o
+ .text.extint_register_callback
+                0x00003e3c       0x64 src/ASF/sam0/drivers/extint/extint_callback.o
+                0x00003e3c                extint_register_callback
+ .text.extint_chan_enable_callback
+                0x00003ea0       0x48 src/ASF/sam0/drivers/extint/extint_callback.o
+                0x00003ea0                extint_chan_enable_callback
+ .text.extint_chan_disable_callback
+                0x00003ee8       0x48 src/ASF/sam0/drivers/extint/extint_callback.o
+                0x00003ee8                extint_chan_disable_callback
+ .text.EIC_Handler
+                0x00003f30       0x6c src/ASF/sam0/drivers/extint/extint_callback.o
+                0x00003f30                EIC_Handler
  .text.system_gclk_chan_get_config_defaults
-                0x0000675c       0x14 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00003f9c       0x14 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
  .text.system_apb_clock_set_mask
-                0x00006770       0x5c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00003fb0       0x5c src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
  .text.system_pinmux_get_config_defaults
-                0x000067cc       0x28 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x0000400c       0x28 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
  .text.system_interrupt_enable
-                0x000067f4       0x2c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00004034       0x2c src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .text._extint_get_eic_from_channel
+                0x00004060       0x4c src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .text.extint_is_syncing
+                0x000040ac       0x4c src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .text._system_extint_init
+                0x000040f8       0xdc src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+                0x000040f8                _system_extint_init
+ .text._extint_enable
+                0x000041d4       0x60 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .text.extint_chan_get_config_defaults
+                0x00004234       0x34 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+                0x00004234                extint_chan_get_config_defaults
+ .text.extint_chan_set_config
+                0x00004268       0xfc src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+                0x00004268                extint_chan_set_config
+ .text.system_pinmux_get_config_defaults
+                0x00004364       0x28 src/ASF/sam0/drivers/port/port.o
+ .text.port_pin_set_config
+                0x0000438c       0x5c src/ASF/sam0/drivers/port/port.o
+                0x0000438c                port_pin_set_config
+ .text.system_gclk_gen_get_config_defaults
+                0x000043e8       0x2c src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text.system_clock_source_osc8m_get_config_defaults
+                0x00004414       0x20 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text.system_clock_source_dfll_get_config_defaults
+                0x00004434       0x50 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text.system_cpu_clock_set_divider
+                0x00004484       0x20 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text.system_apb_clock_set_divider
+                0x000044a4       0x54 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text.system_flash_set_waitstates
+                0x000044f8       0x34 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text._system_dfll_wait_for_sync
+                0x0000452c       0x18 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text._system_clock_source_dfll_set_config_errata_9905
+                0x00004544       0x44 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text.system_clock_source_get_hz
+                0x00004588       0xd0 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x00004588                system_clock_source_get_hz
+ .text.system_clock_source_osc8m_set_config
+                0x00004658       0x78 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x00004658                system_clock_source_osc8m_set_config
+ .text.system_clock_source_dfll_set_config
+                0x000046d0       0xcc src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x000046d0                system_clock_source_dfll_set_config
+ .text.system_clock_source_enable
+                0x0000479c       0xac src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x0000479c                system_clock_source_enable
+ .text.system_clock_source_is_ready
+                0x00004848       0x84 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x00004848                system_clock_source_is_ready
+ .text._switch_peripheral_gclk
+                0x000048cc       0x38 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .text.system_clock_init
+                0x00004904      0x208 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x00004904                system_clock_init
+ .text.system_apb_clock_set_mask
+                0x00004b0c       0x5c src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .text.system_interrupt_enter_critical_section
+                0x00004b68       0x10 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .text.system_interrupt_leave_critical_section
+                0x00004b78       0x10 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .text.system_gclk_is_syncing
+                0x00004b88       0x24 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .text.system_gclk_init
+                0x00004bac       0x30 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00004bac                system_gclk_init
+ .text.system_gclk_gen_set_config
+                0x00004bdc      0x120 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00004bdc                system_gclk_gen_set_config
+ .text.system_gclk_gen_enable
+                0x00004cfc       0x58 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00004cfc                system_gclk_gen_enable
+ .text.system_gclk_gen_get_hz
+                0x00004d54       0xe8 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00004d54                system_gclk_gen_get_hz
+ .text.system_gclk_chan_set_config
+                0x00004e3c       0x44 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00004e3c                system_gclk_chan_set_config
+ .text.system_gclk_chan_enable
+                0x00004e80       0x44 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00004e80                system_gclk_chan_enable
+ .text.system_gclk_chan_disable
+                0x00004ec4       0x9c src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00004ec4                system_gclk_chan_disable
+ .text.system_gclk_chan_get_hz
+                0x00004f60       0x5c src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00004f60                system_gclk_chan_get_hz
+ .text.system_pinmux_get_group_from_gpio_pin
+                0x00004fbc       0x60 src/ASF/sam0/drivers/system/pinmux/pinmux.o
+ .text._system_pinmux_config
+                0x0000501c      0x10c src/ASF/sam0/drivers/system/pinmux/pinmux.o
+ .text.system_pinmux_pin_set_config
+                0x00005128       0x4c src/ASF/sam0/drivers/system/pinmux/pinmux.o
+                0x00005128                system_pinmux_pin_set_config
+ .text._system_dummy_init
+                0x00005174        0xc src/ASF/sam0/drivers/system/system.o
+                0x00005174                _system_events_init
+                0x00005174                _system_dummy_init
+                0x00005174                _system_divas_init
+ .text.system_init
+                0x00005180       0x30 src/ASF/sam0/drivers/system/system.o
+                0x00005180                system_init
+ .text.cpu_irq_save
+                0x000051b0       0x30 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.cpu_irq_is_enabled_flags
+                0x000051e0       0x18 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.cpu_irq_restore
+                0x000051f8       0x30 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.system_pinmux_get_group_from_gpio_pin
+                0x00005228       0x60 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.usb_device_attach
+                0x00005288       0x24 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.usb_device_detach
+                0x000052ac       0x24 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.usb_device_get_address
+                0x000052d0       0x1c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.usb_device_set_address
+                0x000052ec       0x28 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.usb_device_get_frame_number
+                0x00005314       0x20 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.usb_device_set_lpm_mode
+                0x00005334       0x3c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.port_get_group_from_gpio_pin
+                0x00005370       0x24 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.port_pin_get_input_level
+                0x00005394       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.sleepmgr_lock_mode
+                0x000053d8       0x4c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.sleepmgr_unlock_mode
+                0x00005424       0x4c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_wait_clock_ready
+                0x00005470       0x38 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_sleep_mode
+                0x000054a8       0x84 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ep_get_job
+                0x0000552c       0x3c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ep_trans_in_next
+                0x00005568      0x194 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ep_trans_out_next
+                0x000056fc      0x1e8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ep_transfer_process
+                0x000058e4       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ep_abort
+                0x00005928       0x70 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00005928                udd_ep_abort
+ .text.udd_get_frame_number
+                0x00005998       0x1c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00005998                udd_get_frame_number
+ .text.udd_ep_free
+                0x000059b4       0x90 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x000059b4                udd_ep_free
+ .text.udd_ep_alloc
+                0x00005a44      0x1b0 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00005a44                udd_ep_alloc
+ .text.udd_ep_is_halted
+                0x00005bf4       0x2c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00005bf4                udd_ep_is_halted
+ .text.udd_ep_set_halt
+                0x00005c20       0x58 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00005c20                udd_ep_set_halt
+ .text.udd_ep_clear_halt
+                0x00005c78       0x78 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00005c78                udd_ep_clear_halt
+ .text.udd_ctrl_stall_data
+                0x00005cf0       0x34 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ep_run
+                0x00005d24      0x2f8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00005d24                udd_ep_run
+ .text.udd_set_address
+                0x0000601c       0x28 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x0000601c                udd_set_address
+ .text.udd_getaddress
+                0x00006044       0x1c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00006044                udd_getaddress
+ .text.udd_set_setup_payload
+                0x00006060       0x28 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00006060                udd_set_setup_payload
+ .text.udd_ctrl_fetch_ram
+                0x00006088       0x68 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ctrl_send_zlp_in
+                0x000060f0       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ctrl_in_sent
+                0x00006134       0xec src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ctrl_out_received
+                0x00006220      0x15c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_ep0_on_setup
+                0x0000637c       0xf0 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ctrl_underflow
+                0x0000646c       0x48 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ctrl_overflow
+                0x000064b4       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_ep0_on_tansfer_fail
+                0x000064f8       0x3c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_ep0_on_tansfer_ok
+                0x00006534       0x54 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_ctrl_ep_enable
+                0x00006588       0xc4 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_on_suspend
+                0x0000664c       0x44 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_device_lpm_suspend
+                0x00006690       0x70 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_on_sof_notify
+                0x00006700       0x20 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_on_bus_reset
+                0x00006720       0x34 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_on_wakeup
+                0x00006754       0x6c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_detach
+                0x000067c0       0x24 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x000067c0                udd_detach
+ .text.udd_attach
+                0x000067e4       0xb8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x000067e4                udd_attach
+ .text._uhd_vbus_handler
+                0x0000689c       0x40 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text._usb_vbus_config
+                0x000068dc       0x70 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .text.udd_enable
+                0x0000694c       0x8c src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x0000694c                udd_enable
+ .text.system_gclk_chan_get_config_defaults
+                0x000069d8       0x14 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .text.system_apb_clock_set_mask
+                0x000069ec       0x5c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .text.system_pinmux_get_config_defaults
+                0x00006a48       0x28 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .text.system_interrupt_enable
+                0x00006a70       0x2c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  .text._usb_host_interrupt_handler
-                0x00006820      0x4c8 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00006a9c      0x4c8 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  .text.usb_device_register_callback
-                0x00006ce8       0x50 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00006ce8                usb_device_register_callback
+                0x00006f64       0x50 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00006f64                usb_device_register_callback
  .text.usb_device_enable_callback
-                0x00006d38       0x5c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00006d38                usb_device_enable_callback
+                0x00006fb4       0x5c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00006fb4                usb_device_enable_callback
  .text.usb_device_disable_callback
-                0x00006d94       0x58 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00006d94                usb_device_disable_callback
+                0x00007010       0x58 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007010                usb_device_disable_callback
  .text.usb_device_endpoint_register_callback
-                0x00006dec       0x7c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00006dec                usb_device_endpoint_register_callback
+                0x00007068       0x7c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007068                usb_device_endpoint_register_callback
  .text.usb_device_endpoint_unregister_callback
-                0x00006e68       0x78 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00006e68                usb_device_endpoint_unregister_callback
+                0x000070e4       0x78 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x000070e4                usb_device_endpoint_unregister_callback
  .text.usb_device_endpoint_enable_callback
-                0x00006ee0      0x19c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00006ee0                usb_device_endpoint_enable_callback
+                0x0000715c      0x19c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x0000715c                usb_device_endpoint_enable_callback
  .text.usb_device_endpoint_disable_callback
-                0x0000707c      0x1a8 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x0000707c                usb_device_endpoint_disable_callback
+                0x000072f8      0x1a8 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x000072f8                usb_device_endpoint_disable_callback
  .text.usb_device_endpoint_get_config_defaults
-                0x00007224       0x28 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00007224                usb_device_endpoint_get_config_defaults
+                0x000074a0       0x28 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x000074a0                usb_device_endpoint_get_config_defaults
  .text.usb_device_endpoint_set_config
-                0x0000724c      0x4dc src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x0000724c                usb_device_endpoint_set_config
+                0x000074c8      0x4dc src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x000074c8                usb_device_endpoint_set_config
  .text.usb_device_endpoint_abort_job
-                0x00007728       0x80 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00007728                usb_device_endpoint_abort_job
+                0x000079a4       0x80 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x000079a4                usb_device_endpoint_abort_job
  .text.usb_device_endpoint_is_halted
-                0x000077a8       0x70 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x000077a8                usb_device_endpoint_is_halted
+                0x00007a24       0x70 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007a24                usb_device_endpoint_is_halted
  .text.usb_device_endpoint_set_halt
-                0x00007818       0x58 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00007818                usb_device_endpoint_set_halt
+                0x00007a94       0x58 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007a94                usb_device_endpoint_set_halt
  .text.usb_device_endpoint_clear_halt
-                0x00007870      0x118 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00007870                usb_device_endpoint_clear_halt
+                0x00007aec      0x118 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007aec                usb_device_endpoint_clear_halt
  .text.usb_device_endpoint_write_buffer_job
-                0x00007988       0xb8 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00007988                usb_device_endpoint_write_buffer_job
+                0x00007c04       0xb8 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007c04                usb_device_endpoint_write_buffer_job
  .text.usb_device_endpoint_read_buffer_job
-                0x00007a40       0xac src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00007a40                usb_device_endpoint_read_buffer_job
+                0x00007cbc       0xac src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007cbc                usb_device_endpoint_read_buffer_job
  .text.usb_device_endpoint_setup_buffer_job
-                0x00007aec       0x48 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00007aec                usb_device_endpoint_setup_buffer_job
+                0x00007d68       0x48 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007d68                usb_device_endpoint_setup_buffer_job
  .text._usb_device_interrupt_handler
-                0x00007b34      0x560 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00007db0      0x560 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  .text.usb_enable
-                0x00008094       0x30 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x00008094                usb_enable
+                0x00008310       0x30 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00008310                usb_enable
  .text.USB_Handler
-                0x000080c4       0x30 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x000080c4                USB_Handler
+                0x00008340       0x30 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00008340                USB_Handler
  .text.usb_get_config_defaults
-                0x000080f4       0x28 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x000080f4                usb_get_config_defaults
+                0x00008370       0x28 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00008370                usb_get_config_defaults
  .text.usb_init
-                0x0000811c      0x358 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x0000811c                usb_init
+                0x00008398      0x358 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00008398                usb_init
  .text.Reset_Handler
-                0x00008474       0xf8 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
-                0x00008474                Reset_Handler
+                0x000086f0       0xf8 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+                0x000086f0                Reset_Handler
  .text.Dummy_Handler
-                0x0000856c        0x8 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
-                0x0000856c                DMAC_Handler
-                0x0000856c                HardFault_Handler
-                0x0000856c                AC_Handler
-                0x0000856c                SysTick_Handler
-                0x0000856c                PendSV_Handler
-                0x0000856c                NMI_Handler
-                0x0000856c                SERCOM1_Handler
-                0x0000856c                ADC_Handler
-                0x0000856c                TCC1_Handler
-                0x0000856c                SERCOM2_Handler
-                0x0000856c                TCC0_Handler
-                0x0000856c                RTC_Handler
-                0x0000856c                WDT_Handler
-                0x0000856c                TC4_Handler
-                0x0000856c                TC3_Handler
-                0x0000856c                Dummy_Handler
-                0x0000856c                PM_Handler
-                0x0000856c                SERCOM5_Handler
-                0x0000856c                SVC_Handler
-                0x0000856c                TCC2_Handler
-                0x0000856c                EVSYS_Handler
-                0x0000856c                SERCOM3_Handler
-                0x0000856c                SERCOM4_Handler
-                0x0000856c                I2S_Handler
-                0x0000856c                NVMCTRL_Handler
-                0x0000856c                SERCOM0_Handler
-                0x0000856c                DAC_Handler
-                0x0000856c                PTC_Handler
-                0x0000856c                TC5_Handler
-                0x0000856c                SYSCTRL_Handler
+                0x000087e8        0x8 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+                0x000087e8                DMAC_Handler
+                0x000087e8                HardFault_Handler
+                0x000087e8                AC_Handler
+                0x000087e8                SysTick_Handler
+                0x000087e8                PendSV_Handler
+                0x000087e8                NMI_Handler
+                0x000087e8                SERCOM1_Handler
+                0x000087e8                ADC_Handler
+                0x000087e8                TCC1_Handler
+                0x000087e8                SERCOM2_Handler
+                0x000087e8                TCC0_Handler
+                0x000087e8                RTC_Handler
+                0x000087e8                WDT_Handler
+                0x000087e8                TC4_Handler
+                0x000087e8                TC3_Handler
+                0x000087e8                Dummy_Handler
+                0x000087e8                PM_Handler
+                0x000087e8                SERCOM5_Handler
+                0x000087e8                SVC_Handler
+                0x000087e8                TCC2_Handler
+                0x000087e8                EVSYS_Handler
+                0x000087e8                SERCOM3_Handler
+                0x000087e8                SERCOM4_Handler
+                0x000087e8                I2S_Handler
+                0x000087e8                NVMCTRL_Handler
+                0x000087e8                SERCOM0_Handler
+                0x000087e8                DAC_Handler
+                0x000087e8                PTC_Handler
+                0x000087e8                TC5_Handler
+                0x000087e8                SYSCTRL_Handler
  .text.system_set_sleepmode
-                0x00008574       0x68 src/main.o
+                0x000087f0       0x68 src/main.o
  .text.system_sleep
-                0x000085dc       0x10 src/main.o
+                0x00008858       0x10 src/main.o
  .text.sleepmgr_sleep
-                0x000085ec       0x48 src/main.o
+                0x00008868       0x48 src/main.o
  .text.sleepmgr_init
-                0x00008634       0x3c src/main.o
+                0x000088b0       0x3c src/main.o
  .text.sleepmgr_get_sleep_mode
-                0x00008670       0x3c src/main.o
+                0x000088ec       0x3c src/main.o
  .text.sleepmgr_enter_sleep
-                0x000086ac       0x50 src/main.o
- .text.main     0x000086fc       0x48 src/main.o
-                0x000086fc                main
+                0x00008928       0x50 src/main.o
+ .text.main     0x00008978       0x48 src/main.o
+                0x00008978                main
  .text.main_suspend_action
-                0x00008744       0x10 src/main.o
-                0x00008744                main_suspend_action
+                0x000089c0       0x10 src/main.o
+                0x000089c0                main_suspend_action
  .text.main_resume_action
-                0x00008754       0x10 src/main.o
-                0x00008754                main_resume_action
+                0x000089d0       0x10 src/main.o
+                0x000089d0                main_resume_action
  .text.main_sof_action
-                0x00008764       0x34 src/main.o
-                0x00008764                main_sof_action
+                0x000089e0       0x34 src/main.o
+                0x000089e0                main_sof_action
  .text.main_remotewakeup_enable
-                0x00008798       0x10 src/main.o
-                0x00008798                main_remotewakeup_enable
+                0x00008a14       0x10 src/main.o
+                0x00008a14                main_remotewakeup_enable
  .text.main_remotewakeup_disable
-                0x000087a8       0x10 src/main.o
-                0x000087a8                main_remotewakeup_disable
+                0x00008a24       0x10 src/main.o
+                0x00008a24                main_remotewakeup_disable
  .text.main_suspend_lpm_action
-                0x000087b8       0x10 src/main.o
-                0x000087b8                main_suspend_lpm_action
+                0x00008a34       0x10 src/main.o
+                0x00008a34                main_suspend_lpm_action
  .text.main_remotewakeup_lpm_disable
-                0x000087c8       0x10 src/main.o
-                0x000087c8                main_remotewakeup_lpm_disable
+                0x00008a44       0x10 src/main.o
+                0x00008a44                main_remotewakeup_lpm_disable
  .text.main_remotewakeup_lpm_enable
-                0x000087d8       0x10 src/main.o
-                0x000087d8                main_remotewakeup_lpm_enable
+                0x00008a54       0x10 src/main.o
+                0x00008a54                main_remotewakeup_lpm_enable
  .text.main_mouse_enable
-                0x000087e8       0x18 src/main.o
-                0x000087e8                main_mouse_enable
+                0x00008a64       0x18 src/main.o
+                0x00008a64                main_mouse_enable
  .text.main_mouse_disable
-                0x00008800       0x14 src/main.o
-                0x00008800                main_mouse_disable
- .text          0x00008814      0x120 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
-                0x00008814                __aeabi_uidiv
-                0x00008814                __udivsi3
-                0x00008920                __aeabi_uidivmod
- .text          0x00008934      0x1e0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
-                0x00008934                __divsi3
-                0x00008934                __aeabi_idiv
-                0x00008b00                __aeabi_idivmod
- .text          0x00008b14        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
-                0x00008b14                __aeabi_idiv0
-                0x00008b14                __aeabi_ldiv0
- .text          0x00008b18       0x40 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_ctzsi2.o)
-                0x00008b18                __ctzsi2
+                0x00008a7c       0x14 src/main.o
+                0x00008a7c                main_mouse_disable
+ .text          0x00008a90      0x120 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
+                0x00008a90                __aeabi_uidiv
+                0x00008a90                __udivsi3
+                0x00008b9c                __aeabi_uidivmod
+ .text          0x00008bb0      0x1e0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
+                0x00008bb0                __divsi3
+                0x00008bb0                __aeabi_idiv
+                0x00008d7c                __aeabi_idivmod
+ .text          0x00008d90        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
+                0x00008d90                __aeabi_idiv0
+                0x00008d90                __aeabi_ldiv0
+ .text          0x00008d94       0x40 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_ctzsi2.o)
+                0x00008d94                __ctzsi2
  .text.__libc_init_array
-                0x00008b58       0x4c c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-init.o)
-                0x00008b58                __libc_init_array
- .text.memcpy   0x00008ba4       0x12 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-memcpy.o)
-                0x00008ba4                memcpy
- .text.memset   0x00008bb6       0x10 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-memset.o)
-                0x00008bb6                memset
+                0x00008dd4       0x4c c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-init.o)
+                0x00008dd4                __libc_init_array
+ .text.memcpy   0x00008e20       0x12 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-memcpy.o)
+                0x00008e20                memcpy
+ .text.memset   0x00008e32       0x10 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-memset.o)
+                0x00008e32                memset
  *(.glue_7t)
  .glue_7t       0x00000000        0x0 linker stubs
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
  *(.rodata .rodata* .gnu.linkonce.r.*)
- *fill*         0x00008bc6        0x2 
- .rodata        0x00008bc8       0x18 src/ASF/sam0/drivers/sercom/sercom.o
+ *fill*         0x00008e42        0x2 
+ .rodata        0x00008e44       0x18 src/ASF/sam0/drivers/sercom/sercom.o
  .rodata.setMode
-                0x00008be0       0x14 src/RFM69.o
- .rodata        0x00008bf4       0x11 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- *fill*         0x00008c05        0x3 
+                0x00008e5c       0x14 src/RFM69.o
+ .rodata        0x00008e70       0x11 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ *fill*         0x00008e81        0x3 
  .rodata.udc_reqstd
-                0x00008c08       0x28 src/ASF/common/services/usb/udc/udc.o
+                0x00008e84       0x28 src/ASF/common/services/usb/udc/udc.o
  .rodata.system_clock_source_get_hz
-                0x00008c30       0x24 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x00008eac       0x24 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
  .rodata.system_clock_source_enable
-                0x00008c54       0x24 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x00008ed0       0x24 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
  .rodata.system_clock_source_is_ready
-                0x00008c78       0x24 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .rodata        0x00008c9c        0x4 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00008ef4       0x24 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .rodata        0x00008f18        0x4 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
  .rodata._usb_device_irq_bits
-                0x00008ca0        0xe src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
- *fill*         0x00008cae        0x2 
+                0x00008f1c        0xe src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ *fill*         0x00008f2a        0x2 
  .rodata._usb_endpoint_irq_bits
-                0x00008cb0        0x4 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00008f2c        0x4 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  .rodata.usb_device_endpoint_set_config
-                0x00008cb4       0x14 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00008f30       0x14 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00008cc8                . = ALIGN (0x4)
+                0x00008f44                . = ALIGN (0x4)
  *(.init)
- .init          0x00008cc8        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
-                0x00008cc8                _init
- .init          0x00008ccc        0x8 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
-                0x00008cd4                . = ALIGN (0x4)
-                0x00008cd4                __preinit_array_start = .
+ .init          0x00008f44        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+                0x00008f44                _init
+ .init          0x00008f48        0x8 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+                0x00008f50                . = ALIGN (0x4)
+                0x00008f50                __preinit_array_start = .
  *(.preinit_array)
-                0x00008cd4                __preinit_array_end = .
-                0x00008cd4                . = ALIGN (0x4)
-                0x00008cd4                __init_array_start = .
+                0x00008f50                __preinit_array_end = .
+                0x00008f50                . = ALIGN (0x4)
+                0x00008f50                __init_array_start = .
  *(SORT(.init_array.*))
  *(.init_array)
- .init_array    0x00008cd4        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
-                0x00008cd8                __init_array_end = .
-                0x00008cd8                . = ALIGN (0x4)
+ .init_array    0x00008f50        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+                0x00008f54                __init_array_end = .
+                0x00008f54                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *crtend.o(.ctors)
-                0x00008cd8                . = ALIGN (0x4)
+                0x00008f54                . = ALIGN (0x4)
  *(.fini)
- .fini          0x00008cd8        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
-                0x00008cd8                _fini
- .fini          0x00008cdc        0x8 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
-                0x00008ce4                . = ALIGN (0x4)
-                0x00008ce4                __fini_array_start = .
+ .fini          0x00008f54        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crti.o
+                0x00008f54                _fini
+ .fini          0x00008f58        0x8 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtn.o
+                0x00008f60                . = ALIGN (0x4)
+                0x00008f60                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x00008ce4        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .fini_array    0x00008f60        0x4 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
  *(SORT(.fini_array.*))
-                0x00008ce8                __fini_array_end = .
+                0x00008f64                __fini_array_end = .
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *crtend.o(.dtors)
-                0x00008ce8                . = ALIGN (0x4)
-                0x00008ce8                _efixed = .
-                0x00008ce8                PROVIDE (__exidx_start, .)
+                0x00008f64                . = ALIGN (0x4)
+                0x00008f64                _efixed = .
+                0x00008f64                PROVIDE (__exidx_start, .)
 
-.vfp11_veneer   0x00008ce8        0x0
+.vfp11_veneer   0x00008f64        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x00008ce8        0x0
+.v4_bx          0x00008f64        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x00008ce8        0x0
+.iplt           0x00008f64        0x0
  .iplt          0x00000000        0x0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
 
-.eh_frame       0x00008ce8        0x0
- .eh_frame      0x00008ce8        0x0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+.eh_frame       0x00008f64        0x0
+ .eh_frame      0x00008f64        0x0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
 
-.rel.dyn        0x00008ce8        0x0
+.rel.dyn        0x00008f64        0x0
  .rel.iplt      0x00000000        0x0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
 
-.jcr            0x00008ce8        0x0
- .jcr           0x00008ce8        0x0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+.jcr            0x00008f64        0x0
+ .jcr           0x00008f64        0x0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
 
-.igot.plt       0x00008ce8        0x0
+.igot.plt       0x00008f64        0x0
  .igot.plt      0x00000000        0x0 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x00008ce8                PROVIDE (__exidx_end, .)
-                0x00008ce8                . = ALIGN (0x4)
-                0x00008ce8                _etext = .
+                0x00008f64                PROVIDE (__exidx_end, .)
+                0x00008f64                . = ALIGN (0x4)
+                0x00008f64                _etext = .
 
-.relocate       0x20000000       0xdc load address 0x00008ce8
+.relocate       0x20000000       0xe0 load address 0x00008f64
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _srelocate = .
  *(.ramfunc .ramfunc.*)
  *(.data .data.*)
+ .data.radio_sendlength
+                0x20000000        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
  .data.udi_api_hid_mouse
-                0x20000000       0x14 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x20000000                udi_api_hid_mouse
+                0x20000004       0x14 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x20000004                udi_api_hid_mouse
  .data.udi_hid_mouse_report_desc
-                0x20000014       0x35 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                0x20000014                udi_hid_mouse_report_desc
- *fill*         0x20000049        0x3 
+                0x20000018       0x35 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x20000018                udi_hid_mouse_report_desc
+ *fill*         0x2000004d        0x3 
  .data.udc_device_desc
-                0x2000004c       0x12 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
-                0x2000004c                udc_device_desc
- *fill*         0x2000005e        0x2 
+                0x20000050       0x12 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+                0x20000050                udc_device_desc
+ *fill*         0x20000062        0x2 
  .data.udc_device_lpm
-                0x20000060        0xc src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
-                0x20000060                udc_device_lpm
+                0x20000064        0xc src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+                0x20000064                udc_device_lpm
  .data.udc_desc
-                0x2000006c       0x22 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
-                0x2000006c                udc_desc
- *fill*         0x2000008e        0x2 
+                0x20000070       0x22 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+                0x20000070                udc_desc
+ *fill*         0x20000092        0x2 
  .data.udi_apis
-                0x20000090        0x4 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
-                0x20000090                udi_apis
+                0x20000094        0x4 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+                0x20000094                udi_apis
  .data.udc_config_fshs
-                0x20000094        0x8 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
-                0x20000094                udc_config_fshs
+                0x20000098        0x8 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+                0x20000098                udc_config_fshs
  .data.udc_config
-                0x2000009c        0xc src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
-                0x2000009c                udc_config
+                0x200000a0        0xc src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+                0x200000a0                udc_config
  .data.udc_string_desc_languageid
-                0x200000a8        0x4 src/ASF/common/services/usb/udc/udc.o
+                0x200000ac        0x4 src/ASF/common/services/usb/udc/udc.o
  .data.udc_string_manufacturer_name
-                0x200000ac        0xa src/ASF/common/services/usb/udc/udc.o
- *fill*         0x200000b6        0x2 
+                0x200000b0        0xa src/ASF/common/services/usb/udc/udc.o
+ *fill*         0x200000ba        0x2 
  .data.udc_string_product_name
-                0x200000b8        0xa src/ASF/common/services/usb/udc/udc.o
- *fill*         0x200000c2        0x2 
+                0x200000bc        0xa src/ASF/common/services/usb/udc/udc.o
+ *fill*         0x200000c6        0x2 
  .data.udc_string_desc
-                0x200000c4       0x14 src/ASF/common/services/usb/udc/udc.o
+                0x200000c8       0x14 src/ASF/common/services/usb/udc/udc.o
  .data.g_interrupt_enabled
-                0x200000d8        0x1 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
-                0x200000d8                g_interrupt_enabled
-                0x200000dc                . = ALIGN (0x4)
- *fill*         0x200000d9        0x3 
-                0x200000dc                _erelocate = .
+                0x200000dc        0x1 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+                0x200000dc                g_interrupt_enabled
+                0x200000e0                . = ALIGN (0x4)
+ *fill*         0x200000dd        0x3 
+                0x200000e0                _erelocate = .
 
-.bss            0x200000dc      0x4a0 load address 0x00008dc4
-                0x200000dc                . = ALIGN (0x4)
-                0x200000dc                _sbss = .
-                0x200000dc                _szero = .
+.bss            0x200000e0      0x4e4 load address 0x00009044
+                0x200000e0                . = ALIGN (0x4)
+                0x200000e0                _sbss = .
+                0x200000e0                _szero = .
  *(.bss .bss.*)
- .bss           0x200000dc       0x1c c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
+ .bss           0x200000e0       0x1c c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m/crtbegin.o
  .bss._sercom_config
-                0x200000f8        0x2 src/ASF/sam0/drivers/sercom/sercom.o
- .bss.read_buf  0x200000fa        0x2 src/RFM69.o
-                0x200000fa                read_buf
- .bss.cpt_sof.13582
-                0x200000fc        0x1 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- *fill*         0x200000fd        0x3 
- .bss.temp.13585
-                0x20000100        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .bss.x.13583   0x20000104        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .bss.y.13584   0x20000108        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .bss.button_info.13586
-                0x2000010c        0x1 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- *fill*         0x2000010d        0x3 
+                0x200000fc        0x2 src/ASF/sam0/drivers/sercom/sercom.o
+ .bss.read_buf  0x200000fe        0x2 src/RFM69.o
+                0x200000fe                read_buf
+ .bss.radio_sendbuffer
+                0x20000100       0x3e src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .bss.cpt_sof.13589
+                0x2000013e        0x1 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ *fill*         0x2000013f        0x1 
+ .bss.x.13590   0x20000140        0x2 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .bss.lx.13592  0x20000142        0x2 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .bss.y.13591   0x20000144        0x2 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .bss.ly.13593  0x20000146        0x2 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .bss.xCount.13595
+                0x20000148        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .bss.yCount.13594
+                0x2000014c        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .bss.temp.13596
+                0x20000150        0x4 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .bss.button_info.13597
+                0x20000154        0x1 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ *fill*         0x20000155        0x3 
  .bss.udi_hid_mouse_rate
-                0x20000110        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- *fill*         0x20000111        0x3 
+                0x20000158        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ *fill*         0x20000159        0x3 
  .bss.udi_hid_mouse_protocol
-                0x20000114        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x2000015c        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
  .bss.udi_hid_mouse_b_report_valid
-                0x20000115        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- *fill*         0x20000116        0x2 
+                0x2000015d        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ *fill*         0x2000015e        0x2 
  .bss.udi_hid_mouse_report
-                0x20000118        0x7 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x20000160        0x7 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
  .bss.udi_hid_mouse_report_trans_ongoing
-                0x2000011f        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x20000167        0x1 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
  .bss.udi_hid_mouse_report_trans
-                0x20000120        0x7 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- *fill*         0x20000127        0x1 
+                0x20000168        0x7 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ *fill*         0x2000016f        0x1 
  .bss.udc_device_status
-                0x20000128        0x2 src/ASF/common/services/usb/udc/udc.o
- *fill*         0x2000012a        0x2 
+                0x20000170        0x2 src/ASF/common/services/usb/udc/udc.o
+ *fill*         0x20000172        0x2 
  .bss.udc_iface_setting
-                0x2000012c        0x1 src/ASF/common/services/usb/udc/udc.o
- *fill*         0x2000012d        0x3 
+                0x20000174        0x1 src/ASF/common/services/usb/udc/udc.o
+ *fill*         0x20000175        0x3 
  .bss.udc_num_configuration
-                0x20000130        0x1 src/ASF/common/services/usb/udc/udc.o
- *fill*         0x20000131        0x3 
+                0x20000178        0x1 src/ASF/common/services/usb/udc/udc.o
+ *fill*         0x20000179        0x3 
  .bss.udc_ptr_conf
-                0x20000134        0x4 src/ASF/common/services/usb/udc/udc.o
+                0x2000017c        0x4 src/ASF/common/services/usb/udc/udc.o
  .bss.udc_ptr_iface
-                0x20000138        0x4 src/ASF/common/services/usb/udc/udc.o
- .bss.udc_ep_status.11981
-                0x2000013c        0x2 src/ASF/common/services/usb/udc/udc.o
- *fill*         0x2000013e        0x2 
+                0x20000180        0x4 src/ASF/common/services/usb/udc/udc.o
+ .bss.udc_ep_status.11988
+                0x20000184        0x2 src/ASF/common/services/usb/udc/udc.o
+ *fill*         0x20000186        0x2 
  .bss.cpu_irq_critical_section_counter
-                0x20000140        0x4 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+                0x20000188        0x4 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .bss.cpu_irq_prev_interrupt_state
-                0x20000144        0x1 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- *fill*         0x20000145        0x3 
+                0x2000018c        0x1 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ *fill*         0x2000018d        0x3 
  .bss._system_clock_inst
-                0x20000148       0x18 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x20000190       0x18 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
  .bss.udd_ep_control_state
-                0x20000160        0x1 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- *fill*         0x20000161        0x1 
+                0x200001a8        0x1 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ *fill*         0x200001a9        0x1 
  .bss.udd_ctrl_prev_payload_nb_trans
-                0x20000162        0x2 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x200001aa        0x2 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
  .bss.udd_ctrl_payload_nb_trans
-                0x20000164        0x2 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- *fill*         0x20000166        0x2 
+                0x200001ac        0x2 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ *fill*         0x200001ae        0x2 
  .bss.udd_ep_job
-                0x20000168       0x28 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .bss.udd_state.13099
-                0x20000190        0x1 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .bss.b_shortpacket.13242
-                0x20000191        0x1 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- *fill*         0x20000192        0x2 
+                0x200001b0       0x28 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .bss.udd_state.13106
+                0x200001d8        0x1 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .bss.b_shortpacket.13249
+                0x200001d9        0x1 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ *fill*         0x200001da        0x2 
  .bss._usb_instances
-                0x20000194        0x4 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x200001dc        0x4 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  .bss.pipe_callback_para
-                0x20000198        0x6 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
- *fill*         0x2000019e        0x2 
+                0x200001e0        0x6 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ *fill*         0x200001e6        0x2 
  .bss.device_callback_lpm_wakeup_enable
-                0x200001a0        0x4 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x200001e8        0x4 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  .bss.ep_callback_para
-                0x200001a4        0x8 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x200001ec        0x8 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  .bss.host_pipe_job_busy_status
-                0x200001ac        0x4 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x200001ac                host_pipe_job_busy_status
+                0x200001f4        0x4 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x200001f4                host_pipe_job_busy_status
  .bss.main_b_mouse_enable
-                0x200001b0        0x1 src/main.o
+                0x200001f8        0x1 src/main.o
  *(COMMON)
- *fill*         0x200001b1        0x3 
- COMMON         0x200001b4        0x4 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
-                0x200001b4                _rtc_instance
- COMMON         0x200001b8       0xb3 src/RFM69.o
-                0x200001b8                _interruptNum
-                0x200001ba                RFM_SENDERID
-                0x200001bc                rtc_instance
-                0x200001c4                _powerLevel
-                0x200001c5                _inISR
-                0x200001c6                _address
-                0x200001c8                ACK_RECEIVED
-                0x200001ca                RFM_DATALEN
-                0x200001cc                _promiscuousMode
-                0x200001cd                _interruptPin
-                0x200001d0                RFM_DATA
-                0x2000024a                _slaveSelectPin
-                0x2000024c                PAYLOADLEN
-                0x2000024e                ACK_REQUESTED
-                0x20000250                TARGETID
-                0x20000252                _mode
-                0x20000254                _isRFM69HW
-                0x20000258                spi_master_instance
-                0x20000264                RFM_RSSI
-                0x20000268                slave
- *fill*         0x2000026b        0x1 
- COMMON         0x2000026c        0x5 src/ASF/common/services/sleepmgr/samd/sleepmgr.o
-                0x2000026c                sleepmgr_locks
- COMMON         0x20000271        0x1 src/ASF/sam0/drivers/extint/extint_callback.o
-                0x20000271                _current_channel
- *fill*         0x20000272        0x2 
- COMMON         0x20000274       0x40 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
-                0x20000274                _extint_dev
- COMMON         0x200002b4      0x1c8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
-                0x200002b4                udd_ep_out_cache_buffer
-                0x200002f4                usb_device
-                0x2000045c                udd_g_ctrlreq
-                0x20000474                udd_ctrl_buffer
- COMMON         0x2000047c      0x100 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
-                0x2000047c                usb_descriptor_table
-                0x2000057c                . = ALIGN (0x4)
-                0x2000057c                _ebss = .
-                0x2000057c                _ezero = .
+ *fill*         0x200001f9        0x3 
+ COMMON         0x200001fc        0x4 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
+                0x200001fc                _rtc_instance
+ COMMON         0x20000200       0xb3 src/RFM69.o
+                0x20000200                _interruptNum
+                0x20000202                RFM_SENDERID
+                0x20000204                rtc_instance
+                0x2000020c                _powerLevel
+                0x2000020d                _inISR
+                0x2000020e                _address
+                0x20000210                ACK_RECEIVED
+                0x20000212                RFM_DATALEN
+                0x20000214                _promiscuousMode
+                0x20000215                _interruptPin
+                0x20000218                RFM_DATA
+                0x20000292                _slaveSelectPin
+                0x20000294                PAYLOADLEN
+                0x20000296                ACK_REQUESTED
+                0x20000298                TARGETID
+                0x2000029a                _mode
+                0x2000029c                _isRFM69HW
+                0x200002a0                spi_master_instance
+                0x200002ac                RFM_RSSI
+                0x200002b0                slave
+ *fill*         0x200002b3        0x1 
+ COMMON         0x200002b4        0x5 src/ASF/common/services/sleepmgr/samd/sleepmgr.o
+                0x200002b4                sleepmgr_locks
+ COMMON         0x200002b9        0x1 src/ASF/sam0/drivers/extint/extint_callback.o
+                0x200002b9                _current_channel
+ *fill*         0x200002ba        0x2 
+ COMMON         0x200002bc       0x40 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+                0x200002bc                _extint_dev
+ COMMON         0x200002fc      0x1c8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x200002fc                udd_ep_out_cache_buffer
+                0x2000033c                usb_device
+                0x200004a4                udd_g_ctrlreq
+                0x200004bc                udd_ctrl_buffer
+ COMMON         0x200004c4      0x100 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x200004c4                usb_descriptor_table
+                0x200005c4                . = ALIGN (0x4)
+                0x200005c4                _ebss = .
+                0x200005c4                _ezero = .
 
-.stack          0x2000057c     0x2004 load address 0x00009264
-                0x20000580                . = ALIGN (0x8)
- *fill*         0x2000057c        0x4 
-                0x20000580                _sstack = .
-                0x20002580                . = (. + STACK_SIZE)
- *fill*         0x20000580     0x2000 
-                0x20002580                . = ALIGN (0x8)
-                0x20002580                _estack = .
-                0x20002580                . = ALIGN (0x4)
-                0x20002580                _end = .
+.stack          0x200005c4     0x2004 load address 0x00009528
+                0x200005c8                . = ALIGN (0x8)
+ *fill*         0x200005c4        0x4 
+                0x200005c8                _sstack = .
+                0x200025c8                . = (. + STACK_SIZE)
+ *fill*         0x200005c8     0x2000 
+                0x200025c8                . = ALIGN (0x8)
+                0x200025c8                _estack = .
+                0x200025c8                . = ALIGN (0x4)
+                0x200025c8                _end = .
 OUTPUT(Dongle Module.elf elf32-littlearm)
 
 .ARM.attributes
@@ -7428,30 +7438,30 @@ OUTPUT(Dongle Module.elf elf32-littlearm)
  .comment       0x00000000       0x5c src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
  .comment       0x00000000       0x5c src/main.o
 
-.debug_info     0x00000000    0x28750
+.debug_info     0x00000000    0x2883a
  .debug_info    0x00000000     0x25fe src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
  .debug_info    0x000025fe     0x2492 src/ASF/sam0/drivers/sercom/sercom.o
  .debug_info    0x00004a90     0x496d src/ASF/sam0/drivers/sercom/spi/spi.o
  .debug_info    0x000093fd     0x4d76 src/RFM69.o
- .debug_info    0x0000e173      0xefe src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .debug_info    0x0000f071      0x170 src/ASF/common/services/sleepmgr/samd/sleepmgr.o
- .debug_info    0x0000f1e1      0x684 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .debug_info    0x0000f865      0x7f2 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
- .debug_info    0x00010057      0x3d8 src/ASF/common/services/usb/class/hid/device/udi_hid.o
- .debug_info    0x0001042f      0xd51 src/ASF/common/services/usb/udc/udc.o
- .debug_info    0x00011180      0x1ed src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- .debug_info    0x0001136d      0x93c src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .debug_info    0x00011ca9      0xfbc src/ASF/sam0/drivers/extint/extint_callback.o
- .debug_info    0x00012c65     0x1fef src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .debug_info    0x00014c54      0x912 src/ASF/sam0/drivers/port/port.o
- .debug_info    0x00015566     0x2ca8 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .debug_info    0x0001820e     0x127b src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .debug_info    0x00019489      0xa76 src/ASF/sam0/drivers/system/pinmux/pinmux.o
- .debug_info    0x00019eff      0x13f src/ASF/sam0/drivers/system/system.o
- .debug_info    0x0001a03e     0x4fad src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .debug_info    0x0001efeb     0x46db src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
- .debug_info    0x000236c6     0x3a79 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_info    0x0002713f     0x1611 src/main.o
+ .debug_info    0x0000e173      0xf40 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .debug_info    0x0000f0b3      0x170 src/ASF/common/services/sleepmgr/samd/sleepmgr.o
+ .debug_info    0x0000f223      0x72c src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .debug_info    0x0000f94f      0x7f2 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+ .debug_info    0x00010141      0x3d8 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+ .debug_info    0x00010519      0xd51 src/ASF/common/services/usb/udc/udc.o
+ .debug_info    0x0001126a      0x1ed src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_info    0x00011457      0x93c src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .debug_info    0x00011d93      0xfbc src/ASF/sam0/drivers/extint/extint_callback.o
+ .debug_info    0x00012d4f     0x1fef src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .debug_info    0x00014d3e      0x912 src/ASF/sam0/drivers/port/port.o
+ .debug_info    0x00015650     0x2ca8 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .debug_info    0x000182f8     0x127b src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .debug_info    0x00019573      0xa76 src/ASF/sam0/drivers/system/pinmux/pinmux.o
+ .debug_info    0x00019fe9      0x13f src/ASF/sam0/drivers/system/system.o
+ .debug_info    0x0001a128     0x4fad src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .debug_info    0x0001f0d5     0x46db src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .debug_info    0x000237b0     0x3a79 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+ .debug_info    0x00027229     0x1611 src/main.o
 
 .debug_abbrev   0x00000000     0x360c
  .debug_abbrev  0x00000000      0x2d3 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
@@ -7478,30 +7488,30 @@ OUTPUT(Dongle Module.elf elf32-littlearm)
  .debug_abbrev  0x0000318b      0x20a src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
  .debug_abbrev  0x00003395      0x277 src/main.o
 
-.debug_loc      0x00000000     0x4d6c
+.debug_loc      0x00000000     0x4ddc
  .debug_loc     0x00000000      0x3b8 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
  .debug_loc     0x000003b8      0x18c src/ASF/sam0/drivers/sercom/sercom.o
  .debug_loc     0x00000544      0x5e2 src/ASF/sam0/drivers/sercom/spi/spi.o
  .debug_loc     0x00000b26      0xa4c src/RFM69.o
  .debug_loc     0x00001572      0x2e8 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .debug_loc     0x0000185a      0x3b4 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .debug_loc     0x00001c0e       0x70 src/ASF/common/services/usb/class/hid/device/udi_hid.o
- .debug_loc     0x00001c7e      0x56c src/ASF/common/services/usb/udc/udc.o
- .debug_loc     0x000021ea       0x64 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- .debug_loc     0x0000224e      0x118 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .debug_loc     0x00002366      0x1e0 src/ASF/sam0/drivers/extint/extint_callback.o
- .debug_loc     0x00002546      0x310 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .debug_loc     0x00002856       0xa8 src/ASF/sam0/drivers/port/port.o
- .debug_loc     0x000028fe      0x4ae src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .debug_loc     0x00002dac      0x388 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .debug_loc     0x00003134      0x150 src/ASF/sam0/drivers/system/pinmux/pinmux.o
- .debug_loc     0x00003284       0x58 src/ASF/sam0/drivers/system/system.o
- .debug_loc     0x000032dc      0xcc8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .debug_loc     0x00003fa4      0xa3c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
- .debug_loc     0x000049e0       0x64 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_loc     0x00004a44      0x328 src/main.o
+ .debug_loc     0x0000185a      0x424 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .debug_loc     0x00001c7e       0x70 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+ .debug_loc     0x00001cee      0x56c src/ASF/common/services/usb/udc/udc.o
+ .debug_loc     0x0000225a       0x64 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_loc     0x000022be      0x118 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .debug_loc     0x000023d6      0x1e0 src/ASF/sam0/drivers/extint/extint_callback.o
+ .debug_loc     0x000025b6      0x310 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .debug_loc     0x000028c6       0xa8 src/ASF/sam0/drivers/port/port.o
+ .debug_loc     0x0000296e      0x4ae src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .debug_loc     0x00002e1c      0x388 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .debug_loc     0x000031a4      0x150 src/ASF/sam0/drivers/system/pinmux/pinmux.o
+ .debug_loc     0x000032f4       0x58 src/ASF/sam0/drivers/system/system.o
+ .debug_loc     0x0000334c      0xcc8 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .debug_loc     0x00004014      0xa3c src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .debug_loc     0x00004a50       0x64 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+ .debug_loc     0x00004ab4      0x328 src/main.o
 
-.debug_aranges  0x00000000      0xdc0
+.debug_aranges  0x00000000      0xdd0
  .debug_aranges
                 0x00000000       0xa0 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
  .debug_aranges
@@ -7515,62 +7525,62 @@ OUTPUT(Dongle Module.elf elf32-littlearm)
  .debug_aranges
                 0x00000418       0x18 src/ASF/common/services/sleepmgr/samd/sleepmgr.o
  .debug_aranges
-                0x00000430       0xa8 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                0x00000430       0xb8 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
  .debug_aranges
-                0x000004d8       0x18 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+                0x000004e8       0x18 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
  .debug_aranges
-                0x000004f0       0x28 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+                0x00000500       0x28 src/ASF/common/services/usb/class/hid/device/udi_hid.o
  .debug_aranges
-                0x00000518       0xf8 src/ASF/common/services/usb/udc/udc.o
+                0x00000528       0xf8 src/ASF/common/services/usb/udc/udc.o
  .debug_aranges
-                0x00000610       0x28 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+                0x00000620       0x28 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_aranges
-                0x00000638       0x40 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+                0x00000648       0x40 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
  .debug_aranges
-                0x00000678       0x60 src/ASF/sam0/drivers/extint/extint_callback.o
+                0x00000688       0x60 src/ASF/sam0/drivers/extint/extint_callback.o
  .debug_aranges
-                0x000006d8       0x88 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+                0x000006e8       0x88 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
  .debug_aranges
-                0x00000760       0x30 src/ASF/sam0/drivers/port/port.o
+                0x00000770       0x30 src/ASF/sam0/drivers/port/port.o
  .debug_aranges
-                0x00000790       0xc8 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+                0x000007a0       0xc8 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
  .debug_aranges
-                0x00000858       0xa0 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+                0x00000868       0xa0 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
  .debug_aranges
-                0x000008f8       0x48 src/ASF/sam0/drivers/system/pinmux/pinmux.o
+                0x00000908       0x48 src/ASF/sam0/drivers/system/pinmux/pinmux.o
  .debug_aranges
-                0x00000940       0x28 src/ASF/sam0/drivers/system/system.o
+                0x00000950       0x28 src/ASF/sam0/drivers/system/system.o
  .debug_aranges
-                0x00000968      0x200 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+                0x00000978      0x200 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
  .debug_aranges
-                0x00000b68      0x190 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+                0x00000b78      0x190 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
  .debug_aranges
-                0x00000cf8       0x28 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+                0x00000d08       0x28 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
  .debug_aranges
-                0x00000d20       0xa0 src/main.o
+                0x00000d30       0xa0 src/main.o
 
-.debug_ranges   0x00000000      0xc58
+.debug_ranges   0x00000000      0xc68
  .debug_ranges  0x00000000       0x90 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
  .debug_ranges  0x00000090       0x40 src/ASF/sam0/drivers/sercom/sercom.o
  .debug_ranges  0x000000d0       0xe0 src/ASF/sam0/drivers/sercom/spi/spi.o
  .debug_ranges  0x000001b0      0x198 src/RFM69.o
  .debug_ranges  0x00000348       0x80 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .debug_ranges  0x000003c8       0x98 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .debug_ranges  0x00000460       0x18 src/ASF/common/services/usb/class/hid/device/udi_hid.o
- .debug_ranges  0x00000478      0x100 src/ASF/common/services/usb/udc/udc.o
- .debug_ranges  0x00000578       0x18 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- .debug_ranges  0x00000590       0x30 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .debug_ranges  0x000005c0       0x50 src/ASF/sam0/drivers/extint/extint_callback.o
- .debug_ranges  0x00000610       0x78 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .debug_ranges  0x00000688       0x20 src/ASF/sam0/drivers/port/port.o
- .debug_ranges  0x000006a8       0xb8 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .debug_ranges  0x00000760       0x90 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .debug_ranges  0x000007f0       0x38 src/ASF/sam0/drivers/system/pinmux/pinmux.o
- .debug_ranges  0x00000828       0x18 src/ASF/sam0/drivers/system/system.o
- .debug_ranges  0x00000840      0x1f0 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .debug_ranges  0x00000a30      0x180 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
- .debug_ranges  0x00000bb0       0x18 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_ranges  0x00000bc8       0x90 src/main.o
+ .debug_ranges  0x000003c8       0xa8 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .debug_ranges  0x00000470       0x18 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+ .debug_ranges  0x00000488      0x100 src/ASF/common/services/usb/udc/udc.o
+ .debug_ranges  0x00000588       0x18 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_ranges  0x000005a0       0x30 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .debug_ranges  0x000005d0       0x50 src/ASF/sam0/drivers/extint/extint_callback.o
+ .debug_ranges  0x00000620       0x78 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .debug_ranges  0x00000698       0x20 src/ASF/sam0/drivers/port/port.o
+ .debug_ranges  0x000006b8       0xb8 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .debug_ranges  0x00000770       0x90 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .debug_ranges  0x00000800       0x38 src/ASF/sam0/drivers/system/pinmux/pinmux.o
+ .debug_ranges  0x00000838       0x18 src/ASF/sam0/drivers/system/system.o
+ .debug_ranges  0x00000850      0x1f0 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .debug_ranges  0x00000a40      0x180 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .debug_ranges  0x00000bc0       0x18 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+ .debug_ranges  0x00000bd8       0x90 src/main.o
 
 .debug_macro    0x00000000    0x1e442
  .debug_macro   0x00000000      0x4bb src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
@@ -7733,32 +7743,32 @@ OUTPUT(Dongle Module.elf elf32-littlearm)
  .debug_macro   0x0001dd82       0x3a src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
  .debug_macro   0x0001ddbc      0x686 src/main.o
 
-.debug_line     0x00000000    0x10f38
+.debug_line     0x00000000    0x10f76
  .debug_line    0x00000000      0xad4 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
  .debug_line    0x00000ad4      0xb61 src/ASF/sam0/drivers/sercom/sercom.o
  .debug_line    0x00001635      0xf73 src/ASF/sam0/drivers/sercom/spi/spi.o
  .debug_line    0x000025a8     0x14df src/RFM69.o
- .debug_line    0x00003a87      0xfdc src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .debug_line    0x00004a63      0x98a src/ASF/common/services/sleepmgr/samd/sleepmgr.o
- .debug_line    0x000053ed      0xb03 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .debug_line    0x00005ef0      0x938 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
- .debug_line    0x00006828      0x981 src/ASF/common/services/usb/class/hid/device/udi_hid.o
- .debug_line    0x000071a9      0xc47 src/ASF/common/services/usb/udc/udc.o
- .debug_line    0x00007df0      0x80a src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- .debug_line    0x000085fa      0x8fa src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .debug_line    0x00008ef4      0x8fc src/ASF/sam0/drivers/extint/extint_callback.o
- .debug_line    0x000097f0      0xc4a src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .debug_line    0x0000a43a      0x83c src/ASF/sam0/drivers/port/port.o
- .debug_line    0x0000ac76      0xc2a src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .debug_line    0x0000b8a0      0xade src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .debug_line    0x0000c37e      0x8ad src/ASF/sam0/drivers/system/pinmux/pinmux.o
- .debug_line    0x0000cc2b      0x925 src/ASF/sam0/drivers/system/system.o
- .debug_line    0x0000d550     0x13b3 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .debug_line    0x0000e903     0x106d src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
- .debug_line    0x0000f970      0x603 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_line    0x0000ff73      0xfc5 src/main.o
+ .debug_line    0x00003a87      0xfdf src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+ .debug_line    0x00004a66      0x98a src/ASF/common/services/sleepmgr/samd/sleepmgr.o
+ .debug_line    0x000053f0      0xb3e src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .debug_line    0x00005f2e      0x938 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+ .debug_line    0x00006866      0x981 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+ .debug_line    0x000071e7      0xc47 src/ASF/common/services/usb/udc/udc.o
+ .debug_line    0x00007e2e      0x80a src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_line    0x00008638      0x8fa src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .debug_line    0x00008f32      0x8fc src/ASF/sam0/drivers/extint/extint_callback.o
+ .debug_line    0x0000982e      0xc4a src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .debug_line    0x0000a478      0x83c src/ASF/sam0/drivers/port/port.o
+ .debug_line    0x0000acb4      0xc2a src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .debug_line    0x0000b8de      0xade src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .debug_line    0x0000c3bc      0x8ad src/ASF/sam0/drivers/system/pinmux/pinmux.o
+ .debug_line    0x0000cc69      0x925 src/ASF/sam0/drivers/system/system.o
+ .debug_line    0x0000d58e     0x13b3 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .debug_line    0x0000e941     0x106d src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .debug_line    0x0000f9ae      0x603 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+ .debug_line    0x0000ffb1      0xfc5 src/main.o
 
-.debug_str      0x00000000    0x94480
+.debug_str      0x00000000    0x94491
  .debug_str     0x00000000    0x7fb77 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
                               0x8049d (size before relaxing)
  .debug_str     0x0007fb77     0x123b src/ASF/sam0/drivers/sercom/sercom.o
@@ -7767,72 +7777,72 @@ OUTPUT(Dongle Module.elf elf32-littlearm)
                               0x808ed (size before relaxing)
  .debug_str     0x00081c17     0xc3c8 src/RFM69.o
                               0x8d93a (size before relaxing)
- .debug_str     0x0008dfdf      0x21d src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
-                              0x86e4a (size before relaxing)
- .debug_str     0x0008e1fc       0xa8 src/ASF/common/services/sleepmgr/samd/sleepmgr.o
+ .debug_str     0x0008dfdf      0x22b src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+                              0x86e58 (size before relaxing)
+ .debug_str     0x0008e20a       0xa8 src/ASF/common/services/sleepmgr/samd/sleepmgr.o
                               0x7e6e3 (size before relaxing)
- .debug_str     0x0008e2a4      0x39f src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                              0x8102b (size before relaxing)
- .debug_str     0x0008e643      0x5db src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
+ .debug_str     0x0008e2b2      0x3a2 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                              0x81050 (size before relaxing)
+ .debug_str     0x0008e654      0x5db src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
                               0x81269 (size before relaxing)
- .debug_str     0x0008ec1e      0x293 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+ .debug_str     0x0008ec2f      0x293 src/ASF/common/services/usb/class/hid/device/udi_hid.o
                               0x80fb8 (size before relaxing)
- .debug_str     0x0008eeb1      0x626 src/ASF/common/services/usb/udc/udc.o
+ .debug_str     0x0008eec2      0x626 src/ASF/common/services/usb/udc/udc.o
                               0x8175f (size before relaxing)
- .debug_str     0x0008f4d7       0x65 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_str     0x0008f4e8       0x65 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
                               0x7e561 (size before relaxing)
- .debug_str     0x0008f53c       0x4a src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .debug_str     0x0008f54d       0x4a src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
                               0x821dc (size before relaxing)
- .debug_str     0x0008f586      0x45a src/ASF/sam0/drivers/extint/extint_callback.o
+ .debug_str     0x0008f597      0x45a src/ASF/sam0/drivers/extint/extint_callback.o
                               0x7eda4 (size before relaxing)
- .debug_str     0x0008f9e0      0x6ba src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .debug_str     0x0008f9f1      0x6ba src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
                               0x7fcf1 (size before relaxing)
- .debug_str     0x0009009a       0x4e src/ASF/sam0/drivers/port/port.o
+ .debug_str     0x000900ab       0x4e src/ASF/sam0/drivers/port/port.o
                               0x7e951 (size before relaxing)
- .debug_str     0x000900e8     0x16e3 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .debug_str     0x000900f9     0x16e3 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
                               0x816c5 (size before relaxing)
- .debug_str     0x000917cb      0x2cd src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .debug_str     0x000917dc      0x2cd src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
                               0x7f1e0 (size before relaxing)
- .debug_str     0x00091a98      0x1b5 src/ASF/sam0/drivers/system/pinmux/pinmux.o
+ .debug_str     0x00091aa9      0x1b5 src/ASF/sam0/drivers/system/pinmux/pinmux.o
                               0x7ea03 (size before relaxing)
- .debug_str     0x00091c4d       0x47 src/ASF/sam0/drivers/system/system.o
+ .debug_str     0x00091c5e       0x47 src/ASF/sam0/drivers/system/system.o
                               0x7e60c (size before relaxing)
- .debug_str     0x00091c94     0x129e src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .debug_str     0x00091ca5     0x129e src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
                               0x87192 (size before relaxing)
- .debug_str     0x00092f32      0xa89 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .debug_str     0x00092f43      0xa89 src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
                               0x80fa0 (size before relaxing)
- .debug_str     0x000939bb      0x8ce src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+ .debug_str     0x000939cc      0x8ce src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
                               0x6b152 (size before relaxing)
- .debug_str     0x00094289      0x1f7 src/main.o
+ .debug_str     0x0009429a      0x1f7 src/main.o
                               0x86fb8 (size before relaxing)
 
-.debug_frame    0x00000000     0x2f38
+.debug_frame    0x00000000     0x2f78
  .debug_frame   0x00000000      0x230 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
  .debug_frame   0x00000230       0xf8 src/ASF/sam0/drivers/sercom/sercom.o
  .debug_frame   0x00000328      0x36c src/ASF/sam0/drivers/sercom/spi/spi.o
  .debug_frame   0x00000694      0x61c src/RFM69.o
  .debug_frame   0x00000cb0      0x1d0 src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
- .debug_frame   0x00000e80      0x240 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
- .debug_frame   0x000010c0       0x50 src/ASF/common/services/usb/class/hid/device/udi_hid.o
- .debug_frame   0x00001110      0x354 src/ASF/common/services/usb/udc/udc.o
- .debug_frame   0x00001464       0x4c src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- .debug_frame   0x000014b0       0xb0 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
- .debug_frame   0x00001560      0x128 src/ASF/sam0/drivers/extint/extint_callback.o
- .debug_frame   0x00001688      0x1d0 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
- .debug_frame   0x00001858       0x70 src/ASF/sam0/drivers/port/port.o
- .debug_frame   0x000018c8      0x2c4 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
- .debug_frame   0x00001b8c      0x220 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
- .debug_frame   0x00001dac       0xd0 src/ASF/sam0/drivers/system/pinmux/pinmux.o
- .debug_frame   0x00001e7c       0x48 src/ASF/sam0/drivers/system/system.o
- .debug_frame   0x00001ec4      0x788 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
- .debug_frame   0x0000264c      0x5ec src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
- .debug_frame   0x00002c38       0x4c src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_frame   0x00002c84      0x200 src/main.o
- .debug_frame   0x00002e84       0x20 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
- .debug_frame   0x00002ea4       0x20 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
- .debug_frame   0x00002ec4       0x2c c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-init.o)
- .debug_frame   0x00002ef0       0x28 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-memcpy.o)
- .debug_frame   0x00002f18       0x20 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-memset.o)
+ .debug_frame   0x00000e80      0x280 src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+ .debug_frame   0x00001100       0x50 src/ASF/common/services/usb/class/hid/device/udi_hid.o
+ .debug_frame   0x00001150      0x354 src/ASF/common/services/usb/udc/udc.o
+ .debug_frame   0x000014a4       0x4c src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_frame   0x000014f0       0xb0 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
+ .debug_frame   0x000015a0      0x128 src/ASF/sam0/drivers/extint/extint_callback.o
+ .debug_frame   0x000016c8      0x1d0 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
+ .debug_frame   0x00001898       0x70 src/ASF/sam0/drivers/port/port.o
+ .debug_frame   0x00001908      0x2c4 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/clock.o
+ .debug_frame   0x00001bcc      0x220 src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da/gclk.o
+ .debug_frame   0x00001dec       0xd0 src/ASF/sam0/drivers/system/pinmux/pinmux.o
+ .debug_frame   0x00001ebc       0x48 src/ASF/sam0/drivers/system/system.o
+ .debug_frame   0x00001f04      0x788 src/ASF/sam0/drivers/usb/stack_interface/usb_device_udd.o
+ .debug_frame   0x0000268c      0x5ec src/ASF/sam0/drivers/usb/usb_sam_d_r/usb.o
+ .debug_frame   0x00002c78       0x4c src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
+ .debug_frame   0x00002cc4      0x200 src/main.o
+ .debug_frame   0x00002ec4       0x20 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
+ .debug_frame   0x00002ee4       0x20 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
+ .debug_frame   0x00002f04       0x2c c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-init.o)
+ .debug_frame   0x00002f30       0x28 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-memcpy.o)
+ .debug_frame   0x00002f58       0x20 c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a(lib_a-memset.o)
 
 Cross Reference Table
 
@@ -7877,6 +7887,7 @@ RFM_promiscuous                                   src/RFM69.o
 RFM_receiveDone                                   src/RFM69.o
                                                   src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
 RFM_send                                          src/RFM69.o
+                                                  src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
 RFM_sendACK                                       src/RFM69.o
 RFM_sendWithRetry                                 src/RFM69.o
 RFM_setHighPower                                  src/RFM69.o
@@ -8269,6 +8280,10 @@ memset                                            c:/disks/atmel/studio/7.0/tool
                                                   c:/disks/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m/crt0.o
 millis                                            src/RFM69.o
                                                   src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+mouse_buttons                                     src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                                                  src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
+mouse_move                                        src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
+                                                  src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
 port_group_set_config                             src/ASF/sam0/drivers/port/port.o
 port_pin_set_config                               src/ASF/sam0/drivers/port/port.o
                                                   src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
@@ -8452,19 +8467,14 @@ udi_api_hid_mouse                                 src/ASF/common/services/usb/cl
                                                   src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
 udi_apis                                          src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse_desc.o
 udi_hid_mouse_btnleft                             src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                                                  src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
 udi_hid_mouse_btnmiddle                           src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                                                  src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
 udi_hid_mouse_btnright                            src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                                                  src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
 udi_hid_mouse_disable                             src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
 udi_hid_mouse_enable                              src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
 udi_hid_mouse_getsetting                          src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
 udi_hid_mouse_moveScroll                          src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
 udi_hid_mouse_moveX                               src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                                                  src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
 udi_hid_mouse_moveY                               src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
-                                                  src/ASF/common/services/usb/class/hid/device/mouse/example/samd21j18a_samd21_xplained_pro/ui.o
 udi_hid_mouse_report_desc                         src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
 udi_hid_mouse_setup                               src/ASF/common/services/usb/class/hid/device/mouse/udi_hid_mouse.o
 udi_hid_setup                                     src/ASF/common/services/usb/class/hid/device/udi_hid.o

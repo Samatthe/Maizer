@@ -181,8 +181,12 @@ void ui_process(uint16_t framenumber)
 	
 	
 		/* Mouse movement variables */
-	static int32_t x = 0; // only the lower 12 bits of these are used
-	static int32_t y = 0;
+	static int16_t x = 0; // only the lower 12 bits of these are used
+	static int16_t y = 0;
+	static int16_t lx = 0;
+	static int16_t ly = 0;
+	static int32_t yCount = 0;
+	static int32_t xCount = 0;
 	static int32_t temp = 0;
 	
 	static uint8_t button_info = 0x00; //order is: ? ? ? ? left_click right_click middle_click laser_on?
@@ -191,47 +195,56 @@ void ui_process(uint16_t framenumber)
 	if (RFM_receiveDone()) {
 		//info received from camera module (mouse movement)
 		if (RFM_SENDERID == CAMERA_MODULE_NODE_ID) {
+			lx = x;
+			ly = y;
+			xCount = 0;
+			yCount = 0;
+
 			for (int i = 0; i < RFM_DATALEN; i++) {
 				//x LSB 00<data>	x MSB 01<data>
 				//y LSB 10<data>	y MSB 11<data>
 				switch (RFM_DATA[i] >> 6) {
 					case 0: //x LSB
-						temp = 0;
+						xCount += 2;
 						temp = (RFM_DATA[i] & 0x3F);
-						x = x | temp;
+						x = temp;
 						break;
 				
 					case 1: //x MSB
-						temp = 0;
+						xCount += 3;
 						temp = (RFM_DATA[i] & 0x3F);
 						x = x | (temp << 6);
 						break;
 				
 					case 2: //y LSB
-						temp = 0;
+						yCount += 2;
 						temp = (RFM_DATA[i] & 0x3F);
-						y = y | temp;
+						y = temp;
 						break;
 				
 					case 3: //y MSB
-						temp = 0;
+						yCount += 3;
 						temp = (RFM_DATA[i] & 0x3F);
 						y = y | (temp << 6);
 						break;
 				}
 			}
 
-			x = x*(0x7FFF/640);
-			y = y*(0x7FFF/480);
-			
-			udi_hid_mouse_moveX(x);
-			udi_hid_mouse_moveY(y);
+			if(xCount != 5)
+				x = lx;
+			if(yCount != 5)
+				y = ly;
 
-			x = 0;
-			y = 0;
+			x = x*(0x7FFF/427);
+			y = y*(0x7FFF/320);
 			
-			//request info from laser module
-			//RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
+			mouse_move(x, y);
+			//udi_hid_mouse_moveY(y);
+			//udi_hid_mouse_moveX(x);
+			
+			// request info from laser module
+			radio_sendbuffer[0] = 'B';
+			RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
 		}
 		
 		//info received from laser module (clicks)
@@ -248,27 +261,29 @@ void ui_process(uint16_t framenumber)
 					case 2: //button info byte
 						button_info = RFM_DATA[i];
 						
-						udi_hid_mouse_btnleft((button_info & 0x08) >> 3);
-						udi_hid_mouse_btnright((button_info & 0x04) >> 2);
-						udi_hid_mouse_btnmiddle((button_info & 0x02) >> 1);
+						mouse_move(x, y);
+						mouse_buttons((button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
+						//udi_hid_mouse_btnleft((button_info & 0x08) >> 3);
+						//udi_hid_mouse_btnright((button_info & 0x04) >> 2);
+						//udi_hid_mouse_btnmiddle((button_info & 0x02) >> 1);
 						
 						break;
 				}
 			}
 		}
 	}
-	/*else
+	else
 	{
-		x += 50;
-		y += 50;
-		udi_hid_mouse_moveX(x);
-		udi_hid_mouse_moveY(y);
-	}*/
+		//x += 50;
+		//y += 50;
+		//udi_hid_mouse_moveX(x);
+		//udi_hid_mouse_moveY(y);
+	}
 
-		x += 50;
+		/*x += 50;
 		y += 50;
 		udi_hid_mouse_moveX(x);
-		udi_hid_mouse_moveY(y);
+		udi_hid_mouse_moveY(y);*/
 }
 
 /**

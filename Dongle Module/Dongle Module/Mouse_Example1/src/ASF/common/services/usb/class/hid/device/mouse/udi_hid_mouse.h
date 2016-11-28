@@ -83,7 +83,7 @@ typedef struct {
 
 //! Report descriptor for HID mouse
 typedef struct {
-	uint8_t array[25 * 2 + 2 * 1 + 1];
+	uint8_t array[25 * 2 + 3 * 1];
 } udi_hid_mouse_report_desc_t;
 
 
@@ -165,6 +165,10 @@ bool udi_hid_mouse_moveY(int16_t pos_y);
  * \return \c 1 if function was successfully done, otherwise \c 0.
  */
 bool udi_hid_mouse_moveX(int16_t pos_x);
+
+bool mouse_move(uint16_t x, uint16_t y);
+
+bool mouse_buttons(bool left, bool middle, bool right);
 //@}
 
 /**

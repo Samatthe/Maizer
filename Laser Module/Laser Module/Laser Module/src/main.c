@@ -223,42 +223,29 @@ int main (void)
 		} 
 		lbutton = button;
 		//check if the RFM69 receives a  packet
-		//only send info when a packet is received from dongle module
+		//only send info when a packet is received from dongle module			
 		if (RFM_receiveDone()) // Got one!
 		{
-			// The actual message is contained in the RFM_DATA array,
-			// and is RFM_DATALEN bytes in size:
-		  
-			//for (byte i = 0; i < RFM_DATALEN; i++)
-			RFM_DATALEN = RFM_DATALEN;
-			// RFM_RSSI is the "Receive Signal Strength Indicator",
-			// smaller numbers mean higher power.
+			if(RFM_DATALEN == 1 && RFM_DATA[0] == 'B' && RFM_SENDERID == 2)
+			{
+				// The actual message is contained in the RFM_DATA array,
+				// and is RFM_DATALEN bytes in size:
+				sendbuffer[0] = 0; // x axis byte
+				sendbuffer[1] = 0; // y axis byte
+				sendbuffer[2] = 0;
+				sendbuffer[2] |= (port_pin_get_input_level(PIN_PA20) << 7); // Up
+				sendbuffer[2] |= (port_pin_get_input_level(PIN_PA12) << 6); // Down
+				sendbuffer[2] |= (port_pin_get_input_level(PIN_PB09) << 5); // Left
+				sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 4); // Right
+				sendbuffer[2] |= (port_pin_get_input_level(PIN_PB02) << 3); // Left Click
+				sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 2); // Right Click
+				sendbuffer[2] |= (port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
+				sendbuffer[2] |= laserState;								// Laser State
 
-			RFM_RSSI = RFM_RSSI;
-		
-			//port_pin_get_input_level();
-			//Send data packets
-			sendbuffer[0] = 0xFF; // x axis byte
-			sendbuffer[1] = 0xFF; // y axis byte
-			sendbuffer[2] = 0xFF; // button byte -- order is: up | down | left | right | left_click | right_click | middle_click | laser_on?
-		
-		
-			RFM_send(TONODEID, sendbuffer, sendlength, false);
+				RFM_send(TONODEID, sendbuffer, sendlength, false);
+			}
 		}
-
-		sendbuffer[0] = 0; // x axis byte
-		sendbuffer[1] = 0; // y axis byte
-		sendbuffer[2] = 0;
-		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA20) << 7); // Up
-		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA12) << 6); // Down
-		sendbuffer[2] |= (port_pin_get_input_level(PIN_PB09) << 5); // Left
-		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 4); // Right
-		sendbuffer[2] |= (port_pin_get_input_level(PIN_PB02) << 3); // Left Click
-		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 2); // Right Click
-		sendbuffer[2] |= (port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
-		sendbuffer[2] |= laserState;								// Laser State
-		RFM_send(TONODEID, sendbuffer, sendlength, false);
-  }
+	}
 }
 
 void setTrackBallRGBW(uint16_t red, uint16_t green, uint16_t blue, uint16_t white)

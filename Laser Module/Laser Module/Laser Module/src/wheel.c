@@ -27,10 +27,12 @@
 	//If button was not pressed and is now, send button click
 	//If button was and now is not, change the prev value
 
+#include "wheel.h"
+#include <asf.h>
 /********************************************************************/
 
 //Init all values to 0
-void init_buttons(){
+void init_wheel(){
 	wheel.up_val = 0;
 	wheel.down_val = 0;
 	wheel.left_val = 0;
@@ -44,9 +46,6 @@ void init_buttons(){
 	wheel.LR_count = 0;
 	wheel.UD_count = 0;
 
-	wheel.prev_LR = 0;
-	wheel.prev_UD = 0;
-
 }
 
 /********************************************************************/
@@ -55,10 +54,10 @@ void init_buttons(){
 void update_values(){
 	
 	//Read in the new values
-	wheel.left_val = getScroll(LEFT);
-	wheel.right_val = getScroll(RIGHT);
-	wheel.up_val = getScroll(UP);
-	wheel.down_val = getScroll(DOWN);
+	wheel.left_val = port_pin_get_input_level(PIN_PA10); //Left value
+	wheel.right_val = port_pin_get_input_level(PIN_PA11); // Right value
+	wheel.up_val = port_pin_get_input_level(PIN_PA06); // Up value
+	wheel.down_val = port_pin_get_input_level(PIN_PA09); // Down value
 
 	saveValues(&wheel.left_val, &wheel.left_state, &wheel.LR_count, 0);
 	saveValues(&wheel.right_val, &wheel.right_state, &wheel.LR_count, 1);
@@ -69,15 +68,20 @@ void update_values(){
 /********************************************************************/
 
 //Updates the values and increments the counter
-void saveValues(int *current, int *previous, int *count int up_down){
+void saveValues(uint8_t *current, uint8_t *previous, int8_t *count, uint8_t up_down){
 
 	//If the current value is not equal to the previous value
 	if(*current != *previous){
-		increment_count(count, up_down);
+		if(up_down){
+			*count++;
+		}
+
+		else{
+			*count--;
+		}
+		
 		*previous = *current;
 	}
-
-	else{} //Stop compiler errors
 }
 
 /********************************************************************/
@@ -95,31 +99,31 @@ void increment_count(int *counter, int up_down){
 
 /********************************************************************/
 
-int getScroll(Button button_num){
+int getState(enum Wheel_dir button_num){
 	switch(button_num){
 		case LEFT:
-			port_pin_get_input_level(PIN_PA10);
+			return port_pin_get_input_level(PIN_PA10);
 		break;
 
 		case RIGHT:
-			port_pin_get_input_level(PIN_PA11);
+			return port_pin_get_input_level(PIN_PA11);
 		break;
 
 		case UP:
-			port_pin_get_input_level(PIN_PA06);
+			return port_pin_get_input_level(PIN_PA06);
 		break;
 
 		case DOWN:
-			port_pin_get_input_level(PIN_PA09);
+			return port_pin_get_input_level(PIN_PA09);
 		break;
 	}
 }
 
 /********************************************************************/
 
-void send_values(int8_t &LR_scroll, int8_t &UD_scroll){
-	int8_t send_LR_val = (int8_t)(LR_count - prev_LR);
-	int8_t send_UD_val = (int8_t)(UD_count - prev_UD);
+void getScroll(int8_t *LR_scroll, int8_t *UD_scroll){
+	int8_t send_LR_val = (int8_t)(wheel.LR_count);
+	int8_t send_UD_val = (int8_t)(wheel.UD_count);
 
 	if(send_LR_val > MAX_POS_SCROLL){
 		send_LR_val = MAX_POS_SCROLL;
@@ -137,9 +141,9 @@ void send_values(int8_t &LR_scroll, int8_t &UD_scroll){
 		send_UD_val = MAX_NEG_SCROLL;
 	}
 
-	wheel.prev_LR = LR_count;
-	wheel.prev_UD = UD_count;
+	wheel.LR_count = 0;
+	wheel.UD_count = 0;
 
-	LR_scroll = send_LR_val;
-	UD_scroll = send_UD_val;
+	*LR_scroll = send_LR_val;
+	*UD_scroll = send_UD_val;
 }

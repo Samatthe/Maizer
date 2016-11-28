@@ -27,14 +27,13 @@
 	//If button was not pressed and is now, send button click
 	//If button was and now is not, change the prev value
 
+#include <inttypes.h>
 
 #define	HIGH	1
 #define	LOW		0
 
 #define MAX_POS_SCROLL 100
 #define MAX_NEG_SCROLL -100
-
-Wheel_vals wheel;
 
 /********************************************************************/
 
@@ -59,33 +58,38 @@ struct Wheel_vals{
 
 	int8_t LR_count;
 	int8_t UD_count;
-
-	int8_t prev_LR;
-	int8_t prev_UD;
 };
 
 /********************************************************************/
 
+struct Wheel_vals wheel;
+
+/********************************************************************/
+
 //Init all values to 0
-void init_buttons(){};
+void init_wheel();
 
 /********************************************************************/
 
 //Reads the values of the wheel and updates the struct
-void update_values(){};
+void update_values();
 
 /********************************************************************/
 
 //Updates the values and increments the counter
-void saveValues(int *current, int *previous, int *count int up_down){};
+void saveValues(uint8_t *current, uint8_t *previous, int8_t *count, uint8_t up_down);
 
 /********************************************************************/
 
 //If up_down is 1, moves counter up, else moves counter down
-void increment_count(int *counter, int up_down){};
+void increment_count(int *counter, int up_down);
 
 /********************************************************************/
 
-int getScroll(Button button_num){};
+int getState(enum Wheel_dir button_num);
+
+/********************************************************************/
+
+void getScroll(int8_t *LR_scroll, int8_t *UD_scroll);
 
 /********************************************************************/

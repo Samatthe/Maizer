@@ -23,8 +23,11 @@ using namespace std;
 // Use ACKnowledge when sending messages (or not):
 #define USEACK        false // Request ACKs or not
 
+void ColorCycle();
+unsigned int color[3] = {255, 0, 0};
+RFM69 radio;
+
 int main() {
-  RFM69 radio;
   cout << "Node " << MYNODEID << " ready" << endl;
   radio.initialize(FREQUENCY, MYNODEID, NETWORKID);
   radio.setHighPower(); // Always use this for RFM69HCW
@@ -37,7 +40,7 @@ int main() {
 
   while (true) {
     // RECEIVING
-
+  	ColorCycle();
 
 
     if (radio.receiveDone()) // Got one!
@@ -50,18 +53,47 @@ int main() {
         cout << ((char)radio.DATA[i]);
       cout << "]" << endl;
       //radio.send(TONODEID, sendbuffer, sendlength);
+
+      sendbuffer[0] = 'L'; // x axis byte
+	    sendbuffer[1] = 'o'; // y axis byte
+	    sendbuffer[2] = 'l'; // button byte -- order is: up down left right left_click right_click middle_click laser_on?
+
+	    delay(1);
+	    radio.send(TONODEID, sendbuffer, sendlength);
     }
+  }
+}
 
 
 
-    sendbuffer[0] = 'L'; // x axis byte
-    sendbuffer[1] = 'o'; // y axis byte
-    sendbuffer[2] = 'l'; // button byte -- order is: up down left right left_click right_click middle_click laser_on?
 
-    if (radio.canSend()) {  //sends fast
-      radio.send(TONODEID, sendbuffer, sendlength);
-    }
 
-      
+
+
+void ColorCycle()
+{
+  static int color = 0;
+  static int speed = 5;
+  static int index = 0;
+  if(index == 0)
+  {
+    radio.setLED(0xFF - color,color,0x0);
+  }
+  else if(index == 1)
+  {
+    radio.setLED(0x0,0xFF - color,color);
+  }
+  else if(index == 2)
+  {
+    radio.setLED(color,0x0,0xFF - color);
+  }
+  
+  color += speed;
+  if(color >= 0xFF)
+  {
+    color = 0;
+    index++;
+    if(index > 3)
+    index = 0;
   }
 }

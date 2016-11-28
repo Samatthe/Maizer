@@ -30,6 +30,7 @@
 #include <asf.h>
 #include "RFM69.h"
 #include "BQ27441.h"
+#include "wheel.h"
 
 // Addresses for this node.
 #define NETWORKID     0   // Must be the same for all nodes (0 to 255)

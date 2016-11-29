@@ -166,7 +166,7 @@ bool udi_hid_mouse_moveY(int16_t pos_y);
  */
 bool udi_hid_mouse_moveX(int16_t pos_x);
 
-bool mouse_move(uint16_t x, uint16_t y);
+bool mouse_move(uint16_t x, uint16_t y, uint16_t scrollX, uint16_t scrollY, bool left, bool middle, bool right);
 
 bool mouse_buttons(bool left, bool middle, bool right);
 //@}

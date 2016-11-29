@@ -188,6 +188,16 @@ void ui_process(uint16_t framenumber)
 	static int32_t yCount = 0;
 	static int32_t xCount = 0;
 	static int32_t temp = 0;
+	static int32_t scrollX = 0;
+	static int32_t scrollY = 0;
+	static uint32_t Xtotal = 0;
+	static uint32_t Ytotal = 0;
+	static int xVals[5] = {0,0,0,0,0};
+	static int yVals[5] = {0,0,0,0,0};
+
+	static bool left = false;
+	static bool middle = false;
+	static bool right = false;
 	
 	static uint8_t button_info = 0x00; //order is: ? ? ? ? left_click right_click middle_click laser_on?
 
@@ -230,17 +240,34 @@ void ui_process(uint16_t framenumber)
 				}
 			}
 
-			if(xCount != 5)
+			if(xCount != 5 || yCount != 5)
+			{
 				x = lx;
-			if(yCount != 5)
 				y = ly;
+			}
+			else
+			{
+				Xtotal -= xVals[0];
+				Ytotal -= yVals[0];
+				
+				for(int i = 0; i < 4; i++)
+				{
+					yVals[i] = yVals[i + 1];
+					xVals[i] = xVals[i + 1];
+				}
+				
+				Xtotal += x;
+				Ytotal += y;
 
-			x = x*(0x7FFF/427);
-			y = y*(0x7FFF/320);
-			
-			mouse_move(x, y);
-			//udi_hid_mouse_moveY(y);
-			//udi_hid_mouse_moveX(x);
+				yVals[4] = y;
+				xVals[4] = x;
+				
+				x = Xtotal/5;
+				y = Ytotal/5;	
+
+				x = x*(0x7FFF/640);
+				y = y*(0x7FFF/480);
+			}
 			
 			// request info from laser module
 			radio_sendbuffer[0] = 'B';
@@ -252,34 +279,36 @@ void ui_process(uint16_t framenumber)
 			for (int i = 0; i < RFM_DATALEN; i++) {
 				switch (i) {
 					case 0: //x axis scroll
+						scrollX = RFM_DATA[i];
 						break;
 					
 					case 1: //y axis scroll
-					//udi_hid_mouse_moveScroll(RFM_DATA[i]);
+						scrollY = RFM_DATA[i];
 						break;
 					
 					case 2: //button info byte
 						button_info = RFM_DATA[i];
 						
-						mouse_move(x, y);
-						mouse_buttons((button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
-						//udi_hid_mouse_btnleft((button_info & 0x08) >> 3);
-						//udi_hid_mouse_btnright((button_info & 0x04) >> 2);
-						//udi_hid_mouse_btnmiddle((button_info & 0x02) >> 1);
+						//mouse_move(x, y);
+						//mouse_buttons((button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
+						left = (button_info & 0x08) >> 3;
+						middle = (button_info & 0x02) >> 1;
+						right = (button_info & 0x04) >> 2;
 						
 						break;
 				}
 			}
 		}
 	}
-	else
+	/*else
 	{
 		//x += 50;
 		//y += 50;
 		//udi_hid_mouse_moveX(x);
 		//udi_hid_mouse_moveY(y);
-	}
-
+	}*/
+	
+	mouse_move(x, y, scrollX, scrollY, (button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
 		/*x += 50;
 		y += 50;
 		udi_hid_mouse_moveX(x);

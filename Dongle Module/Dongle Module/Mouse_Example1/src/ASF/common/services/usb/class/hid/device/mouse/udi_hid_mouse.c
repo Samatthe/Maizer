@@ -332,7 +332,7 @@ static bool udi_hid_mouse_move(uint8_t pos, uint8_t index_report, bool send)
 	return true;
 }
 
-bool mouse_move(uint16_t x, uint16_t y)
+bool mouse_move(uint16_t x, uint16_t y, uint16_t scrollX, uint16_t scrollY, bool left, bool middle, bool right)
 {
 	irqflags_t flags = cpu_irq_save();
 
@@ -340,6 +340,24 @@ bool mouse_move(uint16_t x, uint16_t y)
 	udi_hid_mouse_report[2] = (x & 0x7F00) >> 8;
 	udi_hid_mouse_report[3] = y & 0x00FF;
 	udi_hid_mouse_report[4] = (y & 0x7F00) >> 8;
+	udi_hid_mouse_report[5] = scrollX & 0x00FF;
+	udi_hid_mouse_report[6] = (scrollX & 0x7F00) >> 8;
+
+	// Modify buttons report
+	if (HID_MOUSE_BTN_DOWN == left)
+	udi_hid_mouse_report[0] |= 0x01;
+	else
+	udi_hid_mouse_report[0] &= ~(unsigned)0x01;
+			
+	if (HID_MOUSE_BTN_DOWN == right)
+	udi_hid_mouse_report[0] |= 0x02;
+	else
+	udi_hid_mouse_report[0] &= ~(unsigned)0x02;
+			
+	if (HID_MOUSE_BTN_DOWN == middle)
+	udi_hid_mouse_report[0] |= 0x04;
+	else
+	udi_hid_mouse_report[0] &= ~(unsigned)0x04;
 
 	// Valid and send report
 

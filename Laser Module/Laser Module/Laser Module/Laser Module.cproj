@@ -724,6 +724,12 @@
     <Compile Include="src\ASF\sam0\drivers\rtc\rtc_sam_d_r\rtc_count_interrupt.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\wheel.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\wheel.h">
+      <SubType>compile</SubType>
+    </Compile>
     <None Include="src\ASF\sam0\drivers\rtc\rtc_tamper.h">
       <SubType>compile</SubType>
     </None>

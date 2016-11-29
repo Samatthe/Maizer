@@ -10,6 +10,8 @@ src\ASF\sam0\drivers\rtc\rtc_sam_d_r\rtc_count.c
 
 src\ASF\sam0\drivers\rtc\rtc_sam_d_r\rtc_count_interrupt.c
 
+src\wheel.c
+
 src\ASF\sam0\drivers\extint\extint_callback.c
 
 src\ASF\sam0\drivers\sercom\i2c\i2c_sam0\i2c_master.c

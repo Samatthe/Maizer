@@ -3,6 +3,7 @@
 //     genImageProjective class to draw a perspective 2D Grid
 //============================================================
 
+
 #include "genImageProjective.h"
 #include <iostream>
 #include <math.h>
@@ -13,6 +14,10 @@ using namespace std;
 //        perspPoints[1] = top-right
 //        perspPoints[2] = bottom-right
 //        perspPoints[3] = bottom-left
+
+//THIS CODE IS USED TO TEST A VERY BASIC SETUP FUNCTION. 
+//SEE BELOW FOR MORE SAMPLE CODE
+/*
 int main()
 {
 	int window_X = 1500;
@@ -34,17 +39,17 @@ int main()
 	int PC_Offset_X = (5*(1500/7))-(PC_Frame_X/2);
 	int PC_Offset_Y = (900/2)-(PC_Frame_Y/2);
 
-	/*
-	QPointF topLeft_source = new QPointF(X1, Y1);
-	QPointF topRight_source = new QPointF(X2,Y2);
-	QPointF bottomRight_source = new QPointF(X3,Y3);
-	QPointF bottomLeft_source = new QPointF(X4,X4);
+	
+	//QPointF topLeft_source = new QPointF(X1, Y1);
+	//QPointF topRight_source = new QPointF(X2,Y2);
+	//QPointF bottomRight_source = new QPointF(X3,Y3);
+	//QPointF bottomLeft_source = new QPointF(X4,X4);
 
-	QPointF topLeft_dest = new QPointF(10, PC_Frame_Y);
-	QPointF topRight_dest = new QPointF(PC_Frame_X, PC_Frame_Y);
-	QPointF bottomRight_dest = new QPointF(PC_Frame_X, 10);
-	QPointF bottomLeft_dest = new QPointF(10,10);
-	*/
+	//QPointF topLeft_dest = new QPointF(10, PC_Frame_Y);
+	//QPointF topRight_dest = new QPointF(PC_Frame_X, PC_Frame_Y);
+	//QPointF bottomRight_dest = new QPointF(PC_Frame_X, 10);
+	//QPointF bottomLeft_dest = new QPointF(10,10);
+	
 
     // Setup a non-transformed area rectangle
     // I use a simple square rectangle here because in this case we are not interested in the source-rectangle,
@@ -72,7 +77,7 @@ int main()
     imageProjective.destArea[2] = bottomRight_dest;
     imageProjective.destArea[3] = bottomLeft_dest;
 
-    int temp = imageProjective.computeCoeefficients();
+    int temp = imageProjective.computeCoefficients();
 
     cout << "temp = " << temp << endl;
 
@@ -84,7 +89,66 @@ int main()
     return 0;
 }
 
+*/
 
+/*
+ * ACTUAL SAMPLE CODE
+ */
+
+
+int main(){
+
+
+	//CALIBRATION VARIABLES, CAN BE CHANGED
+	float X1, X2, X3, X4;
+	float Y1, Y2, Y3, Y4;
+
+	//GET CALIBRATION DATA HERE
+	//THESE FUNCTIONS ARE NOT IMPLEMENTED
+	topLeft(X1, Y1);
+	topRight(X2, Y2);
+	bottomRight(X3, Y3);
+	bottomLeft(X4, Y4);
+
+
+
+	//The max value is 32,767 for both x and y
+	QPointF topLeft_dest = new QPointF(0, 0);
+	QPointF topRight_dest = new QPointF(32767, 0);
+	QPointF bottomRight_dest = new QPointF(32767, 32767);
+	QPointF bottomLeft_dest = new QPointF(0,32767);
+
+
+	//USE THE CALIBRATION DATA HERE
+	QPointF topLeft_source = new QPointF(X1, Y1);
+	QPointF topRight_source = new QPointF(X2,Y2);
+	QPointF bottomRight_source = new QPointF(X3,Y3);
+	QPointF bottomLeft_source = new QPointF(X4,X4);
+
+
+	//SAVE THE DATA TO AN INSTANCE OF THE genImageProjective
+	genImageProjective imageProjective;
+
+	//SOURCE AREA, CALIBRATION RESULTS
+    imageProjective.sourceArea[0] = topLeft_source;
+    imageProjective.sourceArea[1] = topRight_source;
+    imageProjective.sourceArea[2] = bottomRight_source;
+    imageProjective.sourceArea[3] = bottomLeft_source;
+
+    //DESTINATION AREA, X and Y max values of 32767
+    imageProjective.destArea[0] = topLeft_dest;
+    imageProjective.destArea[1] = topRight_dest;
+    imageProjective.destArea[2] = bottomRight_dest;
+    imageProjective.destArea[3] = bottomLeft_dest;
+
+    //After assigning source and destination areas,
+    //Compute coefficients
+	int temp = imageProjective.computeCoefficients();
+
+	
+
+	return 0;
+}
 
 
 

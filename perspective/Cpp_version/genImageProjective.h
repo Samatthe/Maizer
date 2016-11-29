@@ -53,7 +53,7 @@ class genImageProjective
 public:
     genImageProjective();
 
-    int computeCoeefficients(void);
+    int computeCoefficients(void);
     int mapSourceToDestPoint(QPointF& sourcePoint, QPointF& destPoint);
 
 public:

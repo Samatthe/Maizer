@@ -28,8 +28,10 @@
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 #include <asf.h>
+#include <inttypes.h>
 #include "RFM69.h"
 #include "BQ27441.h"
+#include "wheel.h"
 
 // Addresses for this node.
 #define NETWORKID     0   // Must be the same for all nodes (0 to 255)
@@ -204,7 +206,9 @@ int main (void)
 
 	int sendlength = 3; //number can be increased 
 	int index = 0;
-	char sendbuffer[16];
+	int8_t sendbuffer[16];
+
+	init_wheel();
 	
 	while(1) //busy loop
 	//sends data after receiving a request message from the dongle
@@ -220,7 +224,13 @@ int main (void)
 		{
 			laserState = !laserState;
 			port_pin_set_output_level(PIN_PB08, laserState);
-		} 
+		}
+
+		//Do the wheel update
+		update_values();
+		
+		getScroll(&sendbuffer[0], &sendbuffer[1]); // x and y axis update
+		
 		lbutton = button;
 		//check if the RFM69 receives a  packet
 		//only send info when a packet is received from dongle module			
@@ -230,8 +240,8 @@ int main (void)
 			{
 				// The actual message is contained in the RFM_DATA array,
 				// and is RFM_DATALEN bytes in size:
-				sendbuffer[0] = 0; // x axis byte
-				sendbuffer[1] = 0; // y axis byte
+				getScroll(&sendbuffer[0], &sendbuffer[1]); // x and y axis update
+
 				sendbuffer[2] = 0;
 				sendbuffer[2] |= (port_pin_get_input_level(PIN_PA20) << 7); // Up
 				sendbuffer[2] |= (port_pin_get_input_level(PIN_PA12) << 6); // Down

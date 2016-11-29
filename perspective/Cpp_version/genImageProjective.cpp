@@ -76,7 +76,7 @@ genImageProjective::genImageProjective()
  *           y' = (c[3]x + c[4]y + c[5]) / (c[6]x + c[7]y + 1)
  *
  */
-int genImageProjective::computeCoeefficients(void)
+int genImageProjective::computeCoefficients(void)
 {
     int retValue = 0;
     int     i;

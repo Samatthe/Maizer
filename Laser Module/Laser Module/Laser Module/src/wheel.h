@@ -38,9 +38,17 @@
 /********************************************************************/
 
 //Buttons (left, right, up, down)
-enum Wheel_dir{
+/*
+ enum Wheel_dir{
 	LEFT, RIGHT, UP, DOWN
 };
+*/
+
+//Buttons (left, right, up, down)
+#define LEFT 0
+#define RIGHT 1
+#define UP 2
+#define DOWN 3
 
 /********************************************************************/
 
@@ -56,8 +64,8 @@ struct Wheel_vals{
 	uint8_t up_state;
 	uint8_t down_state;
 
-	int8_t LR_count;
-	int8_t UD_count;
+	int16_t LR_count;
+	int16_t UD_count;
 };
 
 /********************************************************************/
@@ -77,7 +85,7 @@ void update_values();
 /********************************************************************/
 
 //Updates the values and increments the counter
-void saveValues(uint8_t *current, uint8_t *previous, int8_t *count, uint8_t up_down);
+void saveValues(uint8_t *current, uint8_t *previous, int16_t *count, uint8_t up_down);
 
 /********************************************************************/
 
@@ -86,7 +94,7 @@ void increment_count(int *counter, int up_down);
 
 /********************************************************************/
 
-int getState(enum Wheel_dir button_num);
+uint8_t getState(uint8_t button_num);
 
 /********************************************************************/
 

@@ -54,10 +54,14 @@ void init_wheel(){
 void update_values(){
 	
 	//Read in the new values
-	wheel.left_val = port_pin_get_input_level(PIN_PA10); //Left value
-	wheel.right_val = port_pin_get_input_level(PIN_PA11); // Right value
-	wheel.up_val = port_pin_get_input_level(PIN_PA06); // Up value
-	wheel.down_val = port_pin_get_input_level(PIN_PA09); // Down value
+	wheel.left_val = getState(LEFT);
+	wheel.right_val = getState(RIGHT);
+	wheel.up_val = getState(UP);
+	wheel.down_val = getState(DOWN);
+	//wheel.left_val = port_pin_get_input_level(PIN_PA10); //Left value
+	//wheel.right_val = port_pin_get_input_level(PIN_PA11); // Right value
+	//wheel.up_val = port_pin_get_input_level(PIN_PA06); // Up value
+	//wheel.down_val = port_pin_get_input_level(PIN_PA09); // Down value
 
 	saveValues(&wheel.left_val, &wheel.left_state, &wheel.LR_count, 0);
 	saveValues(&wheel.right_val, &wheel.right_state, &wheel.LR_count, 1);
@@ -68,7 +72,7 @@ void update_values(){
 /********************************************************************/
 
 //Updates the values and increments the counter
-void saveValues(uint8_t *current, uint8_t *previous, int8_t *count, uint8_t up_down){
+void saveValues(uint8_t *current, uint8_t *previous, int16_t *count, uint8_t up_down){
 
 	//If the current value is not equal to the previous value
 	if(*current != *previous){
@@ -87,19 +91,19 @@ void saveValues(uint8_t *current, uint8_t *previous, int8_t *count, uint8_t up_d
 /********************************************************************/
 
 //If up_down is 1, moves counter up, else moves counter down
-void increment_count(int *counter, int up_down){
-	if(up_down){
-		*counter++;
-	}
+// void increment_count(int *counter, int up_down){
+// 	if(up_down){
+// 		(*counter)++;
+// 	}
 
-	else{
-		*counter--;
-	}
-}
+// 	else{
+// 		(*counter)--;
+// 	}
+// }
 
 /********************************************************************/
 
-int getState(enum Wheel_dir button_num){
+uint8_t getState(uint8_t button_num){
 	switch(button_num){
 		case LEFT:
 			return port_pin_get_input_level(PIN_PA10);

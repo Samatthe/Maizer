@@ -15,3 +15,4 @@ mutex coords_lock;
 Coordinates coords;
 RFM69 radio;
 condition_variable coords_cv;
+int fd;

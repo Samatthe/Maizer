@@ -11,4 +11,4 @@ run2: FpsTest2
 	./FpsTest2
 
 blob: testfps.hpp testfps.cpp main.cpp
-	g++ `pkg-config opencv cvblob --cflags --libs` -pthread -std=c++11 testfps.cpp rfm69.cpp -lwiringPi main.cpp -O3 -o FpsTest3 -DRASPBERRY
+	g++ `pkg-config opencv cvblob --cflags --libs` -pthread -std=c++11 genImageProjective.cpp testfps.cpp rfm69.cpp -lwiringPi main.cpp -O3 -o FpsTest3 -DRASPBERRY

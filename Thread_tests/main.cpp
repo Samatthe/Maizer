@@ -15,6 +15,8 @@
 
 #include "globals.h"
 
+#include "genImageProjective.h"
+
 //using namespace std;
 
 
@@ -41,6 +43,8 @@
 
 #include <csignal>
 
+#include <wiringSerial.h>
+
 
 using namespace cv;
 using namespace std;
@@ -54,6 +58,8 @@ static const int CHANNEL = 0;
 #define MYNODEID      1   // My node ID (0 to 255)
 #define DONGLEID      2   // Destination node ID (0 to 254, 255 = broadcast)
 #define LASERID		  3
+
+#define MAX_PC_XY 4095
 
 bool calibrating = false;
 
@@ -76,16 +82,22 @@ const unsigned long int blue = 0xFF0000;//blue
 //initial min and max HSV filter values.
 //these will be changed using trackbars
 int H_MIN = 0;
-int H_MAX = 256;
-int S_MIN = 0;
+int H_MAX = 99;
+int S_MIN = 37;
 int S_MAX = 256;
-int V_MIN = 180;
+int V_MIN = 170;
 int V_MAX = 256;
+int cal_H_MIN = 0;
+int cal_H_MAX = 99;
+int cal_S_MIN = 30;
+int cal_S_MAX = 256;
+int cal_V_MIN = 0;
+int cal_V_MAX = 256;
 //default capture width and height
 const int FRAME_WIDTH = 640;
 const int FRAME_HEIGHT = 480;
 //max number of objects to be detected in frame
-const int MAX_NUM_OBJECTS = 100;
+const int MAX_NUM_OBJECTS = 50;
 //minimum and maximum object area
 const double MIN_OBJECT_AREA = 1;
 const double MAX_OBJECT_AREA = 40;
@@ -98,6 +110,10 @@ const string trackbarWindowName = "Trackbars";
 
 Ptr<BackgroundSubtractor> pMOG2; //MOG2 Background subtractor
 VideoCapture capture;
+
+genImageProjective transform_screen;
+QPointF temp_point(0,0);
+QPointF from_cam(0,0);
 
 
 
@@ -189,7 +205,7 @@ void calibrate(){
 
 
 
-void SPIsend(){
+/*void SPIsend(){
 	
 	
 	// Initialize the RFM69HCW:
@@ -199,50 +215,102 @@ void SPIsend(){
 	if (ENCRYPT) {
 		radio.encrypt(ENCRYPTKEY);
 	}
-	int sendlength = 3;
+	//int sendlength = 3;
 	static char sendbuffer[4];
-
+	static int sendlength = 4; //6 if sending chars
+	uint16_t temp_x;
+	uint16_t temp_y;
 	while(1){
 		//cout << "SPIIIIIIIIII" << endl;
 			//cout << calibrating << endl;
-			cout << digitalRead(15) << endl;
+			//cout << digitalRead(15) << endl;
 			if(!digitalRead(15)){
 				calibrating = true;
 			}
 		
 			if(calibrating){
-				calibrate();
+				//calibrate();
 			}
 			
 			coords_lock.lock();
-			cout << "SPI: " << coords.x << ", " << coords.y << endl;
+			from_cam.setX(coords.x);
+			from_cam.setY(coords.y);
+			coords_lock.unlock();
 			
-			if(coords.update){
-				coords.update = false;
-				sendbuffer[0] = coords.x & 0x3F;
+			transform_screen.mapSourceToDestPoint(from_cam, temp_point);
+			
+			temp_x = (uint16_t)temp_point.x();
+			temp_y = (uint16_t)temp_point.y();
+			cout << "SPI: " << temp_x << ", " << temp_y << endl;
+			//coords_lock.lock();
+			//if(coords.update){
+				//coords.update = false;
+				sendbuffer[0] = temp_x & 0x003F;
 
-				sendbuffer[1] = (coords.x >> 6) & 0x3F;
+				sendbuffer[1] = (temp_x >> 6) & 0x003F;
 				sendbuffer[1] |= 0x40;
 
-				sendbuffer[2] = coords.y & 0x3F;
+				sendbuffer[2] = temp_y & 0x3F;
 				sendbuffer[2] |= 0x80;
 
-				sendbuffer[3] = (coords.y >> 6) & 0x3F;
+				sendbuffer[3] = (temp_y >> 6) & 0x3F;
 				sendbuffer[3] |= 0xC0;
-			}
-			coords_lock.unlock();
+			//}
+			//coords_lock.unlock();
 			// SENDING
 			
-			static int sendlength = 4; //6 if sending chars
 			radio.setLED(red);
 
 			radio.send(DONGLEID, sendbuffer, sendlength);
 			
+			delay(100);
+			
+	}
+}*/
+
+
+void XBeesend(){
+	static unsigned char sendbuffer[4];
+	static int sendlength = 4; //6 if sending chars
+	uint16_t temp_x;
+	uint16_t temp_y;
+	while(1){
+			if(!digitalRead(15)){
+				calibrating = true;
+			}
+		
+			if(calibrating){
+				//calibrate();
+			}
+			
+			coords_lock.lock();
+			from_cam.setX(coords.x);
+			from_cam.setY(coords.y);
+			coords_lock.unlock();
+			
+			transform_screen.mapSourceToDestPoint(from_cam, temp_point);
+			
+			temp_x = (uint16_t)temp_point.x();
+			temp_y = (uint16_t)temp_point.y();
+			cout << "XBee: " << temp_x << ", " << temp_y << endl;
+
+			sendbuffer[0] = temp_x & 0x003F;
+
+			sendbuffer[1] = (temp_x >> 6) & 0x003F;
+			sendbuffer[1] |= 0x40;
+
+			sendbuffer[2] = temp_y & 0x3F;
+			sendbuffer[2] |= 0x80;
+
+			sendbuffer[3] = (temp_y >> 6) & 0x3F;
+			sendbuffer[3] |= 0xC0;
+
+			for(int i = 0; i < sendlength; i++){
+				serialPutchar(fd, sendbuffer[i]);
+			}
+			delay(50);		
 	}
 }
-
-
-
 
 
 
@@ -334,50 +402,89 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed){
 			//let user know you found an object
 			if (objectFound == true){
 				coords_lock.lock();
-				if(coords.x != x && coords.y != y){
-					coords.update = true;
+				//if(coords.x != x && coords.y != y){
+					//coords.update = true;
 					coords.x = x;
 					coords.y = y;
-					//cout << "blob: " << coords.x << ", " << coords.y << endl;
-				}
+					cout << "blob: " << coords.x << ", " << coords.y << endl;
+				//}
 				coords_lock.unlock();
 			}
 
 		}
-		else cout << "TOO MUCH NOISE " << numObjects << endl;
+		else{
+			cout << "TOO MUCH NOISE " << numObjects << endl;
+			V_MIN++;
+		}
 	}
 }
 
-void zoomScreen(Mat &cameraFeed, Rect &boundRect, Mat &transmtx, Mat &thresh){
+void zoomScreen(Mat &cameraFeed, Rect &boundRect, Mat &transmtx, Mat &thresh, bool second_zoom){
 	//matrix storage for binary threshold image
-
+	int value = 170;
 	while(1){
-		capture.read(cameraFeed);
+		cout << "check 1" << endl;
+		if(!second_zoom){
+			capture.read(cameraFeed);
+			cout << "check 2" << endl;
+		}
+		else{//else might be irrelevant???
+			cameraFeed = imread("first_zoom.jpg", 1);
+			cout << "check 3" << endl;
+		}
 		if (!cameraFeed.empty()){
-			cout << "not empty" << endl;
-			flip(cameraFeed, cameraFeed, -1);
+			cout << "check 4" << endl;
+			//cout << "not empty" << endl;
 			//imshow("feed", cameraFeed);
-			 cvtColor(cameraFeed,thresh,CV_BGR2GRAY);
-			 threshold( thresh, thresh, 70, 255,CV_THRESH_BINARY );
+			if(!second_zoom){
+				cout << "check 5" << endl;
 
-			 vector< vector <Point> > contours; // Vector for storing contour
-			 vector< Vec4i > hierarchy;
-			 int largest_contour_index=0;
-			 int largest_area=0;
+				//flip(cameraFeed, cameraFeed, -1);
+				cvtColor(cameraFeed,thresh,CV_BGR2GRAY);
+				imshow("pre-thresh", thresh);
+				threshold( thresh, thresh, value, 255,CV_THRESH_BINARY );//adjust 70 if not getting four corners on first zoom
+				imshow("post-thresh", thresh);
+			}
+			else{
+				cout << "check 6" << endl;
+				//cout << "else" << endl;
+				cvtColor(cameraFeed,thresh,CV_BGR2GRAY);//Test with grayscale and projecting all black screen
+				//imshow("pre-thresh2", thresh);
+				threshold( thresh, thresh, value, 255,CV_THRESH_BINARY );
+				//inRange(thresh, cv::Scalar(H_MIN, S_MIN, V_MIN), cv::Scalar(H_MAX, S_MAX, V_MAX), thresh);//for using trackbars
+				//inRange(thresh, cv::Scalar(cal_H_MIN, cal_S_MIN, cal_V_MIN), cv::Scalar(cal_H_MAX, cal_S_MAX, cal_V_MAX), thresh); //if you know the calibration HSV values
+				//imshow("post-thresh2", thresh);
+			}
+			cout << "check 7" << endl;
+			vector< vector <Point> > contours; // Vector for storing contour
+			vector< Vec4i > hierarchy;
+			int largest_contour_index=0;
+			int largest_area=0;
+			vector<vector<Point> > contours_poly(1);
 
-			 Mat dst(thresh.rows,thresh.cols,CV_8UC1,Scalar::all(0)); //create destination image
-			 findContours( thresh.clone(), contours, hierarchy,CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE ); // Find the contours in the image
-			 for( int i = 0; i< contours.size(); i++ ){
-				double a=contourArea( contours[i],false);  //  Find the area of contour
-				if(a>largest_area){
-				largest_area=a;
-				largest_contour_index=i;                //Store the index of largest contour
-				}
-			 }
-			 vector<vector<Point> > contours_poly(1);
-			 approxPolyDP( Mat(contours[largest_contour_index]), contours_poly[0],5, true );
-			 boundRect=boundingRect(contours[largest_contour_index]);
-
+			Mat dst(thresh.rows,thresh.cols,CV_8UC1,Scalar::all(0)); //create destination image
+			findContours( thresh.clone(), contours, hierarchy,CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE ); // Find the contours in the image
+			
+			//cout << contours.size() << endl; //if contours is empty, will crash
+			if(!contours.empty()){
+				for( int i = 0; i< contours.size(); i++ ){
+					double a=contourArea( contours[i],false);  //  Find the area of contour
+					if(a>largest_area){
+						largest_area=a;
+						largest_contour_index=i;                //Store the index of largest contour
+					}
+				 }
+				 cout << "check 8" << endl;
+				 
+				 cout << "check 9" << endl;
+				 approxPolyDP( Mat(contours[largest_contour_index]), contours_poly[0],5, true );
+				 cout << "check 10" << endl;
+				 boundRect=boundingRect(contours[largest_contour_index]);
+				 cout << "check not reached" << endl;
+			}
+			else
+				cout << "contours is empty :(" << endl;
+				
 			 if(contours_poly[0].size()==4){
 				std::vector<Point2f> quad_pts;
 				std::vector<Point2f> squre_pts;
@@ -391,13 +498,22 @@ void zoomScreen(Mat &cameraFeed, Rect &boundRect, Mat &transmtx, Mat &thresh){
 				squre_pts.push_back(Point2f(boundRect.x+boundRect.width,boundRect.y+boundRect.height));
 
 				transmtx = getPerspectiveTransform(quad_pts,squre_pts);
-
+imwrite("transmtx.jpg",   transmtx);
 				rectangle(thresh,boundRect,Scalar(0,255,0),1,8,0);
-
+				cout << value << endl;
+				imshow("zoom_thresh", thresh);
 				break;
 			   }
-			   else
+			  else{
 				cout<<"Make sure that your are getting 4 corner using approxPolyDP..."<<endl;
+				cout << value << endl;
+				if(value <= 55){
+					//IDK DO SOMETHING
+				}
+				else{
+					value--;
+				}
+			  }
 		}
 		waitKey(1);
 	}	
@@ -412,12 +528,15 @@ int BlobDetect() {
 	//matrix storage for binary threshold image
 	Mat thresh;
 	Rect boundRect;
+	Rect boundRect2;
 	Mat transmtx;
 	Mat thr;
+	Mat transmtx2;
+	Mat thr2;
 	//x and y values for the location of the object
 	int x = 0, y = 0;
 	//create slider bars for HSV filtering
-	//screateTrackbars();
+	createTrackbars();
 	//open capture object at location zero (default location for webcam)
 	capture.release();
 	if(!capture.open(0))
@@ -429,42 +548,140 @@ int BlobDetect() {
 	capture.set(CAP_PROP_FPS, 90);
 	
 	signal(SIGINT, signalHandler);
-	zoomScreen(cameraFeed, boundRect, transmtx, thr);
+	zoomScreen(cameraFeed, boundRect, transmtx, thr, false); //first zoom	
+	imshow("pre-warp", cameraFeed);
+	warpPerspective(cameraFeed, cameraFeed, transmtx, thr.size());
+	imshow("first post-warp", cameraFeed);
+	Mat first_zoom = cameraFeed(boundRect);
+
+	imwrite("first_zoom.jpg", first_zoom);
+	cout << "returning6" << endl;
+
+	//imshow("first zoom", first_zoom);
+	//at this point first_zoom has been flipped (for when camera is upsidedown) and is zoomed in on the projector screen
+	zoomScreen(cameraFeed, boundRect2, transmtx2, thr2, true); //second zoom
+	cout << "returning7" << endl;
+	
+
+	//warpPerspective(image_roi2, image_roi2, transmtx2, thr2.size());
+	Mat second_zoom (cameraFeed, boundRect2);
+	//imwrite("second_zoom.jpg", second_zoom);
+	//imshow("second zoom", second_zoom);
+
+	Point max_xy = boundRect2.br();
+	cout << "Max_xy = (" << max_xy.x << "," << max_xy.y << ")" << endl;
+	
+	//Set the source points
+	temp_point.setX((float)0);
+	temp_point.setY((float)0);
+	transform_screen.sourceArea[0] = temp_point;
+	temp_point.setX((float)max_xy.x);
+	transform_screen.sourceArea[1] = temp_point;
+	temp_point.setY((float)max_xy.y);
+	transform_screen.sourceArea[2] = temp_point;
+	temp_point.setX((float)0);
+	transform_screen.sourceArea[3] = temp_point;
+	
+	//Set the destination points
+	temp_point.setX((float)0);
+	temp_point.setY((float)0);
+	transform_screen.destArea[0] = temp_point;
+	temp_point.setX((float)MAX_PC_XY);
+	transform_screen.destArea[1] = temp_point;
+	temp_point.setY((float)MAX_PC_XY);
+	transform_screen.destArea[2] = temp_point;
+	temp_point.setX((float)0);
+	transform_screen.destArea[3] = temp_point;
+	
+	transform_screen.computeCoefficients();
+	
 	pMOG2 = createBackgroundSubtractorMOG2(50, 16, false); //MOG2 approach
+	Mat image_roi = cameraFeed.clone();
+	Mat image_roi1;
+	
+	//cout << capture.get(CAP_PROP_EXPOSURE) << endl;
+	//cout << capture.get(CAP_PROP_BRIGHTNESS) << endl;
+	//imshow("live", cameraFeed);
+	//capture.set(CAP_PROP_EXPOSURE, 1);
+	//capture.set(CAP_PROP_BRIGHTNESS, .5);
+	/*zoomScreen(cameraFeed, boundRect, transmtx, thr, false); //first zoom	
+	Mat helpme(cameraFeed, boundRect);
+	
+	while(1){
+		imshow("HALP", helpme);
+		//warpPerspective(helpme, image_roi1, transmtx, thr.size());
+		//imshow("halp post-warp", image_roi);
+		capture.read(cameraFeed);
+		//warpPerspective(cameraFeed, cameraFeed, transmtx, thr.size());
+		
+	imshow("pre-warp", cameraFeed);
+	//transpose(cameraFeed, cameraFeed);
+	//flip(cameraFeed, cameraFeed, 1);
+	warpPerspective(cameraFeed, image_roi, transmtx, thr.size());
+	imshow("first post-warp", image_roi);
+	//Mat first_zoom = cameraFeed(boundRect);
+		//flip(cameraFeed, cameraFeed, -1);
+		//Mat image_roi3 (cameraFeed, boundRect);
+		//Mat image_roi5 (image_roi3, boundRect2);
+		//imshow("first_zoom", first_zoom);
+		waitKey(1);
+	}*/
+	
 	while (1){
 
 		//read the current frame
 		if(!capture.read(cameraFeed))
 			cout << "capture failed" << endl;
 		if (!cameraFeed.empty()){
+			imshow("live", cameraFeed);
 			cvtColor(cameraFeed, thresh, COLOR_BGR2GRAY);
-			flip(thresh, thresh, -1);
-			flip(cameraFeed, cameraFeed, -1);
-			warpPerspective(thresh, thresh, transmtx, thr.size());
-			rectangle(thresh,boundRect,Scalar(0,255,0),1,8,0);
-			Mat image_roi (thresh, boundRect);
+			//flip(thresh, thresh, -1);
+			//flip(cameraFeed, cameraFeed, -1);
+			//warpPerspective(thresh, thresh, transmtx, thr.size());
+			//rectangle(thresh,boundRect,Scalar(0,255,0),1,8,0);
+			image_roi1 = thresh(boundRect);
+			//warpPerspective(image_roi1, image_roi1, transmtx2, thr2.size());
+			image_roi = image_roi1(boundRect2);
+			//threshold(thresh, thresh, V_MIN, V_MAX, THRESH_TOZERO);
 			threshold(image_roi, image_roi, V_MIN, V_MAX, THRESH_TOZERO);
+			//pMOG2->apply(thresh, thresh);
+			//trackFilteredObject(x, y, thresh, cameraFeed);
 			pMOG2->apply(image_roi, image_roi);
 			trackFilteredObject(x, y, image_roi, cameraFeed);
-			warpPerspective(cameraFeed, cameraFeed, transmtx, thr.size());
-			Mat image_roi2 (cameraFeed, boundRect);
-			
-			//imshow("Frame", image_roi2);
-			//imshow("FG Mask MOG 2", image_roi);
+			//warpPerspective(cameraFeed, cameraFeed, transmtx, thr.size());
+			Mat image_roi3 (cameraFeed, boundRect);
+			//imshow("roi3", image_roi3);
+			//warpPerspective(image_roi3, image_roi3, transmtx2, thr2.size());
+			Mat image_roi5 (image_roi3, boundRect2);
+			imshow("Frame", image_roi5);
+			imshow("FG Mask MOG 2", image_roi);
+		}
+		else{
+			cout << "empty frame" << endl;
 		}
 		waitKey(1);
 	}
 
+	cout << "returning" << endl;
 	return(0);
 }
 
 
 int main(int argc, char* argv[]) {
-	radio.initialize(FREQUENCY, MYNODEID, NETWORKID);
-	radio.setHighPower(); // Always use this for RFM69HCW
+	//radio.initialize(FREQUENCY, MYNODEID, NETWORKID);
+	//radio.setHighPower(); // Always use this for RFM69HCW
+
+	//initialize serial port
+	if((fd = serialOpen("/dev/ttyS0", 57600)) < 0){
+		cout << "unable to poen serial port" << endl;
+		return 1;
+	}
+
 
 	thread blob(BlobDetect);
-	thread spi(SPIsend);
+	thread xbee(XBeesend);
 	blob.join();
+		cout << "returning2" << endl;
+
     return 0;
 }

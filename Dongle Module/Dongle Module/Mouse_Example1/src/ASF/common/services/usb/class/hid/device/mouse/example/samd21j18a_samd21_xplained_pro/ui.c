@@ -136,7 +136,7 @@ void ui_init(void)
 	
 	// Initialize the RFM69HCW:
 	configure_radio();
-	//configure_port_pins();
+	configure_port_pins();
 }
 
 void ui_powerdown(void)
@@ -163,6 +163,12 @@ void ui_wakeup(void)
 void ui_process(uint16_t framenumber)
 {
 	static uint8_t cpt_sof = 0;
+	static uint32_t cameraTimeOut = 0;
+	static bool calibration = false;
+	static bool calibrate_button = 0;
+	calibrate_button = port_pin_get_input_level(PIN_PA15);
+	
+	cameraTimeOut = millis();
 
 	if ((framenumber % 1000) == 0) {
 		LED_On(LED_0_PIN);
@@ -176,9 +182,6 @@ void ui_process(uint16_t framenumber)
 		return;
 	}
 	cpt_sof = 0;
-	
-	
-	
 	
 		/* Mouse movement variables */
 	static int16_t x = 0; // only the lower 12 bits of these are used
@@ -199,12 +202,19 @@ void ui_process(uint16_t framenumber)
 	static bool middle = false;
 	static bool right = false;
 	
-	static uint8_t button_info = 0x00; //order is: ? ? ? ? left_click right_click middle_click laser_on?
+	static uint8_t button_info = 0x00; //order is: up down left right left_click right_click middle_click laser_enabled
 
 	// this will receive the mouse location from the camera module
 	if (RFM_receiveDone()) {
 		//info received from camera module (mouse movement)
 		if (RFM_SENDERID == CAMERA_MODULE_NODE_ID) {
+			cameraTimeOut = millis(); //reset the timeout when receiving packet from camera
+			
+			if (calibrate_button) // set the system into calibration mode when button is pressed on dongle
+				calibration = true;
+			else if (RFM_DATA[0] == 'N') // set the system to regular operation mode when camera sends a 'N' packet
+				calibration = false;
+			
 			lx = x;
 			ly = y;
 			xCount = 0;
@@ -269,9 +279,20 @@ void ui_process(uint16_t framenumber)
 				y = y*(0x7FFF/480);
 			}
 			
-			// request info from laser module
-			radio_sendbuffer[0] = 'B';
-			RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
+			if (calibration) {
+				// request a new frame from camera module
+				radio_sendbuffer[0] = 'C';
+				RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
+			}
+			else {
+				// request a new frame from camera module
+				radio_sendbuffer[0] = 'R';
+				RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
+				
+				// request info from laser module
+				radio_sendbuffer[0] = 'B'; //B is arbitrary. Y will set LEDs to color show. N will set it to white.
+				RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
+			}
 		}
 		
 		//info received from laser module (clicks)
@@ -300,6 +321,14 @@ void ui_process(uint16_t framenumber)
 			}
 		}
 	}
+	
+	//handle camera timeout
+	if (millis() - cameraTimeOut > 500) { // if time exceeds 500ms
+		RFM_DATA[0] = 'R'; //regular mode
+		RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
+		cameraTimeOut = millis();
+		calibration = false;
+	}
 	/*else
 	{
 		//x += 50;
@@ -307,8 +336,8 @@ void ui_process(uint16_t framenumber)
 		//udi_hid_mouse_moveX(x);
 		//udi_hid_mouse_moveY(y);
 	}*/
-	
-	mouse_move(x, y, scrollX, scrollY, (button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
+	if (!calibration)
+		mouse_move(x, y, scrollX, scrollY, (button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
 		/*x += 50;
 		y += 50;
 		udi_hid_mouse_moveX(x);

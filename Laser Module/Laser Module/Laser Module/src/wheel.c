@@ -73,11 +73,11 @@ void saveValues(uint8_t *current, uint8_t *previous, int8_t *count, uint8_t up_d
 	//If the current value is not equal to the previous value
 	if(*current != *previous){
 		if(up_down){
-			*count++;
+			(*count)++;
 		}
 
 		else{
-			*count--;
+			(*count)--;
 		}
 		
 		*previous = *current;

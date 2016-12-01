@@ -85,7 +85,7 @@ int main(void)
 			}
 		}
 #else /* #ifdef USB_DEVICE_LOW_SPEED */
-		sleepmgr_enter_sleep();
+		//sleepmgr_enter_sleep();
 #endif
 	}
 }

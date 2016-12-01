@@ -85,7 +85,7 @@ void configure_rtc_count(void)
 	rtc_count_init(&rtc_instance, RTC, &config_rtc_count);
 	rtc_count_enable(&rtc_instance);
 
-	rtc_count_set_period(&rtc_instance, 10000);
+	rtc_count_set_period(&rtc_instance, 100000);
 }
 
 void reset_millis(void)

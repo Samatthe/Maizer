@@ -102,7 +102,7 @@ void configure_button_pins(void)
 	struct port_config config_port_pin;
 	port_get_config_defaults(&config_port_pin);
 	config_port_pin.direction = PORT_PIN_DIR_INPUT;
-	port_pin_set_config(PIN_PA15, &config_port_pin);
+	//port_pin_set_config(PIN_PA0, &config_port_pin);
 }
 //configure the RFM69 module
 void configure_radio(void) {
@@ -125,7 +125,7 @@ static void ui_wakeup_handler(void)
 {
 	/* It is a wakeup then send wakeup USB */
 	udc_remotewakeup();
-	LED_On(LED_0_PIN);
+	//LED_On(LED_0_PIN);
 }
 
 
@@ -136,12 +136,12 @@ void ui_init(void)
 	
 	// Initialize the RFM69HCW:
 	configure_radio();
-	configure_port_pins();
+	//configure_port_pins();
 }
 
 void ui_powerdown(void)
 {
-	LED_Off(LED_0_PIN);
+	//LED_Off(LED_0_PIN);
 }
 
 
@@ -157,31 +157,15 @@ void ui_wakeup_disable(void)
 
 void ui_wakeup(void)
 {
-	LED_On(LED_0_PIN);
+	//LED_On(LED_0_PIN);
 }
 
 void ui_process(uint16_t framenumber)
 {
 	static uint8_t cpt_sof = 0;
-	static uint32_t cameraTimeOut = 0;
+	static uint32_t cameraTimeOut = 10000;
 	static bool calibration = false;
-	static bool calibrate_button = 0;
-	calibrate_button = port_pin_get_input_level(PIN_PA15);
 	
-	cameraTimeOut = millis();
-
-	if ((framenumber % 1000) == 0) {
-		LED_On(LED_0_PIN);
-	}
-	if ((framenumber % 1000) == 500) {
-		LED_Off(LED_0_PIN);
-	}
-	/* Scan process running each 5ms */
-	cpt_sof++;
-	if (cpt_sof < 5) {
-		return;
-	}
-	cpt_sof = 0;
 	
 		/* Mouse movement variables */
 	static int16_t x = 0; // only the lower 12 bits of these are used
@@ -208,95 +192,95 @@ void ui_process(uint16_t framenumber)
 	if (RFM_receiveDone()) {
 		//info received from camera module (mouse movement)
 		if (RFM_SENDERID == CAMERA_MODULE_NODE_ID) {
-			cameraTimeOut = millis(); //reset the timeout when receiving packet from camera
-			
-			if (calibrate_button) // set the system into calibration mode when button is pressed on dongle
+			if (RFM_DATA[0] == 'Y' && RFM_DATALEN == 1) // set the system into calibration mode when button is pressed on camera
 				calibration = true;
-			else if (RFM_DATA[0] == 'N') // set the system to regular operation mode when camera sends a 'N' packet
+
+			else if (RFM_DATA[0] == 'N' && RFM_DATALEN == 1) // set the system to regular operation mode when camera sends a 'N' packet
 				calibration = false;
-			
-			lx = x;
-			ly = y;
-			xCount = 0;
-			yCount = 0;
+				
+			else {
+				lx = x;
+				ly = y;
+				xCount = 0;
+				yCount = 0;
 
-			for (int i = 0; i < RFM_DATALEN; i++) {
-				//x LSB 00<data>	x MSB 01<data>
-				//y LSB 10<data>	y MSB 11<data>
-				switch (RFM_DATA[i] >> 6) {
-					case 0: //x LSB
-						xCount += 2;
-						temp = (RFM_DATA[i] & 0x3F);
-						x = temp;
-						break;
+				for (int i = 0; i < RFM_DATALEN; i++) {
+					//x LSB 00<data>	x MSB 01<data>
+					//y LSB 10<data>	y MSB 11<data>
+					switch (RFM_DATA[i] >> 6) {
+						case 0: //x LSB
+							xCount += 2;
+							temp = (RFM_DATA[i] & 0x3F);
+							x = temp;
+							break;
 				
-					case 1: //x MSB
-						xCount += 3;
-						temp = (RFM_DATA[i] & 0x3F);
-						x = x | (temp << 6);
-						break;
+						case 1: //x MSB
+							xCount += 3;
+							temp = (RFM_DATA[i] & 0x3F);
+							x = x | (temp << 6);
+							break;
 				
-					case 2: //y LSB
-						yCount += 2;
-						temp = (RFM_DATA[i] & 0x3F);
-						y = temp;
-						break;
+						case 2: //y LSB
+							yCount += 2;
+							temp = (RFM_DATA[i] & 0x3F);
+							y = temp;
+							break;
 				
-					case 3: //y MSB
-						yCount += 3;
-						temp = (RFM_DATA[i] & 0x3F);
-						y = y | (temp << 6);
-						break;
+						case 3: //y MSB
+							yCount += 3;
+							temp = (RFM_DATA[i] & 0x3F);
+							y = y | (temp << 6);
+							break;
+					}
 				}
-			}
 
-			if(xCount != 5 || yCount != 5)
-			{
-				x = lx;
-				y = ly;
-			}
-			else
-			{
-				Xtotal -= xVals[0];
-				Ytotal -= yVals[0];
-				
-				for(int i = 0; i < 4; i++)
+				if(xCount != 5 || yCount != 5)
 				{
-					yVals[i] = yVals[i + 1];
-					xVals[i] = xVals[i + 1];
+					x = lx;
+					y = ly;
 				}
+				else
+				{
+					Xtotal -= xVals[0];
+					Ytotal -= yVals[0];
 				
-				Xtotal += x;
-				Ytotal += y;
-
-				yVals[4] = y;
-				xVals[4] = x;
+					for(int i = 0; i < 4; i++)
+					{
+						yVals[i] = yVals[i + 1];
+						xVals[i] = xVals[i + 1];
+					}
 				
-				x = Xtotal/5;
-				y = Ytotal/5;	
+					Xtotal += x;
+					Ytotal += y;
 
-				x = x*(0x7FFF/640);
-				y = y*(0x7FFF/480);
+					yVals[4] = y;
+					xVals[4] = x;
+				
+					x = Xtotal/5;
+					y = Ytotal/5;	
+
+					x = x*(0x7FFF/640);
+					y = y*(0x7FFF/480);
+				}
 			}
 			
 			if (calibration) {
 				// request a new frame from camera module
 				radio_sendbuffer[0] = 'C';
-				RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
+				for (int i = 0; i < 2; i++)
+					RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
 			}
 			else {
-				// request a new frame from camera module
-				radio_sendbuffer[0] = 'R';
-				RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
-				
 				// request info from laser module
 				radio_sendbuffer[0] = 'B'; //B is arbitrary. Y will set LEDs to color show. N will set it to white.
-				RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
+				for (int i = 0; i < 2; i++)
+					RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
 			}
 		}
 		
 		//info received from laser module (clicks)
 		else if (RFM_SENDERID == LASER_MODULE_NODE_ID) {
+			
 			for (int i = 0; i < RFM_DATALEN; i++) {
 				switch (i) {
 					case 0: //x axis scroll
@@ -319,15 +303,24 @@ void ui_process(uint16_t framenumber)
 						break;
 				}
 			}
+			
+			// request a new frame from camera module
+			radio_sendbuffer[0] = 'R';
+			RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
 		}
+	}
+	else
+	{
+		//LED_Off(LED_0_PIN);
 	}
 	
 	//handle camera timeout
-	if (millis() - cameraTimeOut > 500) { // if time exceeds 500ms
-		RFM_DATA[0] = 'R'; //regular mode
+	if (millis() > cameraTimeOut) { // if time exceeds 500ms
+		//radio_sendbuffer[0] = 'R'; //regular mode
+		radio_sendbuffer[0] = calibration + '0';
 		RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
-		cameraTimeOut = millis();
-		calibration = false;
+		//calibration = false;
+		reset_millis();
 	}
 	/*else
 	{

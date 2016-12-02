@@ -256,10 +256,10 @@ int main (void)
 			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA20) << 7); // Up
 			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA12) << 6); // Down
 			sendbuffer[2] |= (port_pin_get_input_level(PIN_PB09) << 5); // Left
-			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 4); // Right
+			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA04) << 4); // Right
 			sendbuffer[2] |= (port_pin_get_input_level(PIN_PB02) << 3); // Left Click
 			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 2); // Right Click
-			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
+			sendbuffer[2] |= (!port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
 			sendbuffer[2] |= laserState;								// Laser State
 
 			RFM_send(receivingNode, sendbuffer, sendlength, false);

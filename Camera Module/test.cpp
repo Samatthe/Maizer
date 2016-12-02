@@ -1,11 +1,9 @@
 //g++ -x c++ -std=c++11 Pi_Example.cpp RFM69.cpp RFM69.h -o Pi_RFM69 -lwiringPi -DRASPBERRY
 
 #include "rfm69.h"
-#include <iostream>
 #include <string>
 #include <wiringPiSPI.h>
 #include <wiringPi.h>
-#include <bitset>
 
 using namespace std;
 
@@ -55,28 +53,11 @@ int main() {
   while(1) {
   	//ColorCycle();
 
-/*  	count ++;
-  	if (count == 30000000) {
-  		cout << "~~~~~~~~~~~~~~~~~~~set calibration true" << endl;
-  		calibrating = true;
-  		count = 0;
-  	}
-*/
-
-
-
-    if (radio.receiveDone()) { // Got one!
-
-    	if (calibrating)
-	  		cout << "calibrating" << endl;
-	  	else
-	  		cout << "not calibrating" << endl;
-
-
+    if (radio.receiveDone()) { // Packet received
       if (radio.SENDERID == DONGLEID) { // if data came from dongle
-      	cout << "dongle " << radio.DATA[0] << endl;
-        if (!calibrating) { // dongle thinks we're in regular mode
+        if (!calibrating) { // we're in regular mode (not calibration mode)
 
+//this is is where ben's skew correction and the x/y values are needed//
   //        (x,y) - from OpenCV
   //        piPoint.setX(x);
   //        piPoint.setY(y);
@@ -85,7 +66,7 @@ int main() {
 
           sendlength = 4;
 
-          //location bytes
+          //load location bytes into the buffer
           sendbuffer[0] = x & 0x3F;
 
           sendbuffer[1] = (x >> 6) & 0x3F;
@@ -97,48 +78,40 @@ int main() {
           sendbuffer[3] = (y >> 6) & 0x3F;
           sendbuffer[3] |= 0xC0;
           
-          cout << "sending pos to dongle" << endl;
           for (int i = 0; i < 2; i++) { // try to send the packet twice
-            delayMicroseconds(1);
+            delayMicroseconds(1); // we might be able to remove this delay, not sure
             radio.send(DONGLEID, sendbuffer, sendlength);
           }
         }
 
-        else {
-        //else if (radio.DATA[0] == 'C') { // dongle thinks we're in calibration mode
+        else { //we're in calibration mode
           sendlength = 1;
 
           if (calibrating) {
             sendbuffer[0] = 'Y'; // tell dongle we're still calibrating
-            calibrating = true;
+            calibrating = true; /////////////////////////////////////////This will need to be changed when the GPIO pin is actually being polled
           }
-          else {//this case shouldn't really happen
+          else { // this case shouldn't really happen
             sendbuffer[0] = 'N'; // tell dongle we're done calibrating
-            //calibrating = false;
           }
 
-          cout << "sending " << sendbuffer[0] << " to dongle" << endl;
           for (int i = 0; i < 2; i++) { // send the packet to dongle twice
-            delayMicroseconds(1);
+            delayMicroseconds(1); // we might be able to remove this delay, not sure
             radio.send(DONGLEID, sendbuffer, sendlength);
           }
 
-          delay(100);
+          delay(100); // this can be reduced or eliminated. I put this here to prevent race conditions/deadlocks during calibration
 
           for (int i = 0; i < 2; i++) { // send packet to remote twice
-            delayMicroseconds(1);
+            delayMicroseconds(1); // we might be able to remove this delay, not sure
             radio.send(LASERID, sendbuffer, sendlength); // request button info from laser and tell it we're calibrating
-            cout << "sending to laser" << endl;
           }
         }
       }
 
       else if (radio.SENDERID == LASERID) { // if data came from laser module
-        cout << "received from laser" << endl;
-        cout << unsigned(radio.DATALEN) << endl;
         //get the keys and do stuff
-        if (radio.DATA[2] == 0b00000010) { //trackball button is clicked
-        	cout << "leaving calibration mode" << endl;
+        if (radio.DATA[2] == 0b00000010) { //trackball button is clicked -- This ends calibration mode
           calibrating = false; //end calibration
 
           //tell dongle we're done calibrating
@@ -146,12 +119,12 @@ int main() {
           sendbuffer[0] = 'N';
 
           for (int i = 0; i < 5; i++) { // send packet to dongle 5 times (for good measure)
-            delayMicroseconds(1);
+            delayMicroseconds(1); // we might be able to remove this delay, not sure
             radio.send(LASERID, sendbuffer, sendlength); // request button info from laser and tell it we're calibrating
           }
 
           for (int i = 0; i < 5; i++) { // send packet to dongle 5 times (for good measure)
-            delayMicroseconds(1);
+            delayMicroseconds(1); // we might be able to remove this delay, not sure
             radio.send(DONGLEID, sendbuffer, sendlength); // request button info from laser and tell it we're calibrating
           }
 
@@ -189,8 +162,6 @@ int main() {
         }
       }
     }
-
-
   }
 }
 

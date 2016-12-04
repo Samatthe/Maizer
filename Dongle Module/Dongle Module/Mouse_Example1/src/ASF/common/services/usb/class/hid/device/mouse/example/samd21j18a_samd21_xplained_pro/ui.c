@@ -165,6 +165,7 @@ void ui_process(uint16_t framenumber)
 	static uint8_t cpt_sof = 0;
 	static uint32_t cameraTimeOut = 10000;
 	static bool calibration = false;
+	static bool laserEnabled = false;
 	
 	
 		/* Mouse movement variables */
@@ -300,6 +301,11 @@ void ui_process(uint16_t framenumber)
 						middle = (button_info & 0x02) >> 1;
 						right = (button_info & 0x04) >> 2;
 						
+						if (button_info & 0x01) //if laser is enabled
+							laserEnabled = true;
+						else
+							laserEnabled = false;
+						
 						break;
 				}
 			}
@@ -329,7 +335,7 @@ void ui_process(uint16_t framenumber)
 		//udi_hid_mouse_moveX(x);
 		//udi_hid_mouse_moveY(y);
 	}*/
-	if (!calibration)
+	if (!calibration && laserEnabled) // move mouse only if laser enabled and not calibrating
 		mouse_move(x, y, scrollX, scrollY, (button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
 		/*x += 50;
 		y += 50;

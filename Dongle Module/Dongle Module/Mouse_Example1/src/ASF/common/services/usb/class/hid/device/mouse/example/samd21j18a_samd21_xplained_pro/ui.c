@@ -199,7 +199,7 @@ void ui_process(uint16_t framenumber)
 			else if (RFM_DATA[0] == 'N' && RFM_DATALEN == 1) // set the system to regular operation mode when camera sends a 'N' packet
 				calibration = false;
 				
-			else {
+			else if (laserEnabled) {
 				lx = x;
 				ly = y;
 				xCount = 0;
@@ -240,7 +240,7 @@ void ui_process(uint16_t framenumber)
 					x = lx;
 					y = ly;
 				}
-				else
+				else 
 				{
 					Xtotal -= xVals[0];
 					Ytotal -= yVals[0];
@@ -335,7 +335,7 @@ void ui_process(uint16_t framenumber)
 		//udi_hid_mouse_moveX(x);
 		//udi_hid_mouse_moveY(y);
 	}*/
-	if (!calibration && laserEnabled) // move mouse only if laser enabled and not calibrating
+	if (!calibration) // move mouse only if laser enabled and not calibrating
 		mouse_move(x, y, scrollX, scrollY, (button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
 		/*x += 50;
 		y += 50;

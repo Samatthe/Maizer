@@ -64,6 +64,8 @@ void configure_IO_pins(void);
 
 // Helper Functions
 void ColorCycle(void);
+void colorGradient(uint16_t state);
+void blinkRed(void);
 
 // Helper functions
 void setTrackBallRGBW(uint16_t red, uint16_t green, uint16_t blue, uint16_t white);
@@ -147,6 +149,8 @@ int main (void)
 {
 	int receivingNode = 0;
 	bool calibrationLEDS = false;
+
+	uint16_t state = 0;
 	
     /* Initialize system */
 	system_init();
@@ -154,18 +158,22 @@ int main (void)
 	configure_IO_pins();
 	
 
-	/*if(!lipo_begin())
+	if(!lipo_begin())
 	{
-		setTrackBallRGBW(0, 0xFFFF, 0, 0);
+		setTrackBallRGBW(0xFFFF, 0, 0, 0);
 		
-		for(int i = 0; i < 100000; i++)
+		for( ; ; )
 		{ }
+		
 	}
 	else
 	{
-		setTrackBallRGBW(0xFFFF, 0, 0, 0);
+		setTrackBallRGBW(0, 0xFFFF, 0, 0);
+		for(int i = 0; i < 100000; i++)
+		{ }
 	}
-	//lipo_setCapacity(Capacity);
+
+	lipo_setCapacity(Capacity);
 
 	/*uint16_t soc = lipo_soc(FILTERED);
 	uint16_t volts = lipo_voltage();
@@ -175,7 +183,8 @@ int main (void)
 	int16_t power = lipo_power();
 	uint8_t health = lipo_soh(PERCENT);*/
 
-	/*uint16_t timeout = 0;
+	/*
+	uint16_t timeout = 0;
 
 	struct i2c_master_packet packet = {
 		.address     = SLAVE_ADDRESS,
@@ -198,13 +207,15 @@ int main (void)
 		if (timeout++ == TIMEOUT) {
 			break;
 		}
-	}*/
+	}
+	*/
 
 	// Initialize the RFM69HCW:
 	RFM_initialize(FREQUENCY, MYNODEID, NETWORKID);
 	RFM_setHighPower(true);
-	if (ENCRYPT)
+	if (ENCRYPT){
 		RFM_encrypt(ENCRYPTKEY);
+	}
 
 
 	int sendlength = 3; //number can be increased 
@@ -217,10 +228,12 @@ int main (void)
 	//sends data after receiving a request message from the dongle
 	//sends X axis byte, Y axis byte, button byte
 	{
-		if (calibrationLEDS)
+		if (calibrationLEDS){
 			ColorCycle();
-		else
-			setTrackBallRGBW(0x0, 0x0, 0x0, 0xFFFF);
+		}
+		else{
+			//setTrackBallRGBW(0x0, 0x0, 0x0, 0xFFFF);
+		}
 			
 		static bool button = 0;
 		static bool lbutton = 0;
@@ -244,10 +257,12 @@ int main (void)
 		if (RFM_receiveDone()) // Got one!
 		{
 			receivingNode = RFM_SENDERID;
-			if (RFM_DATA[0] == 'Y')
+			if (RFM_DATA[0] == 'Y'){
 				calibrationLEDS = true;
-			if (RFM_DATA[0] == 'N')
+			}
+			if (RFM_DATA[0] == 'N'){
 				calibrationLEDS = false;
+			}
 			// The actual message is contained in the RFM_DATA array,
 			// and is RFM_DATALEN bytes in size:
 			getScroll(&sendbuffer[0], &sendbuffer[1]); // x and y axis update
@@ -264,6 +279,26 @@ int main (void)
 
 			RFM_send(receivingNode, sendbuffer, sendlength, false);
 		}
+
+		state = lipo_soc(FILTERED);
+
+		if(state > 10){
+			colorGradient(state);
+		}
+
+		else if(state > 5){
+			blinkRed();
+		}
+
+		else{
+			//Put into sleep mode, but I don't know how to do that
+			while(lipo_soc(FILTERED) < 0x0005){}
+		}
+	}
+
+	
+	while(1){
+		state = lipo_soc(FILTERED);
 	}
 }
 
@@ -302,7 +337,75 @@ void ColorCycle(void)
 	{
 		color = 0;
 		index++;
-		if(index > 2)
-		index = 0;
+
+		if(index > 2){
+			index = 0;
+		}
+		
+	}
+}
+
+void colorGradient(uint16_t state){
+
+	static int gradient = 0;
+	static int updown = 0; //up = 1, down = 0
+	static int speed = 17;
+	
+	//Now check if it's max faded
+	if(gradient >= 0xFFFF){ //yes (max)
+		updown = 0;
+	}
+
+	else if(gradient <= 0){ //No, min
+		updown = 1;
+	}
+
+	//Increment or decrement
+	if(updown){
+		gradient += speed;
+	}
+
+	else{
+		gradient -= speed;
+	}
+
+	//See what color the RGB shoud be
+	if(state > 65){ //greeen
+		setTrackBallRGBW(0x0, 0xFFFF - gradient, 0x0000, 0x0000);
+	}
+
+	else if(state > 25){ //yellow
+		setTrackBallRGBW(0xFFFF - gradient, 0xFFFF - gradient, 0x0, 0x0000);
+	}
+
+	else if(state > 10){ //red
+		setTrackBallRGBW(0xFFFF - gradient, 0x0, 0x0, 0x0);
+	}
+
+	else{}
+
+}
+
+
+void blinkRed(void){
+	static int time_on = 200;
+	static int count = 0;
+	static int updown = 0;
+
+	if(count >= time_on){
+		updown = 0;
+	}
+
+	else if(count <= 0){
+		updown = 1;
+	}
+
+	if(updown){
+		setTrackBallRGBW(0xFFFF, 0x0, 0x0, 0x0);
+		count++;
+	}
+	else{
+		setTrackBallRGBW(0x0, 0x0, 0x0, 0x0);
+		count--;
 	}
 }

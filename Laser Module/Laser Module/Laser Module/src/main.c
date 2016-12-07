@@ -66,6 +66,7 @@ void configure_IO_pins(void);
 void ColorCycle(void);
 void colorGradient(uint16_t state);
 void blinkRed(void);
+void colorSolid(uint16_t state);
 
 // Helper functions
 void setTrackBallRGBW(uint16_t red, uint16_t green, uint16_t blue, uint16_t white);
@@ -162,15 +163,15 @@ int main (void)
 	{
 		setTrackBallRGBW(0xFFFF, 0, 0, 0);
 		
-		for( ; ; )
-		{ }
+		//for( ; ; )
+		//{ }
 		
 	}
 	else
 	{
 		setTrackBallRGBW(0, 0xFFFF, 0, 0);
-		for(int i = 0; i < 100000; i++)
-		{ }
+		//for(int i = 0; i < 100000; i++)
+		//{ }
 	}
 
 	lipo_setCapacity(Capacity);
@@ -221,6 +222,8 @@ int main (void)
 	int sendlength = 3; //number can be increased 
 	int index = 0;
 	int8_t sendbuffer[16];
+	int16_t current = 0;
+	bool charging = false;
 
 	init_wheel();
 	
@@ -281,24 +284,28 @@ int main (void)
 		}
 
 		state = lipo_soc(FILTERED);
+		current = lipo_current(AVG);
 
-		if(state > 10){
-			colorGradient(state);
+		if(current >= -1){
+			charging = true;
+		}
+		else{
+			charging = false;
 		}
 
+		if(state > 10 && charging){
+			colorGradient(state);
+		}
+		else if(state > 10 && !charging){
+			colorSolid(state);
+		}
 		else if(state > 5){
 			blinkRed();
 		}
-
 		else{
 			//Put into sleep mode, but I don't know how to do that
 			while(lipo_soc(FILTERED) < 0x0005){}
 		}
-	}
-
-	
-	while(1){
-		state = lipo_soc(FILTERED);
 	}
 }
 
@@ -333,7 +340,7 @@ void ColorCycle(void)
 	}
 	
 	color += speed;
-	if(color >= 0xFFFF)
+	if(color >= (0xFFFF - speed))
 	{
 		color = 0;
 		index++;
@@ -349,13 +356,12 @@ void colorGradient(uint16_t state){
 
 	static int gradient = 0;
 	static int updown = 0; //up = 1, down = 0
-	static int speed = 17;
+	static int speed = 100;
 	
 	//Now check if it's max faded
-	if(gradient >= 0xFFFF){ //yes (max)
+	if(gradient >= (0xFFFF - speed)){ //yes (max)
 		updown = 0;
 	}
-
 	else if(gradient <= 0){ //No, min
 		updown = 1;
 	}
@@ -364,26 +370,22 @@ void colorGradient(uint16_t state){
 	if(updown){
 		gradient += speed;
 	}
-
 	else{
 		gradient -= speed;
 	}
 
-	//See what color the RGB shoud be
-	if(state > 65){ //greeen
+	//See what color the RGB should be
+	if(state > 65){ //green
 		setTrackBallRGBW(0x0, 0xFFFF - gradient, 0x0000, 0x0000);
 	}
-
 	else if(state > 25){ //yellow
-		setTrackBallRGBW(0xFFFF - gradient, 0xFFFF - gradient, 0x0, 0x0000);
+		//setTrackBallRGBW(0x7000, 0xFFFF, 0x0, 0x1000);
+		setTrackBallRGBW(0xFFFF - gradient, 0xFFFF - gradient, 0x0, 0x0);
 	}
-
 	else if(state > 10){ //red
 		setTrackBallRGBW(0xFFFF - gradient, 0x0, 0x0, 0x0);
 	}
-
 	else{}
-
 }
 
 
@@ -408,4 +410,21 @@ void blinkRed(void){
 		setTrackBallRGBW(0x0, 0x0, 0x0, 0x0);
 		count--;
 	}
+}
+
+void colorSolid(uint16_t state){
+
+
+	//See what color the RGB should be
+	if(state > 65){ //green
+		setTrackBallRGBW(0x0, 0xFFFF, 0x0000, 0x0000);
+	}
+	else if(state > 25){ //yellow
+		setTrackBallRGBW(0x7000, 0xFFFF, 0x0, 0x1000);
+	}
+	else if(state > 10){ //red
+		setTrackBallRGBW(0xFFFF, 0x0, 0x0, 0x0);
+	}
+	else{}
+
 }

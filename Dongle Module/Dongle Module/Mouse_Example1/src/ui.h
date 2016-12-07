@@ -69,4 +69,29 @@ void ui_wakeup(void);
  */
 void ui_process(uint16_t framenumber);
 
+/* Mouse movement variables */
+extern int16_t x; // only the lower 12 bits of these are used
+extern int16_t y;
+extern int16_t lx;
+extern int16_t ly;
+extern int32_t yCount;
+extern int32_t xCount;
+extern int32_t temp;
+extern int32_t scrollX;
+extern int32_t scrollY;
+extern uint32_t Xtotal;
+extern uint32_t Ytotal;
+extern int xVals[5];
+extern int yVals[5];
+
+extern bool left;
+extern bool middle;
+extern bool right;
+
+extern uint32_t cameraTimeOut;
+extern bool calibration;
+extern bool laserEnabled;
+
+extern uint8_t button_info; //order is: up down left right left_click right_click middle_click laser_enabled
+
 #endif // _UI_H_

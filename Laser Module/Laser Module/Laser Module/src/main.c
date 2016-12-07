@@ -257,8 +257,10 @@ int main (void)
 		lbutton = button;
 		//check if the RFM69 receives a  packet
 		//only send info when a packet is received from dongle module			
-		if (RFM_receiveDone()) // Got one!
+		static int count = 0;
+		if (RFM_receiveDone())// && RFM_SENDERID == 2) // Got one!  /*count >= 100)*/
 		{
+		    count = 0;
 			receivingNode = RFM_SENDERID;
 			if (RFM_DATA[0] == 'Y'){
 				calibrationLEDS = true;
@@ -280,8 +282,10 @@ int main (void)
 			sendbuffer[2] |= (!port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
 			sendbuffer[2] |= laserState;								// Laser State
 
+			for(int i = 0; i < 1; i++) {}
 			RFM_send(receivingNode, sendbuffer, sendlength, false);
 		}
+		count++;
 
 		state = lipo_soc(FILTERED);
 		current = lipo_current(AVG);

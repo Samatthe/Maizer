@@ -490,8 +490,10 @@ void configure_i2c_master(void)
 	i2c_master_get_config_defaults(&config_i2c_master);
 	/* Change buffer timeout to something longer. */
 	config_i2c_master.buffer_timeout = 10000;
+	config_i2c_master.pinmux_pad0 = PINMUX_PA22C_SERCOM3_PAD0;
+	config_i2c_master.pinmux_pad1 = PINMUX_PA23C_SERCOM3_PAD1;
 	/* Initialize and enable device with config. */
-	i2c_master_init(&i2c_master_instance, SERCOM2, &config_i2c_master);
+	i2c_master_init(&i2c_master_instance, SERCOM3, &config_i2c_master);
 	i2c_master_enable(&i2c_master_instance);
 }
 
@@ -831,14 +833,17 @@ bool enterConfig(bool userControl)
 	
 	if (executeControlWord(BQ27441_CONTROL_SET_CFGUPDATE))
 	{
-		int16_t timeout = BQ72441_I2C_TIMEOUT;
+		int16_t timeout = BQ72441_I2C_TIMEOUT - 1900;
 		while ((timeout--) && (!(status() & BQ27441_FLAG_CFGUPMODE)))
 		{
+		/*
+			reset_millis();
 			uint32_t time = millis();
-			while(millis()-time < 1)
+			while(time < 1)
 			{
-			 //Delay(1);
+			  uint32_t time = millis();
 			}
+			*/
 		}
 		
 		if (timeout > 0)
@@ -961,10 +966,10 @@ uint16_t readControlWord(uint16_t function)
 {
 	uint8_t subCommandMSB = (function >> 8);
 	uint8_t subCommandLSB = (function & 0x00FF);
-	uint8_t command[2] = {subCommandLSB, subCommandMSB};
+	uint8_t command[3] = {0x00, subCommandLSB, subCommandMSB};
 	uint8_t data[2] = {0, 0};
 	
-	i2cWriteBytes((uint8_t) 0, command, 2);
+	i2cWriteBytes((uint8_t) 0, command, 3);
 	
 	if (i2cReadBytes((uint8_t) 0, data, 2))
 	{
@@ -1185,13 +1190,14 @@ uint16_t i2cWriteBytes(uint8_t subAddress, uint8_t * src, uint8_t count)
 		.hs_master_code  = 0x0,
 	};
 
+	/*
 	while (i2c_master_write_packet_wait(&i2c_master_instance, &packet) !=
 	STATUS_OK) {
 		if (timeout--) {
 			break;
 		}
 	}
-	
+	*/
 	timeout = BQ72441_I2C_TIMEOUT;
 	packet.data = src;
 	packet.data_length = count;

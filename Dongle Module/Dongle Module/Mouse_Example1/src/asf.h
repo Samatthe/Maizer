@@ -85,6 +85,9 @@
 // From module: SERCOM SPI - Serial Peripheral Interface (Polled APIs)
 #include <spi.h>
 
+// From module: SERCOM USART - Serial Communications (Polled APIs)
+#include <usart.h>
+
 // From module: SYSTEM - Clock Management for SAMD21/R21/DAx
 #include <clock.h>
 #include <gclk.h>
@@ -107,6 +110,9 @@
 // From module: Sleep manager - SAMD implementation
 #include <samd/sleepmgr.h>
 #include <sleepmgr.h>
+
+// From module: TCC - Timer Counter for Control Applications (Polled APIs)
+#include <tcc.h>
 
 // From module: USB - Universal Serial Bus
 #include <usb.h>

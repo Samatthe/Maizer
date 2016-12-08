@@ -87,17 +87,66 @@ bool left = false;
 bool middle = false;
 bool right = false;
 
+bool arrow_up = false;
+bool arrow_down = false;
+bool arrow_right = false;
+bool arrow_left = false;
+
+uint8_t xbee_sendbuffer[4];
+uint8_t xbee_receivebuffer[4];
+
 uint32_t cameraTimeOut = 10000;
 bool calibration = false;
 bool laserEnabled = false;
+
+struct usart_module usart_instance;
 
 uint8_t button_info = 0x00;
 
 static volatile bool main_b_mouse_enable = false;
 
+void configure_LED_PWM(void);
+struct tcc_module tcc0;
+struct tcc_module tcc1;
 void configure_button_pins(void);
 void setLEDcolor(unsigned long int val);
-void configure_radio();
+void configure_radio(void);
+void configure_usart(void);
+void ColorCycle(void);
+void setRGB(uint16_t red, uint16_t green, uint16_t blue);
+//void setTrackBallRGBW(uint16_t red, uint16_t green, uint16_t blue, uint16_t white);
+
+////////////// Configure all of the LED ports as PWM outputs //////////////////
+void configure_LED_PWM(void)
+{
+	struct tcc_config config_tcc;
+	tcc_get_config_defaults(&config_tcc, TCC0);
+	config_tcc.counter.period = 0xFFFF;
+	config_tcc.compare.wave_generation = TCC_WAVE_GENERATION_SINGLE_SLOPE_PWM;
+	config_tcc.compare.match[0] = 0xFFFF;
+	config_tcc.pins.enable_wave_out_pin[0] = true;
+	config_tcc.pins.wave_out_pin[0]        = PIN_PA21F_TCC0_WO7;
+	config_tcc.pins.wave_out_pin_mux[0]    = MUX_PA21F_TCC0_WO7;
+	tcc_init(&tcc0, TCC0, &config_tcc);
+	tcc_enable(&tcc0);
+	
+	tcc_get_config_defaults(&config_tcc, TCC1);
+	config_tcc.counter.period = 0xFFFF;
+	config_tcc.compare.wave_generation = TCC_WAVE_GENERATION_SINGLE_SLOPE_PWM;
+	config_tcc.compare.match[0] = 0xFFFF;
+	config_tcc.compare.match[1] = 0xFFFF;
+	config_tcc.pins.enable_wave_out_pin[0] = true;
+	config_tcc.pins.enable_wave_out_pin[1] = true;
+	config_tcc.pins.enable_wave_out_pin[2] = true;
+	config_tcc.pins.wave_out_pin[0]        = PIN_PA06E_TCC1_WO0;
+	config_tcc.pins.wave_out_pin[1]        = PIN_PA07E_TCC1_WO1;
+	config_tcc.pins.wave_out_pin_mux[0]    = MUX_PA06E_TCC1_WO0;
+	config_tcc.pins.wave_out_pin_mux[1]    = MUX_PA07E_TCC1_WO1;
+	tcc_init(&tcc1, TCC1, &config_tcc);
+	tcc_enable(&tcc1);
+}
+///////////////////////////////////////////////////////////////////////////
+
 // colors can be made by creating an unsigned long int
 // colors are 1 byte each, 0x<blue><green><red>
 const unsigned long int red = 0x0000FF;//red
@@ -143,6 +192,22 @@ void configure_radio(void) {
 	RFM_encrypt(ENCRYPTKEY);
 }
 
+//Configure the USART port
+void configure_usart(void){
+	struct usart_config config_usart;
+	usart_get_config_defaults(&config_usart);
+	config_usart.baudrate = 57600;
+	config_usart.mux_setting = USART_RX_1_TX_0_XCK_1;
+	config_usart.pinmux_pad0 = PINMUX_PB08D_SERCOM4_PAD0;
+	config_usart.pinmux_pad1 = PINMUX_PB09D_SERCOM4_PAD1;
+	config_usart.pinmux_pad2 = PINMUX_UNUSED;
+	config_usart.pinmux_pad3 = PINMUX_UNUSED;
+
+	while(usart_init(&usart_instance, SERCOM4, &config_usart) != STATUS_OK){}
+
+	usart_enable(&usart_instance);
+}
+
 
 /*! \brief Main function. Execution starts here.
  */
@@ -152,6 +217,8 @@ int main(void)
 	cpu_irq_enable();
 	system_init();
 	configure_radio();
+	configure_usart();
+	//configure_LED_PWM();
 
 	// Initialize the sleep manager
 	sleepmgr_init();
@@ -160,6 +227,7 @@ int main(void)
 
 	// Start USB stack to authorize VBus monitoring
 	udc_start();
+
 
 	// The main loop manages only the power mode
 	// because the USB management is done by interrupt
@@ -178,134 +246,169 @@ int main(void)
 			}
 		}
 #else /* #ifdef USB_DEVICE_LOW_SPEED */
+	//xbee_sendbuffer[0] = 0x00;
+	//xbee_sendbuffer[1] = 0x01;
+	//xbee_sendbuffer[2] = 0x02;
+	//xbee_sendbuffer[3] = 0x03;
+	//while(usart_write_buffer_wait(&usart_instance, xbee_sendbuffer, sizeof(xbee_sendbuffer)) != STATUS_OK){}
 
 		// this will receive the mouse location from the camera module
-		if (RFM_receiveDone()) {
+		if (usart_read_buffer_wait(&usart_instance, xbee_receivebuffer, sizeof(xbee_receivebuffer)) == STATUS_OK) 
+		{
 			//info received from camera module (mouse movement)
-			if (RFM_SENDERID == CAMERA_MODULE_NODE_ID) {
-				if (RFM_DATA[0] == 'Y' && RFM_DATALEN == 1) // set the system into calibration mode when button is pressed on camera
+			if (xbee_receivebuffer[0] == 'Y' && xbee_receivebuffer[1] == 'C' && xbee_receivebuffer[2] == 'Y' && xbee_receivebuffer[3] == 'C'){ // set the system into calibration mode when button is pressed on camera
 				calibration = true;
+			}
 
-				else if (RFM_DATA[0] == 'N' && RFM_DATALEN == 1) // set the system to regular operation mode when camera sends a 'N' packet
+			else if (xbee_receivebuffer[0] == 'N' && xbee_receivebuffer[1] == 'C' && xbee_receivebuffer[2] == 'N' && xbee_receivebuffer[3] == 'C'){ // set the system to regular operation mode when camera sends a 'N' packet
 				calibration = false;
-				
-				else {//if (laserEnabled) {
-					lx = x;
-					ly = y;
-					xCount = 0;
-					yCount = 0;
+			}
+			
+			else {//if (laserEnabled) {
+				lx = x;
+				ly = y;
+				xCount = 0;
+				yCount = 0;
 
-					for (int i = 0; i < RFM_DATALEN; i++) {
-						//x LSB 00<data>	x MSB 01<data>
-						//y LSB 10<data>	y MSB 11<data>
-						switch (RFM_DATA[i] >> 6) {
-							case 0: //x LSB
-							xCount += 2;
-							temp = (RFM_DATA[i] & 0x3F);
-							x = temp;
-							break;
-							
-							case 1: //x MSB
-							xCount += 3;
-							temp = (RFM_DATA[i] & 0x3F);
-							x = x | (temp << 6);
-							break;
-							
-							case 2: //y LSB
-							yCount += 2;
-							temp = (RFM_DATA[i] & 0x3F);
-							y = temp;
-							break;
-							
-							case 3: //y MSB
-							yCount += 3;
-							temp = (RFM_DATA[i] & 0x3F);
-							y = y | (temp << 6);
-							break;
-						}
-					}
-
-					if(xCount != 5 || yCount != 5)
-					{
-						x = lx;
-						y = ly;
-					}
-					else
-					{
-						int avg = 4;
-						Xtotal -= xVals[0];
-						Ytotal -= yVals[0];
+				for (int i = 0; i < 4; i++) {
+					//x LSB 00<data>	x MSB 01<data>
+					//y LSB 10<data>	y MSB 11<data>
+					switch (xbee_receivebuffer[i] >> 6) {
+						case 0: //x LSB
+						xCount += 2;
+						temp = (xbee_receivebuffer[i] & 0x3F);
+						x = temp;
+						break;
 						
-						for(int i = 0; i < avg-1; i++)
-						{
-							yVals[i] = yVals[i + 1];
-							xVals[i] = xVals[i + 1];
-						}
+						case 1: //x MSB
+						xCount += 3;
+						temp = (xbee_receivebuffer[i] & 0x3F);
+						x = x | (temp << 6);
+						break;
 						
-						Xtotal += x;
-						Ytotal += y;
-
-						yVals[avg-1] = y;
-						xVals[avg-1] = x;
+						case 2: //y LSB
+						yCount += 2;
+						temp = (xbee_receivebuffer[i] & 0x3F);
+						y = temp;
+						break;
 						
-						x = Xtotal/avg;
-						y = Ytotal/avg;
-
-						x = x*(0x7FFF/4095);
-						y = y*(0x7FFF/4095);
+						case 3: //y MSB
+						yCount += 3;
+						temp = (xbee_receivebuffer[i] & 0x3F);
+						y = y | (temp << 6);
+						break;
 					}
 				}
-				
-				if (calibration) {
-					// request a new frame from camera module
-					radio_sendbuffer[0] = 'C';
-	//				for (int i = 0; i < 2; i++)
-					RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
+
+				if(xCount != 5 || yCount != 5)
+				{
+					x = lx;
+					y = ly;
 				}
-				else {
-					// request info from laser module
-					radio_sendbuffer[0] = 'B'; //B is arbitrary. Y will set LEDs to color show. N will set it to white.
-//					for (int i = 0; i < 2; i++)
-					RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
+				else
+				{
+					int avg = 4;
+					Xtotal -= xVals[0];
+					Ytotal -= yVals[0];
+					
+					for(int i = 0; i < avg-1; i++)
+					{
+						yVals[i] = yVals[i + 1];
+						xVals[i] = xVals[i + 1];
+					}
+					
+					Xtotal += x;
+					Ytotal += y;
+
+					yVals[avg-1] = y;
+					xVals[avg-1] = x;
+					
+					x = Xtotal/avg;
+					y = Ytotal/avg;
+
+					x = x*(0x7FFF/4095);
+					y = y*(0x7FFF/4095);
 				}
 			}
 			
-			//info received from laser module (clicks)
-			else if (RFM_SENDERID == LASER_MODULE_NODE_ID) {
-				
-				for (int i = 0; i < RFM_DATALEN; i++) {
-					switch (i) {
-						case 0: //x axis scroll
-						scrollX = RFM_DATA[i];
-						break;
-						
-						case 1: //y axis scroll
-						scrollY = RFM_DATA[i];
-						break;
-						
-						case 2: //button info byte
-						button_info = RFM_DATA[i];
-						
-						//mouse_move(x, y);
-						//mouse_buttons((button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
-						left = (button_info & 0x08) >> 3;
-						middle = (button_info & 0x02) >> 1;
-						right = (button_info & 0x04) >> 2;
-						
-						if (button_info & 0x01) //if laser is enabled
-						laserEnabled = true;
-						else
-						laserEnabled = false;
-						
-						break;
-					}
-				}
-				
+			if (calibration) {
 				// request a new frame from camera module
-				radio_sendbuffer[0] = 'R';
-				//RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false);
+				xbee_sendbuffer[0] = 'C';
+				xbee_sendbuffer[1] = button_info;
+				xbee_sendbuffer[2] = 0x00;
+				xbee_sendbuffer[3] = 0x00;
+//				for (int i = 0; i < 2; i++)
+				while(usart_write_buffer_wait(&usart_instance, xbee_sendbuffer, sizeof(xbee_sendbuffer)) != STATUS_OK){}
 			}
+			else {
+				// request info from laser module
+				radio_sendbuffer[0] = 0x00; 
+				radio_sendbuffer[1] = 0x00;
+				radio_sendbuffer[2] = 0x00;
+				radio_sendbuffer[3] = 0x00; //B is arbitrary. Y will set LEDs to color show. N will set it to white.
+//					for (int i = 0; i < 2; i++)
+				RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
+			}
+			
 		}
+
+		//END OF CAMERA MODULE CODE
+			
+		//info received from laser module (clicks)
+		if (RFM_receiveDone())
+		{	
+			for (int i = 0; i < RFM_DATALEN; i++) {
+				switch (i) {
+					case 0: //x axis scroll
+					scrollX = RFM_DATA[i];
+					break;
+					
+					case 1: //y axis scroll
+					scrollY = RFM_DATA[i];
+					break;
+					
+					case 2: //button info byte
+					button_info = RFM_DATA[i];
+					
+					//mouse_move(x, y);
+					//mouse_buttons((button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
+					left = (button_info & 0x08) >> 3;
+					middle = (button_info & 0x02) >> 1;
+					right = (button_info & 0x04) >> 2;
+
+					//arrow_up = (button_info & 0x80) >> 7;
+					//arrow_down = (button_info & 0x40) >> 6;
+					//arrow_left = (button_info & 0x20) >> 5;
+					//arrow_right = (button_info & 0x10) >> 4;
+					
+					if (button_info & 0x01){ //if laser is enabled
+						laserEnabled = true;
+						port_pin_set_output_level(PIN_PA02, HIGH);
+					}
+					else{
+						laserEnabled = false;
+						port_pin_set_output_level(PIN_PA02, LOW);
+					}
+					
+					break;
+				}
+			}
+			
+			// request a new frame from camera module
+			//radio_sendbuffer[0] = 'R';
+			//while(usart_write_buffer_wait(&usart_instance, xbee_sendbuffer, sizeof(xbee_sendbuffer)) != STATUS_OK){}
+
+			//RFM_send(CAMERA_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //if commented out, the radio is not sending
+		}
+
+		//if(calibration)
+		//{
+			//ColorCycle();
+		//}
+		//setRGB(0,0xFFFF,0xFFFF);
+		//setRGB(0xFFFF,0,0xFFFF);
+		//setRGB(0xFFFF,0xFFFF, 0);
+		//setRGB(0xFFFF,0xFFFF,0xFFFF);
 
 		//handle camera timeout
 		/*if (millis() > cameraTimeOut) { // if time exceeds 500ms
@@ -317,6 +420,8 @@ int main(void)
 		}*/
 
 		//sleepmgr_enter_sleep();
+
+
 #endif
 	}
 }
@@ -414,3 +519,43 @@ void main_mouse_disable(void)
  *       - conf_foo.h   configuration of each module
  *       - ui.c        implement of user's interface (buttons, leds)
  */
+ void setRGB(uint16_t red, uint16_t green, uint16_t blue)
+ {
+	 /* BLUE */
+	 tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (1), blue);
+	 /* GREEN */
+	 tcc_set_compare_value(&tcc1, (enum tcc_match_capture_channel) (0), green);
+	 /* RED */
+	 tcc_set_compare_value(&tcc0, (enum tcc_match_capture_channel) (1), red);
+ }
+
+void ColorCycle(void)
+{
+	static int color = 0;
+	static int speed = 10;
+	static int index = 0;
+	if(index == 0)
+	{
+		setRGB(0xFFFF - color,color,0x0);
+	}
+	else if(index == 1)
+	{
+		setRGB(0x0,0xFFFF - color,color);
+	}
+	else if(index == 2)
+	{
+		setRGB(color,0x0,0xFFFF - color);
+	}
+	
+	color += speed;
+	if(color >= (0xFFFF - speed))
+	{
+		color = 0;
+		index++;
+
+		if(index > 2){
+			index = 0;
+		}
+		
+	}
+}

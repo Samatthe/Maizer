@@ -22,7 +22,7 @@ Arduino Uno (any 'duino should do)
 // General Constants //
 ///////////////////////
 #define BQ27441_UNSEAL_KEY	0x8000 // Secret code to unseal the BQ27441-G1A
-#define BQ27441_DEVICE_ID	0x0421 // Default device ID
+#define BQ27441_DEVICE_ID	0x0421 //0x0421 // Default device ID
 
 ///////////////////////
 // Standard Commands //

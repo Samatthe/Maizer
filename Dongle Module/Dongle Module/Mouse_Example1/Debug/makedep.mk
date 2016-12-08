@@ -8,6 +8,10 @@ src\ASF\sam0\drivers\sercom\sercom.c
 
 src\ASF\sam0\drivers\sercom\spi\spi.c
 
+src\ASF\sam0\drivers\sercom\usart\usart.c
+
+src\ASF\sam0\drivers\tcc\tcc.c
+
 src\RFM69.c
 
 src\ASF\common\services\usb\class\hid\device\mouse\example\samd21j18a_samd21_xplained_pro\ui.c

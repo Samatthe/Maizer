@@ -102,8 +102,8 @@ void ui_process(uint16_t framenumber)
 	}
 	cpt_sof = 0;
 
-	if (!calibration) // move mouse only if laser enabled and not calibrating
-		mouse_move(x, y, scrollX, scrollY, (button_info & 0x08) >> 3, (button_info & 0x02) >> 1, (button_info & 0x04) >> 2);
+	//if (!calibration) // move mouse only if laser enabled and not calibrating
+		mouse_move(x, y, scrollX, scrollY, left, middle, right);
 }
 
 /**

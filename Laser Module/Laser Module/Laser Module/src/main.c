@@ -252,15 +252,13 @@ int main (void)
 		//Do the wheel update
 		update_values();
 		
-		getScroll(&sendbuffer[0], &sendbuffer[1]); // x and y axis update
+		//getScroll(&sendbuffer[0], &sendbuffer[1]); // x and y axis update
 		
 		lbutton = button;
 		//check if the RFM69 receives a  packet
 		//only send info when a packet is received from dongle module			
-		static int count = 0;
-		if (RFM_receiveDone())// && RFM_SENDERID == 2) // Got one!  /*count >= 100)*/
+		if (RFM_receiveDone()) // Got one!
 		{
-		    count = 0;
 			receivingNode = RFM_SENDERID;
 			if (RFM_DATA[0] == 'Y'){
 				calibrationLEDS = true;
@@ -268,10 +266,15 @@ int main (void)
 			if (RFM_DATA[0] == 'N'){
 				calibrationLEDS = false;
 			}
+
+			//RFM_send(2, sendbuffer, sendlength, false);
+		}
 			// The actual message is contained in the RFM_DATA array,
 			// and is RFM_DATALEN bytes in size:
-			getScroll(&sendbuffer[0], &sendbuffer[1]); // x and y axis update
+			//getScroll(&sendbuffer[0], &sendbuffer[1]); // x and y axis update
 
+			sendbuffer[0] = 0;
+			sendbuffer[1] = 0;
 			sendbuffer[2] = 0;
 			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA20) << 7); // Up
 			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA12) << 6); // Down
@@ -282,10 +285,14 @@ int main (void)
 			sendbuffer[2] |= (!port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
 			sendbuffer[2] |= laserState;								// Laser State
 
-			for(int i = 0; i < 1; i++) {}
-			RFM_send(receivingNode, sendbuffer, sendlength, false);
-		}
-		count++;
+			static int count = 0;
+			if(count >= 10)
+			{
+				count = 0;
+				RFM_send(2, sendbuffer, sendlength, false);
+			}
+			count++;
+		//}
 
 		state = lipo_soc(FILTERED);
 		current = lipo_current(AVG);

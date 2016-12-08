@@ -27,11 +27,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  11 .debug_macro  0000a7d5  00000000  00000000  00062493  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_line   00011d8e  00000000  00000000  0006cc68  2**0
+ 12 .debug_line   00011d8c  00000000  00000000  0006cc68  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_str    00092734  00000000  00000000  0007e9f6  2**0
+ 13 .debug_str    00092734  00000000  00000000  0007e9f4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_frame  00003224  00000000  00000000  0011112c  2**2
+ 14 .debug_frame  00003224  00000000  00000000  00111128  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -20530,65 +20530,57 @@ int main (void)
     6e74:	781a      	ldrb	r2, [r3, #0]
     6e76:	4b88      	ldr	r3, [pc, #544]	; (7098 <main+0x314>)
     6e78:	701a      	strb	r2, [r3, #0]
-		//check if the RFM69 receives a  packet
-		//only send info when a packet is received from dongle module			
-		if (RFM_receiveDone()) // Got one!
-    6e7a:	4b8b      	ldr	r3, [pc, #556]	; (70a8 <main+0x324>)
-    6e7c:	4798      	blx	r3
-    6e7e:	1e03      	subs	r3, r0, #0
-    6e80:	d015      	beq.n	6eae <main+0x12a>
-		{
-			receivingNode = RFM_SENDERID;
-    6e82:	4b8a      	ldr	r3, [pc, #552]	; (70ac <main+0x328>)
-    6e84:	881b      	ldrh	r3, [r3, #0]
-    6e86:	b29b      	uxth	r3, r3
-    6e88:	623b      	str	r3, [r7, #32]
-			if (RFM_DATA[0] == 'Y'){
-    6e8a:	4b89      	ldr	r3, [pc, #548]	; (70b0 <main+0x32c>)
-    6e8c:	881b      	ldrh	r3, [r3, #0]
-    6e8e:	b29b      	uxth	r3, r3
-    6e90:	2b59      	cmp	r3, #89	; 0x59
-    6e92:	d103      	bne.n	6e9c <main+0x118>
-				calibrationLEDS = true;
-    6e94:	2327      	movs	r3, #39	; 0x27
-    6e96:	18fb      	adds	r3, r7, r3
-    6e98:	2201      	movs	r2, #1
-    6e9a:	701a      	strb	r2, [r3, #0]
-			}
-			if (RFM_DATA[0] == 'N'){
-    6e9c:	4b84      	ldr	r3, [pc, #528]	; (70b0 <main+0x32c>)
-    6e9e:	881b      	ldrh	r3, [r3, #0]
-    6ea0:	b29b      	uxth	r3, r3
-    6ea2:	2b4e      	cmp	r3, #78	; 0x4e
-    6ea4:	d103      	bne.n	6eae <main+0x12a>
-				calibrationLEDS = false;
-    6ea6:	2327      	movs	r3, #39	; 0x27
-    6ea8:	18fb      	adds	r3, r7, r3
-    6eaa:	2200      	movs	r2, #0
-    6eac:	701a      	strb	r2, [r3, #0]
-		}
+
 			// The actual message is contained in the RFM_DATA array,
 			// and is RFM_DATALEN bytes in size:
 			//getScroll(&sendbuffer[0], &sendbuffer[1]); // x and y axis update
 
 			sendbuffer[0] = 0;
-    6eae:	003b      	movs	r3, r7
-    6eb0:	2200      	movs	r2, #0
-    6eb2:	701a      	strb	r2, [r3, #0]
+    6e7a:	003b      	movs	r3, r7
+    6e7c:	2200      	movs	r2, #0
+    6e7e:	701a      	strb	r2, [r3, #0]
 			sendbuffer[1] = 0;
-    6eb4:	003b      	movs	r3, r7
-    6eb6:	2200      	movs	r2, #0
-    6eb8:	705a      	strb	r2, [r3, #1]
+    6e80:	003b      	movs	r3, r7
+    6e82:	2200      	movs	r2, #0
+    6e84:	705a      	strb	r2, [r3, #1]
 			sendbuffer[2] = 0;
-    6eba:	003b      	movs	r3, r7
-    6ebc:	2200      	movs	r2, #0
-    6ebe:	709a      	strb	r2, [r3, #2]
+    6e86:	003b      	movs	r3, r7
+    6e88:	2200      	movs	r2, #0
+    6e8a:	709a      	strb	r2, [r3, #2]
 			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA20) << 7); // Up
-    6ec0:	2014      	movs	r0, #20
+    6e8c:	2014      	movs	r0, #20
+    6e8e:	4b80      	ldr	r3, [pc, #512]	; (7090 <main+0x30c>)
+    6e90:	4798      	blx	r3
+    6e92:	0003      	movs	r3, r0
+    6e94:	01d9      	lsls	r1, r3, #7
+    6e96:	003b      	movs	r3, r7
+    6e98:	2202      	movs	r2, #2
+    6e9a:	569a      	ldrsb	r2, [r3, r2]
+    6e9c:	b24b      	sxtb	r3, r1
+    6e9e:	4313      	orrs	r3, r2
+    6ea0:	b25a      	sxtb	r2, r3
+    6ea2:	003b      	movs	r3, r7
+    6ea4:	709a      	strb	r2, [r3, #2]
+			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA12) << 6); // Down
+    6ea6:	200c      	movs	r0, #12
+    6ea8:	4b79      	ldr	r3, [pc, #484]	; (7090 <main+0x30c>)
+    6eaa:	4798      	blx	r3
+    6eac:	0003      	movs	r3, r0
+    6eae:	0199      	lsls	r1, r3, #6
+    6eb0:	003b      	movs	r3, r7
+    6eb2:	2202      	movs	r2, #2
+    6eb4:	569a      	ldrsb	r2, [r3, r2]
+    6eb6:	b24b      	sxtb	r3, r1
+    6eb8:	4313      	orrs	r3, r2
+    6eba:	b25a      	sxtb	r2, r3
+    6ebc:	003b      	movs	r3, r7
+    6ebe:	709a      	strb	r2, [r3, #2]
+			sendbuffer[2] |= (port_pin_get_input_level(PIN_PB09) << 5); // Left
+    6ec0:	2029      	movs	r0, #41	; 0x29
     6ec2:	4b73      	ldr	r3, [pc, #460]	; (7090 <main+0x30c>)
     6ec4:	4798      	blx	r3
     6ec6:	0003      	movs	r3, r0
-    6ec8:	01d9      	lsls	r1, r3, #7
+    6ec8:	0159      	lsls	r1, r3, #5
     6eca:	003b      	movs	r3, r7
     6ecc:	2202      	movs	r2, #2
     6ece:	569a      	ldrsb	r2, [r3, r2]
@@ -20597,12 +20589,12 @@ int main (void)
     6ed4:	b25a      	sxtb	r2, r3
     6ed6:	003b      	movs	r3, r7
     6ed8:	709a      	strb	r2, [r3, #2]
-			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA12) << 6); // Down
-    6eda:	200c      	movs	r0, #12
+			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA04) << 4); // Right
+    6eda:	2004      	movs	r0, #4
     6edc:	4b6c      	ldr	r3, [pc, #432]	; (7090 <main+0x30c>)
     6ede:	4798      	blx	r3
     6ee0:	0003      	movs	r3, r0
-    6ee2:	0199      	lsls	r1, r3, #6
+    6ee2:	0119      	lsls	r1, r3, #4
     6ee4:	003b      	movs	r3, r7
     6ee6:	2202      	movs	r2, #2
     6ee8:	569a      	ldrsb	r2, [r3, r2]
@@ -20611,12 +20603,12 @@ int main (void)
     6eee:	b25a      	sxtb	r2, r3
     6ef0:	003b      	movs	r3, r7
     6ef2:	709a      	strb	r2, [r3, #2]
-			sendbuffer[2] |= (port_pin_get_input_level(PIN_PB09) << 5); // Left
-    6ef4:	2029      	movs	r0, #41	; 0x29
+			sendbuffer[2] |= (port_pin_get_input_level(PIN_PB02) << 3); // Left Click
+    6ef4:	2022      	movs	r0, #34	; 0x22
     6ef6:	4b66      	ldr	r3, [pc, #408]	; (7090 <main+0x30c>)
     6ef8:	4798      	blx	r3
     6efa:	0003      	movs	r3, r0
-    6efc:	0159      	lsls	r1, r3, #5
+    6efc:	00d9      	lsls	r1, r3, #3
     6efe:	003b      	movs	r3, r7
     6f00:	2202      	movs	r2, #2
     6f02:	569a      	ldrsb	r2, [r3, r2]
@@ -20625,12 +20617,12 @@ int main (void)
     6f08:	b25a      	sxtb	r2, r3
     6f0a:	003b      	movs	r3, r7
     6f0c:	709a      	strb	r2, [r3, #2]
-			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA04) << 4); // Right
-    6f0e:	2004      	movs	r0, #4
+			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 2); // Right Click
+    6f0e:	200f      	movs	r0, #15
     6f10:	4b5f      	ldr	r3, [pc, #380]	; (7090 <main+0x30c>)
     6f12:	4798      	blx	r3
     6f14:	0003      	movs	r3, r0
-    6f16:	0119      	lsls	r1, r3, #4
+    6f16:	0099      	lsls	r1, r3, #2
     6f18:	003b      	movs	r3, r7
     6f1a:	2202      	movs	r2, #2
     6f1c:	569a      	ldrsb	r2, [r3, r2]
@@ -20639,69 +20631,79 @@ int main (void)
     6f22:	b25a      	sxtb	r2, r3
     6f24:	003b      	movs	r3, r7
     6f26:	709a      	strb	r2, [r3, #2]
-			sendbuffer[2] |= (port_pin_get_input_level(PIN_PB02) << 3); // Left Click
-    6f28:	2022      	movs	r0, #34	; 0x22
+			sendbuffer[2] |= (!port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
+    6f28:	200d      	movs	r0, #13
     6f2a:	4b59      	ldr	r3, [pc, #356]	; (7090 <main+0x30c>)
     6f2c:	4798      	blx	r3
     6f2e:	0003      	movs	r3, r0
-    6f30:	00d9      	lsls	r1, r3, #3
-    6f32:	003b      	movs	r3, r7
-    6f34:	2202      	movs	r2, #2
-    6f36:	569a      	ldrsb	r2, [r3, r2]
-    6f38:	b24b      	sxtb	r3, r1
-    6f3a:	4313      	orrs	r3, r2
-    6f3c:	b25a      	sxtb	r2, r3
-    6f3e:	003b      	movs	r3, r7
-    6f40:	709a      	strb	r2, [r3, #2]
-			sendbuffer[2] |= (port_pin_get_input_level(PIN_PA15) << 2); // Right Click
-    6f42:	200f      	movs	r0, #15
-    6f44:	4b52      	ldr	r3, [pc, #328]	; (7090 <main+0x30c>)
-    6f46:	4798      	blx	r3
-    6f48:	0003      	movs	r3, r0
-    6f4a:	0099      	lsls	r1, r3, #2
-    6f4c:	003b      	movs	r3, r7
-    6f4e:	2202      	movs	r2, #2
-    6f50:	569a      	ldrsb	r2, [r3, r2]
-    6f52:	b24b      	sxtb	r3, r1
-    6f54:	4313      	orrs	r3, r2
-    6f56:	b25a      	sxtb	r2, r3
-    6f58:	003b      	movs	r3, r7
-    6f5a:	709a      	strb	r2, [r3, #2]
-			sendbuffer[2] |= (!port_pin_get_input_level(PIN_PA13) << 1); // Middle Click
-    6f5c:	200d      	movs	r0, #13
-    6f5e:	4b4c      	ldr	r3, [pc, #304]	; (7090 <main+0x30c>)
-    6f60:	4798      	blx	r3
-    6f62:	0003      	movs	r3, r0
-    6f64:	001a      	movs	r2, r3
-    6f66:	2301      	movs	r3, #1
-    6f68:	4053      	eors	r3, r2
-    6f6a:	b2db      	uxtb	r3, r3
-    6f6c:	0059      	lsls	r1, r3, #1
-    6f6e:	003b      	movs	r3, r7
-    6f70:	2202      	movs	r2, #2
-    6f72:	569a      	ldrsb	r2, [r3, r2]
-    6f74:	b24b      	sxtb	r3, r1
-    6f76:	4313      	orrs	r3, r2
-    6f78:	b25a      	sxtb	r2, r3
-    6f7a:	003b      	movs	r3, r7
-    6f7c:	709a      	strb	r2, [r3, #2]
+    6f30:	001a      	movs	r2, r3
+    6f32:	2301      	movs	r3, #1
+    6f34:	4053      	eors	r3, r2
+    6f36:	b2db      	uxtb	r3, r3
+    6f38:	0059      	lsls	r1, r3, #1
+    6f3a:	003b      	movs	r3, r7
+    6f3c:	2202      	movs	r2, #2
+    6f3e:	569a      	ldrsb	r2, [r3, r2]
+    6f40:	b24b      	sxtb	r3, r1
+    6f42:	4313      	orrs	r3, r2
+    6f44:	b25a      	sxtb	r2, r3
+    6f46:	003b      	movs	r3, r7
+    6f48:	709a      	strb	r2, [r3, #2]
 			sendbuffer[2] |= laserState;								// Laser State
-    6f7e:	003b      	movs	r3, r7
-    6f80:	2202      	movs	r2, #2
-    6f82:	569a      	ldrsb	r2, [r3, r2]
-    6f84:	4b45      	ldr	r3, [pc, #276]	; (709c <main+0x318>)
-    6f86:	781b      	ldrb	r3, [r3, #0]
-    6f88:	b25b      	sxtb	r3, r3
-    6f8a:	4313      	orrs	r3, r2
-    6f8c:	b25a      	sxtb	r2, r3
-    6f8e:	003b      	movs	r3, r7
-    6f90:	709a      	strb	r2, [r3, #2]
+    6f4a:	003b      	movs	r3, r7
+    6f4c:	2202      	movs	r2, #2
+    6f4e:	569a      	ldrsb	r2, [r3, r2]
+    6f50:	4b52      	ldr	r3, [pc, #328]	; (709c <main+0x318>)
+    6f52:	781b      	ldrb	r3, [r3, #0]
+    6f54:	b25b      	sxtb	r3, r3
+    6f56:	4313      	orrs	r3, r2
+    6f58:	b25a      	sxtb	r2, r3
+    6f5a:	003b      	movs	r3, r7
+    6f5c:	709a      	strb	r2, [r3, #2]
 
+			if (RFM_receiveDone()) // Got one!
+    6f5e:	4b52      	ldr	r3, [pc, #328]	; (70a8 <main+0x324>)
+    6f60:	4798      	blx	r3
+    6f62:	1e03      	subs	r3, r0, #0
+    6f64:	d015      	beq.n	6f92 <main+0x20e>
+			{
+				receivingNode = RFM_SENDERID;
+    6f66:	4b51      	ldr	r3, [pc, #324]	; (70ac <main+0x328>)
+    6f68:	881b      	ldrh	r3, [r3, #0]
+    6f6a:	b29b      	uxth	r3, r3
+    6f6c:	623b      	str	r3, [r7, #32]
+				if (RFM_DATA[0] == 'Y'){
+    6f6e:	4b50      	ldr	r3, [pc, #320]	; (70b0 <main+0x32c>)
+    6f70:	881b      	ldrh	r3, [r3, #0]
+    6f72:	b29b      	uxth	r3, r3
+    6f74:	2b59      	cmp	r3, #89	; 0x59
+    6f76:	d103      	bne.n	6f80 <main+0x1fc>
+					calibrationLEDS = true;
+    6f78:	2327      	movs	r3, #39	; 0x27
+    6f7a:	18fb      	adds	r3, r7, r3
+    6f7c:	2201      	movs	r2, #1
+    6f7e:	701a      	strb	r2, [r3, #0]
+				}
+				if (RFM_DATA[0] == 'N'){
+    6f80:	4b4b      	ldr	r3, [pc, #300]	; (70b0 <main+0x32c>)
+    6f82:	881b      	ldrh	r3, [r3, #0]
+    6f84:	b29b      	uxth	r3, r3
+    6f86:	2b4e      	cmp	r3, #78	; 0x4e
+    6f88:	d103      	bne.n	6f92 <main+0x20e>
+					calibrationLEDS = false;
+    6f8a:	2327      	movs	r3, #39	; 0x27
+    6f8c:	18fb      	adds	r3, r7, r3
+    6f8e:	2200      	movs	r2, #0
+    6f90:	701a      	strb	r2, [r3, #0]
+				}
+
+				//RFM_send(2, sendbuffer, sendlength, false);
+			}
 			static int count = 0;
-			if(count >= 10)
+			if(count >= 50)
     6f92:	4b48      	ldr	r3, [pc, #288]	; (70b4 <main+0x330>)
     6f94:	681b      	ldr	r3, [r3, #0]
-    6f96:	2b09      	cmp	r3, #9
+    6f96:	2b31      	cmp	r3, #49	; 0x31
     6f98:	dd09      	ble.n	6fae <main+0x22a>
 			{
 				count = 0;

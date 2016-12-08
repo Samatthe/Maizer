@@ -347,7 +347,7 @@ int main(void)
 				radio_sendbuffer[2] = 0x00;
 				radio_sendbuffer[3] = 0x00; //B is arbitrary. Y will set LEDs to color show. N will set it to white.
 //					for (int i = 0; i < 2; i++)
-				RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
+				//RFM_send(LASER_MODULE_NODE_ID, radio_sendbuffer, radio_sendlength, false); //send empty packet
 			}
 			
 		}

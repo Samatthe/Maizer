@@ -8012,7 +8012,7 @@ OUTPUT(Laser Module.elf elf32-littlearm)
  .debug_macro   0x0000a4f7       0x84 src/main.o
  .debug_macro   0x0000a57b      0x25a src/main.o
 
-.debug_line     0x00000000    0x11d8e
+.debug_line     0x00000000    0x11d8c
  .debug_line    0x00000000      0xcdc src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
  .debug_line    0x00000cdc      0xc34 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count.o
  .debug_line    0x00001910      0xaa4 src/ASF/sam0/drivers/rtc/rtc_sam_d_r/rtc_count_interrupt.o
@@ -8035,7 +8035,7 @@ OUTPUT(Laser Module.elf elf32-littlearm)
  .debug_line    0x0000e7b4      0x93f src/ASF/sam0/drivers/system/pinmux/pinmux.o
  .debug_line    0x0000f0f3      0x9b6 src/ASF/sam0/drivers/system/system.o
  .debug_line    0x0000faa9      0x650 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_line    0x000100f9     0x1c95 src/main.o
+ .debug_line    0x000100f9     0x1c93 src/main.o
 
 .debug_str      0x00000000    0x92734
  .debug_str     0x00000000    0x7fe13 src/ASF/sam0/drivers/extint/extint_sam_d_r/extint.o
